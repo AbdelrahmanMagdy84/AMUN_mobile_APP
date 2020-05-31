@@ -1,0 +1,91 @@
+import 'package:amun/screens/category_records_screen.dart';
+import 'package:amun/screens/login_screen.dart';
+import 'package:amun/screens/my_doctors_screen.dart';
+import 'package:amun/screens/register_screen.dart';
+
+import './main_drawer.dart';
+import './screens/categories_screen.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primaryColor:Colors.amber,
+        accentColor: Color(0xff10AD91),
+        primarySwatch: Colors.blue,
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                color: Color(0xff10AD91) ,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18))
+      ),
+     // home: CategoriesScreen(),
+      routes:{
+        '/': (ctx)=>LoginScreen(),
+        RegisterScreen.routeName:( ctx)=> RegisterScreen(),
+        CategoriesScreen.routeName:(ctx)=>CategoriesScreen(),
+        CategoryRecordsScreen.routeName:(ctx)=>CategoryRecordsScreen(),
+        MyDoctorsScreen.routeName:(ctx)=>MyDoctorsScreen()
+
+      } ,
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+ 
+
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      drawer: MainDrawer(),
+      body: Container(
+        color: Colors.black,
+        child: GridView(
+          padding: EdgeInsets.all(20),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+          ),
+          children: <Widget>[],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
