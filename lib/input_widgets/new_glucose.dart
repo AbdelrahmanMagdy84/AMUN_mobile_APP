@@ -28,16 +28,16 @@ class _NewGlucoseState extends State<NewGlucose> {
     });
   }
 
-  Widget buildRadioListTile(Type intailValue, String title) {
+  Widget buildRadioListTile(TimeType intailValue, String title) {
     return Container(
       width: 180,
       child: RadioListTile(
         title: Text(title),
         value: intailValue,
-        groupValue: glucose.type,
-        onChanged: (Type value) {
+        groupValue: glucose.timeType,
+        onChanged: (TimeType value) {
           setState(() {
-            glucose.type = value;
+            glucose.timeType = value;
           });
         },
       ),
@@ -93,6 +93,7 @@ class _NewGlucoseState extends State<NewGlucose> {
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context).size.height;
 
+    var postprandial;
     return SingleChildScrollView(
       child: Card(
         elevation: 4,
@@ -130,9 +131,9 @@ class _NewGlucoseState extends State<NewGlucose> {
                           "Type",
                           style: Theme.of(context).textTheme.title,
                         ),
-                        buildRadioListTile(Type.fasting, 'Fasting'),
-                        buildRadioListTile(Type.postprandial, 'Postprandial'),
-                        buildRadioListTile(Type.random, 'Random'),
+                        buildRadioListTile(TimeType.fasting, 'Fasting'),
+                        buildRadioListTile(TimeType.afterEating, 'After Eating'),
+                        buildRadioListTile(TimeType.two_three_hours_aftrer_eating, '2-3 hours after eating'),
                       ],
                     )),
               ),

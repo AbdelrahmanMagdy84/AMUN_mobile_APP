@@ -28,21 +28,7 @@ class _NewPressureState extends State<NewPressure> {
     });
   }
 
-  Widget buildRadioListTile(Type type, String title) {
-    return Container(
-      width: 180,
-      child: RadioListTile<Type>(
-        title: Text(title),
-        value: type,
-        groupValue: glucose.type,
-        onChanged: (Type value) {
-          setState(() {
-            glucose.type = value;
-          });
-        },
-      ),
-    );
-  }
+ 
 
   Decoration _decoration = new BoxDecoration(
     border: new Border(
