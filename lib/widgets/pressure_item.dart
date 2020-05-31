@@ -4,8 +4,8 @@ import '../models/blood_Pressure.dart';
 
 class PressureItem extends StatelessWidget {
   DateTime date = DateTime.now();
-  int upper = 255;
-  int lower = 177;
+  int upper = 180;
+  int lower = 80;
   //int heartRate = 80;
   Widget buildCircleAvatar(int value, BuildContext ctx) {
     return CircleAvatar(
@@ -55,32 +55,34 @@ class PressureItem extends StatelessWidget {
   }
 
   Map<String, Object> getPressureIndecator(int upper, int lower) {
-    if (upper <= 120 && lower < 80) {
+    if (upper <= 120 && lower <= 80) {
       return {'indecator': 'Normal', 'color': Colors.blue[100]};
-    } else if ((120 <= upper && upper <= 129) && lower <= 80) {
-      return {'indecator': 'Elevated', 'color': Colors.deepOrangeAccent[200]};
+    } else if ((121 <= upper && upper <= 129) && lower <= 80) {
+      return {'indecator': 'Elevated', 'color': Colors.deepOrangeAccent[100]};
     } else if ((130 <= upper && upper <= 139) || (80 < lower && lower <= 89)) {
       return {
         'indecator': "High blood pressure satge 1",
-        'color': Colors.orangeAccent[100]
+        'color': Colors.orange
       };
     } else if ((140 <= upper && upper <= 179) || (90 < lower && lower <= 119)) {
       return {
         'indecator': "High blood pressure satge 2",
-        'color': Colors.deepOrangeAccent[300]
+        'color': Colors.deepOrangeAccent[700]
       };
     } else if ((180 <= upper) || (120 < lower)) {
-      return {'indecator': "Hypertensive crisis", 'color': Colors.red[300]};
+      return {'indecator': "Hypertensive crisis", 'color': Colors.red[400]};
     }
   }
 
-  Widget buildPressureItem(BuildContext ctx, int upper, int lower, DateTime date) {
+  Widget buildPressureItem(
+      BuildContext ctx, int upper, int lower, DateTime date) {
     Map<String, Object> obj = getPressureIndecator(upper, lower);
     return Container(
-      color: obj['color'],
       child: Column(
         children: <Widget>[
           Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            color: obj['color'],
             child: Center(
               child: Text(
                 obj['indecator'],
@@ -115,7 +117,8 @@ class PressureItem extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {// hna hn3ml return lee list mn pressure item (buildPressureItem)
+  Widget build(BuildContext context) {
+    // hna hn3ml return lee list mn pressure item (buildPressureItem)
     return Card(
       elevation: 10,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),

@@ -28,7 +28,10 @@ class _NewGlucoseState extends State<NewGlucose> {
     });
   }
 
-  Widget buildRadioListTile(TimeType intailValue, String title) {
+  Widget buildRadioListTile(
+    TimeType intailValue,
+    String title,
+  ) {
     return Container(
       width: 180,
       child: RadioListTile(
@@ -38,6 +41,23 @@ class _NewGlucoseState extends State<NewGlucose> {
         onChanged: (TimeType value) {
           setState(() {
             glucose.timeType = value;
+
+            if (value == TimeType.fasting) {
+              min = 80;
+              max = 300;
+              currentValue = 81 ;
+            }
+            if (value == TimeType.afterEating) {
+              min = 170;
+              max = 300;
+               currentValue =171 ;
+            }
+            if (value == TimeType.two_three_hours_aftrer_eating) {
+              min = 120;
+              max = 500;
+               currentValue = 131 ;
+            }
+            
           });
         },
       ),
@@ -57,11 +77,15 @@ class _NewGlucoseState extends State<NewGlucose> {
     ),
   );
 
-  static int min = 70;
-  static int max = 250;
-  static int currentValue =140;
+   int min = 1;
+   int max = 2;
+  int currentValue =2;
+ 
 
-  Widget buildNumberPicker({String title, String measureUnite}) {
+  Widget buildNumberPicker({
+    String title,
+    String measureUnite,
+  }) {
     return Column(
       children: <Widget>[
         Card(
@@ -75,7 +99,9 @@ class _NewGlucoseState extends State<NewGlucose> {
             initialValue: currentValue,
             minValue: min,
             maxValue: max,
-            onChanged: (newValue) => setState(() => currentValue = newValue),
+            onChanged: (newValue) => setState(() {currentValue = newValue;
+            }
+            ),
           ),
         ),
         Padding(
@@ -113,12 +139,6 @@ class _NewGlucoseState extends State<NewGlucose> {
               ),
             ),
             Container(
-              height: 200,
-              child: Card(
-                child: buildNumberPicker(title: 'Glucose',measureUnite: 'mg/dl'),
-              ),
-            ),
-            Container(
               padding: EdgeInsets.symmetric(vertical: 20),
               width: double.infinity,
               child: Container(
@@ -132,10 +152,21 @@ class _NewGlucoseState extends State<NewGlucose> {
                           style: Theme.of(context).textTheme.title,
                         ),
                         buildRadioListTile(TimeType.fasting, 'Fasting'),
-                        buildRadioListTile(TimeType.afterEating, 'After Eating'),
-                        buildRadioListTile(TimeType.two_three_hours_aftrer_eating, '2-3 hours after eating'),
+                        buildRadioListTile(
+                            TimeType.afterEating, 'After Eating'),
+                        buildRadioListTile(
+                            TimeType.two_three_hours_aftrer_eating,
+                            '2-3 hours after eating'),
                       ],
                     )),
+              ),
+            ),
+            Container( 
+              height: 200,
+              width: double.infinity,
+              child: Card(
+                child:
+                    buildNumberPicker(title: 'Glucose', measureUnite: 'mg/dl'),
               ),
             ),
             Card(

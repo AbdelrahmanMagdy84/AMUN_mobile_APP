@@ -3,35 +3,70 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class GlucoseItem extends StatelessWidget {
-   DateTime date = DateTime.now();
-  final int glucose = 125;
-  final String type = 'Fasting';
-  BloodGlucose bloodGlocose = BloodGlucose(date: DateTime.now(),value: 125,timeType: TimeType.fasting);
-
-
+  DateTime date = DateTime.now();
 
   Map<String, Object> getGlucoseIndecator(BloodGlucose bloodGlocose) {
-    if (bloodGlocose.timeType==TimeType.fasting ) {
-    if (80<=bloodGlocose.value &&bloodGlocose.value<=100) {
-      return {'indecator': 'Normal', 'color': Colors.green};
-    } else if (101<=bloodGlocose.value &&bloodGlocose.value<=125) {
-      return {'indecator': 'Impaired Glucose', 'color': Colors.yellow};
-    } else if (126<=bloodGlocose.value ) {
-      return {
-        'indecator': "Diabetic",
-        'color': Colors.red
-      };
-      }};
-   
+    if (bloodGlocose.timeType == TimeType.fasting) {
+      if (80 <= bloodGlocose.value && bloodGlocose.value <= 100) {
+        return {'indecator': 'Normal', 'color': Colors.green};
+      } else if (101 <= bloodGlocose.value && bloodGlocose.value <= 125) {
+        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
+      } else if (126 <= bloodGlocose.value) {
+        return {'indecator': "Diabetic", 'color': Colors.red};
+      }
+    } else if (bloodGlocose.timeType == TimeType.afterEating) {
+      if (170 <= bloodGlocose.value && bloodGlocose.value <= 200) {
+        return {'indecator': 'Normal', 'color': Colors.green};
+      } else if (190 <= bloodGlocose.value && bloodGlocose.value <= 230) {
+        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
+      } else if (231 <= bloodGlocose.value && bloodGlocose.value <= 300) {
+        return {'indecator': "Diabetic", 'color': Colors.red};
+      }
+    } else if (bloodGlocose.timeType ==
+        TimeType.two_three_hours_aftrer_eating) {
+      if (120 <= bloodGlocose.value && bloodGlocose.value <= 140) {
+        return {'indecator': 'Normal', 'color': Colors.green};
+      } else if (141 <= bloodGlocose.value && bloodGlocose.value <= 199) {
+        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
+      } else if (200 <= bloodGlocose.value) {
+        return {'indecator': "Diabetic", 'color': Colors.red};
+      }
+    }
+    return null;
   }
-  Widget buildListTile(
-      BuildContext ctx, BloodGlucose bloodGlucose) {
-         Map<String, Object> obj = getGlucoseIndecator(bloodGlucose);
+
+  String getTimeTypeText(TimeType timeType) {
+    switch (timeType) {
+      case TimeType.fasting:
+        return 'Fasting';
+
+      case TimeType.afterEating:
+        return 'After Eating';
+
+      case TimeType.two_three_hours_aftrer_eating:
+        return '2-3 Hours After Eating';
+    }
+    return '';
+  }
+
+  Widget buildListTile(BuildContext ctx, BloodGlucose bloodGlucose) {
+    Map<String, Object> obj = getGlucoseIndecator(bloodGlucose);
     return Container(
-      color: obj['color'],
       child: Column(
         children: <Widget>[
-          Container(child: Center(child: Text(obj['indecator']),),),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            color: obj['color'],
+            child: Center(
+              child: Text(
+                obj['indecator'],
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           Row(children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -45,16 +80,18 @@ class GlucoseItem extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              '$glucose',
+                              '${bloodGlucose.value}',
                               style: TextStyle(
-                                  color: Theme.of(ctx).primaryColor, fontSize: 18),
+                                  color: Theme.of(ctx).primaryColor,
+                                  fontSize: 18),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 0),
                               child: Text(
                                 'mg/dl',
                                 style: TextStyle(
-                                    color: Theme.of(ctx).primaryColor, fontSize: 12),
+                                    color: Theme.of(ctx).primaryColor,
+                                    fontSize: 12),
                               ),
                             )
                           ],
@@ -65,16 +102,22 @@ class GlucoseItem extends StatelessWidget {
               ]),
             ),
             Expanded(
-              
               child: Text(
-                type,
-                style: Theme.of(ctx).textTheme.title,
+                getTimeTypeText(bloodGlucose.timeType),
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
               ),
               flex: 1,
             ),
-            Text(DateFormat.yMMMd().format(date)),
+            Padding(
+              padding: const EdgeInsets.only( right:10),
+              child: Text(DateFormat.yMMMd().format(date)),
+            ),
             IconButton(
-                padding: EdgeInsets.only(left: 30, right: 20),
+                padding: EdgeInsets.only(left: 10, right: 10),
                 icon: Icon(
                   Icons.delete,
                   color: Theme.of(ctx).errorColor,
@@ -90,11 +133,14 @@ class GlucoseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BloodGlucose bloodGlucose = BloodGlucose(
+        date: DateTime.now(),
+        value: 185,
+        timeType: TimeType.fasting);
     return Card(
       elevation: 10,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      child: buildListTile(context,bloodGlocose),
-      
+      child: buildListTile(context, bloodGlucose),
     );
   }
 }
