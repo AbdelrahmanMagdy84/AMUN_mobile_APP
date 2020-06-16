@@ -1,7 +1,10 @@
-import 'package:amun/screens/category_records_screen.dart';
-import 'package:amun/screens/login_screen.dart';
-import 'package:amun/screens/my_doctors_screen.dart';
-import 'package:amun/screens/register_screen.dart';
+import './screens/allergies_screen.dart';
+import './screens/category_records_screen.dart';
+import './screens/login_screen.dart';
+import './screens/my_doctors_screen.dart';
+
+import './screens/register_screen.dart';
+import './screens/scanner_screen.dart';
 
 import './main_drawer.dart';
 import './screens/categories_screen.dart';
@@ -16,24 +19,25 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor:Colors.amber,
-        accentColor: Color(0xff10AD91),
-        primarySwatch: Colors.blue,
-        textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
-                color: Color(0xff10AD91) ,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18))
-      ),
-     // home: CategoriesScreen(),
-      routes:{
-        '/': (ctx)=>LoginScreen(),
-        RegisterScreen.routeName:( ctx)=> RegisterScreen(),
-        CategoriesScreen.routeName:(ctx)=>CategoriesScreen(),
-        CategoryRecordsScreen.routeName:(ctx)=>CategoryRecordsScreen(),
-        MyDoctorsScreen.routeName:(ctx)=>MyDoctorsScreen()
-
-      } ,
+          primaryColor: Colors.amber,
+          accentColor: Color(0xff10AD91),
+          primarySwatch: Colors.blue,
+          textTheme: ThemeData.light().textTheme.copyWith(
+                title: TextStyle(
+                    color: Color(0xff10AD91),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              )),
+      // home: CategoriesScreen(),
+      routes: {
+        '/': (ctx) => LoginScreen(),
+        RegisterScreen.routeName: (ctx) => RegisterScreen(),
+        CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
+        CategoryRecordsScreen.routeName: (ctx) => CategoryRecordsScreen(),
+        MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
+        AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
+        ScannerScreen.routeName: (ctx) => ScannerScreen(),
+      },
     );
   }
 }
@@ -48,8 +52,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
- 
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -57,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      
     });
   }
 

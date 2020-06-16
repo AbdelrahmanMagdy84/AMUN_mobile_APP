@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
-import '../input_widgets/custom_number_picker.dart';
 import '../models/blood_glucose.dart';
 import 'package:flutter/material.dart';
 
@@ -108,7 +107,7 @@ class _NewGlucoseState extends State<NewGlucose> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Text(
             '$title: $currentValue $measureUnite',
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
       ],

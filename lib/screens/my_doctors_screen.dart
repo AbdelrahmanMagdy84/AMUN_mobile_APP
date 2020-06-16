@@ -16,7 +16,7 @@ class _MyDoctorsScreenState extends State<MyDoctorsScreen> {
 
   String screenTitle;
 
-  Widget item(String name, String specialization) {
+  Widget item(String name,String username ,String specialization) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
@@ -45,7 +45,7 @@ class _MyDoctorsScreenState extends State<MyDoctorsScreen> {
                             Container(
                               padding: EdgeInsets.only(top: 10),
                               child: Text(
-                                'Username: $specialization ',
+                                'Username: $username ',
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
@@ -109,7 +109,7 @@ class _MyDoctorsScreenState extends State<MyDoctorsScreen> {
               title: Icon(Icons.search,size: 34,),
             ),
           ),
-          item('ahmed', 'specialization'),
+          item('ahmed','ahmedMecky123','عظام'),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

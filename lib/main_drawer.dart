@@ -1,3 +1,5 @@
+import 'package:amun/screens/allergies_screen.dart';
+
 import './screens/categories_screen.dart';
 import './screens/my_doctors_screen.dart';
 import 'package:flutter/material.dart';
@@ -60,11 +62,9 @@ class MainDrawer extends StatelessWidget {
             Navigator.of(context).pushNamed(MyDoctorsScreen.routeName,
                 arguments: {'screen title': 'Facilities'});
           }),
-          buildListTile(context, 'Medecines', Icons.healing, () {
-            // Navigator.of(context).pushReplacementNamed('/');
-          }),
-          buildListTile(context, 'Alergies', Icons.tag_faces, () {
-            //  Navigator.of(context).pushReplacementNamed(FilterScreen.routeName);
+          buildListTile(context, 'Medecines', Icons.healing, () {}),
+          buildListTile(context, 'Allergies', Icons.tag_faces, () {
+            Navigator.of(context).pushNamed(AllergiesScreen.routeName);
           }),
         ],
       ),
