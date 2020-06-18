@@ -48,82 +48,85 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
       body: allergy == null
           ? Center(child: Text('no allergies yet'))
           : LayoutBuilder(builder: (context, constraints) {
-              return Column(children: <Widget>[
-                Container(
-                 
-                  child: Card(
-                    elevation: 4,
-                    child: Column(
-                      children: <Widget>[
-                        FittedBox(
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.only(top: 10,bottom: 5),
-                            child: Text(
-                              '$allergy',
-                              style: Theme.of(context).textTheme.title,
+              return Container(
+
+                child: Column(children: <Widget>[
+                  Container(
+                   padding: EdgeInsets.only(top:10),
+                    child: Card(
+                      elevation: 4,
+                      child: Column(
+                        children: <Widget>[
+                          FittedBox(
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.only(top: 10,bottom: 5),
+                              child: Text(
+                                '$allergy',
+                                style: Theme.of(context).textTheme.title,
+                              ),
                             ),
                           ),
-                        ),
-                        Divider(
-                          height: 0,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                width: constraints.maxWidth * 0.8,
-                                padding: EdgeInsets.only(left: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    FittedBox(
-                                      child: Container(
-                                        padding: EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          'Type: $allergyType ',
-                                          style: TextStyle(
-                                            fontSize: 16,
+                          Divider(
+                            height: 0,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: constraints.maxWidth * 0.8,
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      FittedBox(
+                                        child: Container(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text(
+                                            'Type: $allergyType ',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                        vertical: 10,
-                                      ),
-                                      child: Text(
-                                       'Date: ${DateFormat.yMMMd().format(date)}',
-                                        style: TextStyle(
-                                          fontSize: 14,
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: 10,
                                         ),
-                                      ),
-                                    )
-                                  ],
+                                        child: Text(
+                                         'Date: ${DateFormat.yMMMd().format(date)}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                width: constraints.maxWidth * 0.1,
-                                alignment: Alignment.centerLeft,
-                                child: Expanded(
-                                  child: IconButton(
-                                      icon: Icon(
-                                        Icons.delete,
-                                        color: Theme.of(context).errorColor,
-                                      ),
-                                      onPressed: () {}),
+                                Container(
+                                  width: constraints.maxWidth * 0.1,
+                                  alignment: Alignment.centerLeft,
+                                  child: Expanded(
+                                    child: IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Theme.of(context).errorColor,
+                                        ),
+                                        onPressed: () {}),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ]);
+                ]),
+              );
             }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(

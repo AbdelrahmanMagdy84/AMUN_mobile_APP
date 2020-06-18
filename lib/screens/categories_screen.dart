@@ -1,4 +1,3 @@
-
 import 'package:amun/screens/scanner_screen.dart';
 
 import '../widgets/category_item.dart';
@@ -14,7 +13,6 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,29 +31,43 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       drawer: MainDrawer(),
       drawerScrimColor: Theme.of(context).primaryColor.withOpacity(0.5),
-      
       body: Container(
-        padding: const EdgeInsets.only(top: 20),
-        child: GridView(
-          padding: EdgeInsets.all(20),
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200,
+        
+          margin: const EdgeInsets.only(top: 30,left: 20,right:20),
+          child: GridView.count(
+            crossAxisCount: 2,
             childAspectRatio: 1 / 1,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 20,
+            crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
+            mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
+            children: <Widget>[
+              ...categories
+                  .map(
+                    (cat) =>
+                        CategoryItem(cat.id, cat.title, cat.color, cat.image),
+                  )
+                  .toList(),
+            ],
+          )
+
+          //  GridView(
+          //   padding: EdgeInsets.all(20),
+          //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+
+          //     maxCrossAxisExtent: 200,
+          //     childAspectRatio: 1 / 1,
+          //     crossAxisSpacing: 15,
+          //     mainAxisSpacing: 20,
+          //   ),
+          //   children: <Widget>[
+          //     ...categories
+          //         .map(
+          //           (cat) =>
+          //               CategoryItem(cat.id, cat.title, cat.color, cat.image),
+          //         )
+          //         .toList(),
+          //   ],
+          // ),
           ),
-          children: <Widget>[
-            ...categories
-                .map(
-                  (cat) =>
-                      CategoryItem(cat.id, cat.title, cat.color, cat.image),
-                )
-                .toList(),
-          ],
-        ),
-      ),
     );
   }
-
- 
 }
