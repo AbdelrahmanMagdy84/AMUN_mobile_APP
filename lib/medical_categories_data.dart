@@ -20,7 +20,7 @@ List<Category> categories = [
   Category(
       color: Colors.cyan,
       id: '4',
-      title: "Appointment",
+      title: "Reminders",
       image: 'images/appointment.png'),
   Category(
       color: Colors.black12,

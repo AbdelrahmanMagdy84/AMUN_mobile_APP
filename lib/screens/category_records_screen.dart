@@ -1,3 +1,7 @@
+import 'package:amun/reminders/global_bloc.dart';
+import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
+import 'package:provider/provider.dart';
+
 import '../input_widgets/new_glucose.dart';
 import '../input_widgets/new_pressure.dart';
 import '../widgets/radiograph_item.dart';
@@ -43,9 +47,10 @@ class _CategoryRecordsScreenState extends State<CategoryRecordsScreen> {
       case '3':
         break;
       case '4':
+        chosenWidget = RemindersScreen();
+
         break;
       case '5':
-        chosenWidget = RadiographItem('Systolic');
         break;
     }
     //});
@@ -76,6 +81,7 @@ class _CategoryRecordsScreenState extends State<CategoryRecordsScreen> {
       case '3':
         break;
       case '4':
+        chosenWidget = Text('');
         break;
       case '5':
         break;
@@ -83,30 +89,58 @@ class _CategoryRecordsScreenState extends State<CategoryRecordsScreen> {
     return chosenWidget;
   }
 
+  GlobalBloc globalBloc;
+
+  void initState() {
+    globalBloc = GlobalBloc();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "$categoryTitle",
-          style: Theme.of(context).textTheme.title,
+    Widget selected = selectItemType();
+    if (categoryTitle == "Reminders") {
+      return Provider<GlobalBloc>.value(
+        value: globalBloc,
+        child: MaterialApp(
+          theme: ThemeData(
+              primaryColor: Colors.amber,
+              accentColor: Color(0xff10AD91),
+              primarySwatch: Colors.blue,
+              textTheme: ThemeData.light().textTheme.copyWith(
+                    title: TextStyle(
+                        color: Color(0xff10AD91),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  )),
+          home: RemindersScreen(),
+          debugShowCheckedModeBanner: false,
         ),
-      ),
-      body: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return selectItemType();
-        },
-        itemCount: 1,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => startAddNewRecord(context),
-        child: Icon(
-          Icons.add,
-          size: 40,
-          color: Theme.of(context).primaryColor,
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "$categoryTitle",
+            style: Theme.of(context).textTheme.title,
+          ),
         ),
-      ),
-    );
+        body: ListView.builder(
+          itemBuilder: (ctx, index) {
+            return selected;
+          },
+          itemCount: 1,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => startAddNewRecord(context),
+          child: Icon(
+            Icons.add,
+            size: 40,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+      );
+    }
   }
 }

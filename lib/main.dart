@@ -1,3 +1,6 @@
+import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
+import 'package:amun/reminders/ui/new_entry/new_entry.dart';
+
 import './screens/allergies_screen.dart';
 import './screens/category_records_screen.dart';
 import './screens/login_screen.dart';
@@ -37,6 +40,8 @@ class MyApp extends StatelessWidget {
         MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
         AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
         ScannerScreen.routeName: (ctx) => ScannerScreen(),
+        RemindersScreen.routeName: (ctx) => RemindersScreen(),
+        NewEntry.routeName: (ctx) => NewEntry(),
       },
     );
   }
