@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
   final String name = "Abdelrahman Magdy";
-  final username="Ab!223344";
+  final username = "Ab!223344";
   final String age = "55";
   final String bloodType = "A Positive";
   Widget buildListTile(
@@ -67,7 +67,7 @@ class MainDrawer extends StatelessWidget {
             //   color: Theme.of(context).accentColor,
             // ),
             ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
               child: Container(
                 height: mediaQuery.height * 0.25,
                 width: double.infinity,
@@ -80,25 +80,24 @@ class MainDrawer extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       //margin: EdgeInsets.only(top:20),
                       child: Container(
-                          margin: EdgeInsets.only(top:15,left:15),
+                          margin: EdgeInsets.only(top: 15, left: 15),
                           child: buildMyText(context, "Name", name)),
                     ),
                     Divider(),
-                     Container(
+                    Container(
                         margin: EdgeInsets.only(left: 15),
                         alignment: Alignment.centerLeft,
                         child: buildMyText(context, "Username", username)),
-                        Divider(),
+                    Divider(),
                     Container(
                         margin: EdgeInsets.only(left: 15),
                         alignment: Alignment.centerLeft,
                         child: buildMyText(context, "Age", age)),
-                        Divider(),
+                    Divider(),
                     Container(
-                        margin: EdgeInsets.only(left:15,bottom: 15),
+                        margin: EdgeInsets.only(left: 15, bottom: 15),
                         alignment: Alignment.centerLeft,
                         child: buildMyText(context, "Blood Type", bloodType)),
-                        
                   ],
                 ),
               ),

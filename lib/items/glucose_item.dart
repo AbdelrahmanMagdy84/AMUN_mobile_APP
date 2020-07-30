@@ -113,8 +113,13 @@ class GlucoseItem extends StatelessWidget {
               flex: 1,
             ),
             Padding(
-              padding: const EdgeInsets.only( right:10),
-              child: Text(DateFormat.yMMMd().format(date)),
+              padding: const EdgeInsets.only(right: 10),
+              child: Column(
+                children: <Widget>[
+                  Text(DateFormat.Hm().format(date)),
+                  Text(DateFormat.yMMMd().format(date)),
+                ],
+              ),
             ),
             IconButton(
                 padding: EdgeInsets.only(left: 10, right: 10),
@@ -134,9 +139,7 @@ class GlucoseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BloodGlucose bloodGlucose = BloodGlucose(
-        date: DateTime.now(),
-        value: 185,
-        timeType: TimeType.fasting);
+        date: DateTime.now(), value: 185, timeType: TimeType.fasting);
     return Card(
       elevation: 10,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),

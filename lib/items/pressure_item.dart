@@ -99,7 +99,12 @@ class PressureItem extends StatelessWidget {
             //  buildColumn(ctx, heartRate, 'heartRate'),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Text(DateFormat.yMMMd().format(date)),
+              child: Column(
+                children: <Widget>[
+                  Text(DateFormat.Hm().format(date)),
+                  Text(DateFormat.yMMMd().format(date)),
+                ],
+              ),
             ),
             IconButton(
                 padding: EdgeInsets.only(left: 10),
