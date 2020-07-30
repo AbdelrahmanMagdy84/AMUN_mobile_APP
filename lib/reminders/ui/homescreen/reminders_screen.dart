@@ -1,6 +1,8 @@
 import 'package:amun/reminders/models/medicine.dart';
 import 'package:amun/reminders/ui/medicine_details/medicine_details.dart';
 import 'package:amun/reminders/ui/new_entry/new_entry.dart';
+import 'package:amun/screens/categories_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../global_bloc.dart';
@@ -23,6 +25,18 @@ class _RemindersScreenState extends State<RemindersScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>new CategoriesScreen()
+            ),
+          );
+        },
+                
+                ),
       ),
       body: Container(
         child: Column(

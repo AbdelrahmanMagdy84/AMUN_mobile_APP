@@ -1,9 +1,6 @@
-
 import 'package:amun/reminders/global_bloc.dart';
-import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
 import 'package:amun/screens/scanner_screen.dart';
-import 'package:provider/provider.dart';
-import '../widgets/category_item.dart';
+import '../items/category_item.dart';
 import '../medical_categories_data.dart';
 import '../main_drawer.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +21,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   @override
-  Widget build(BuildContext context) { 
-  
-  
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
         actions: <Widget>[
           IconButton(
               color: Theme.of(context).accentColor,
@@ -40,27 +35,35 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 Navigator.of(context).pushNamed(ScannerScreen.routeName);
               })
         ],
-        title: Text("AMUN MR"),
+        //title: Text("AMUN MR"),
       ),
       drawer: MainDrawer(),
       drawerScrimColor: Theme.of(context).primaryColor.withOpacity(0.5),
-      body: Container(
-
-          margin: const EdgeInsets.only(top: 30,left: 20,right:20),
-          child: GridView.count(
-            crossAxisCount: 2,
-            childAspectRatio: 1 / 1,
-            crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
-            mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
-            children: <Widget>[
-              ...categories
-                  .map(
-                    (cat) =>
-                        CategoryItem(cat.id, cat.title, cat.color, cat.image),
-                  )
-                  .toList(),
-            ],
-          ),),);
+      body: Column(
+        children: <Widget>[
+          TopContainer(),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(top: 30, left: 20, right: 20),
+              child: GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 1 / 1,
+                crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
+                mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
+                children: <Widget>[
+                  ...categories
+                      .map(
+                        (cat) => CategoryItem(
+                            cat.id, cat.title, cat.color, cat.image),
+                      )
+                      .toList(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
 
     //       //  GridView(
     //       //   padding: EdgeInsets.all(20),
@@ -82,5 +85,44 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     //       // ),
     //       ),
     // );
+  }
+}
+
+class TopContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.elliptical(50, 27),
+            bottomRight: Radius.elliptical(50, 27),
+          ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 5,
+              color: Colors.grey[400],
+              offset: Offset(0, 3.5),
+            )
+          ],
+          color: Theme.of(context).primaryColor),
+      width: double.infinity,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: 10,
+            ),
+            child: Text(
+              "AMUN MR",
+              style: TextStyle(
+                fontFamily: "Angel",
+                fontSize: 64,
+                color: Theme.of(context).accentColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

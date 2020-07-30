@@ -1,14 +1,25 @@
+import 'package:amun/input_widgets/new_prescreption.dart';
+import 'package:amun/items/prescreption_item.dart';
+import 'package:amun/models/Prescreption.dart';
 import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
+import 'package:amun/reminders/ui/new_entry/new_entry.dart';
+import 'package:amun/screens/allergies_screen.dart';
+import 'package:amun/screens/my_doctors_screen.dart';
+import 'package:amun/screens/register_screen.dart';
+import 'package:amun/screens/scanner_screen.dart';
+import 'package:amun/screens/show_image_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../input_widgets/new_glucose.dart';
 import '../input_widgets/new_pressure.dart';
-import '../widgets/radiograph_item.dart';
-import '../widgets/glucose_item.dart';
-import '../widgets/pressure_item.dart';
+import '../items/radiograph_item.dart';
+import '../items/glucose_item.dart';
+import '../items/pressure_item.dart';
 import '../models/category.dart';
 import 'package:flutter/material.dart';
+
+import 'categories_screen.dart';
 
 class CategoryRecordsScreen extends StatefulWidget {
   static const routeName = "Category_records";
@@ -45,12 +56,14 @@ class _CategoryRecordsScreenState extends State<CategoryRecordsScreen> {
         chosenWidget = PressureItem();
         break;
       case '3':
+        chosenWidget = PrscreptionItemOrRadiograph();
         break;
       case '4':
         chosenWidget = RemindersScreen();
 
         break;
       case '5':
+        chosenWidget = PrscreptionItemOrRadiograph();
         break;
     }
     //});
@@ -79,11 +92,13 @@ class _CategoryRecordsScreenState extends State<CategoryRecordsScreen> {
         chosenWidget = NewPressure();
         break;
       case '3':
+        chosenWidget = NewPrescreptionOrRadiograph("Prescreption");
         break;
       case '4':
         chosenWidget = Text('');
         break;
       case '5':
+        chosenWidget = NewPrescreptionOrRadiograph("Radiograph");
         break;
     }
     return chosenWidget;
@@ -115,6 +130,18 @@ class _CategoryRecordsScreenState extends State<CategoryRecordsScreen> {
                   )),
           home: RemindersScreen(),
           debugShowCheckedModeBanner: false,
+          routes: {
+            CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
+            NewEntry.routeName: (ctx) => NewEntry(),
+            RegisterScreen.routeName: (ctx) => RegisterScreen(),
+            CategoryRecordsScreen.routeName: (ctx) => CategoryRecordsScreen(),
+            MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
+            AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
+            ScannerScreen.routeName: (ctx) => ScannerScreen(),
+            RemindersScreen.routeName: (ctx) => RemindersScreen(),
+            NewEntry.routeName: (ctx) => NewEntry(),
+            ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
+          },
         ),
       );
     } else {
