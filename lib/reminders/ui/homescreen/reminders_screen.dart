@@ -26,17 +26,14 @@ class _RemindersScreenState extends State<RemindersScreen> {
       appBar: AppBar(
         elevation: 0.0,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>new CategoriesScreen()
-            ),
-          );
-        },
-                
-                ),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => new CategoriesScreen()),
+            );
+          },
+        ),
       ),
       body: Container(
         child: Column(

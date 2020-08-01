@@ -1,5 +1,9 @@
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
 import 'package:amun/reminders/ui/new_entry/new_entry.dart';
+import 'package:amun/screens/blood_pressure_screen.dart';
+import 'package:amun/screens/glucose_screen.dart';
+import 'package:amun/screens/prescription_screen.dart';
+import 'package:amun/screens/reminder_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
 
 import './screens/allergies_screen.dart';
@@ -37,13 +41,18 @@ class MyApp extends StatelessWidget {
         '/': (ctx) => LoginScreen(),
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
-        CategoryRecordsScreen.routeName: (ctx) => CategoryRecordsScreen(),
+     
         MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
         AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
         ScannerScreen.routeName: (ctx) => ScannerScreen(),
         RemindersScreen.routeName: (ctx) => RemindersScreen(),
+
         NewEntry.routeName: (ctx) => NewEntry(),
         ShowImageScreen.routeName:(ctx)=>ShowImageScreen(),
+       // PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
+        BloodPressureScreen.routeName:(ctx)=>BloodPressureScreen(),
+        BloodGlucoseScreen.routeName:(ctx)=>BloodGlucoseScreen(),
+        ReminderScreen.routeName:(ctx)=>ReminderScreen()
       },
     );
   }

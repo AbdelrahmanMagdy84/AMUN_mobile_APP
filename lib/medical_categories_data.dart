@@ -15,7 +15,7 @@ List<Category> categories = [
   Category(
       color: Colors.blueAccent,
       id: '3',
-      title: "Prescreption",
+      title: "Prescription",
       image: 'images/pres.png'),
   Category(
       color: Colors.cyan,
