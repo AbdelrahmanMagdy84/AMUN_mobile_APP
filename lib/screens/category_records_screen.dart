@@ -10,7 +10,6 @@
 // import 'package:amun/screens/scanner_screen.dart';
 // import 'package:amun/screens/show_image_screen.dart';
 // import 'package:provider/provider.dart';
-
 // import '../input_widgets/new_glucose.dart';
 // import '../input_widgets/new_pressure.dart';
 // import '../items/radiograph_item.dart';
@@ -18,7 +17,6 @@
 // import '../items/pressure_item.dart';
 // import '../models/category.dart';
 // import 'package:flutter/material.dart';
-
 // import 'categories_screen.dart';
 
 // class CategoryRecordsScreen extends StatefulWidget {
