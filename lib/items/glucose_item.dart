@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 class GlucoseItem extends StatelessWidget {
   DateTime date = DateTime.now();
-
+  String note =
+      "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
   Map<String, Object> getGlucoseIndecator(BloodGlucose bloodGlocose) {
     if (bloodGlocose.timeType == TimeType.fasting) {
       if (80 <= bloodGlocose.value && bloodGlocose.value <= 100) {
@@ -131,6 +132,14 @@ class GlucoseItem extends StatelessWidget {
                 // widget.delete(widget.transaction.id),
                 ),
           ]),
+          Container(
+            padding: EdgeInsets.all(20),
+            width: double.infinity,
+            child: Text(
+              "Note: $note",
+              maxLines: 3,
+            ),
+          ),
         ],
       ),
     );

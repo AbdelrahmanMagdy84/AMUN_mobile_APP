@@ -48,8 +48,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
           RemindersScreen.routeName: (ctx) => RemindersScreen(),
           CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
           NewEntry.routeName: (ctx) => NewEntry(),
-          RegisterScreen.routeName: (ctx) => RegisterScreen(),
-          // CategoryRecordsScreen.routeName: (ctx) => CategoryRecordsScreen(),
+          RegisterScreen.routeName: (ctx) => RegisterScreen(),          
           MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
           AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
           ScannerScreen.routeName: (ctx) => ScannerScreen(),
@@ -61,7 +60,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
           RemindersScreen.routeName: (ctx) => RemindersScreen(),
           NewEntry.routeName: (ctx) => NewEntry(),
           ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
-          // PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
           BloodPressureScreen.routeName: (ctx) => BloodPressureScreen(),
           BloodGlucoseScreen.routeName: (ctx) => BloodGlucoseScreen(),
           ReminderScreen.routeName: (ctx) => ReminderScreen()

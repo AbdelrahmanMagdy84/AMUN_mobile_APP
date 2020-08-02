@@ -1,7 +1,7 @@
+import 'package:amun/models/blood_Pressure.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
-import '../input_widgets/custom_number_picker.dart';
-import '../models/blood_glucose.dart';
+
 import 'package:flutter/material.dart';
 
 class NewPressure extends StatefulWidget {
@@ -10,7 +10,8 @@ class NewPressure extends StatefulWidget {
 }
 
 class _NewPressureState extends State<NewPressure> {
-  BloodGlucose glucose = new BloodGlucose();
+  BloodPressure pressure = new BloodPressure();
+  final noteController = TextEditingController();
 
   void displayDatePicker() {
     showDatePicker(
@@ -23,12 +24,10 @@ class _NewPressureState extends State<NewPressure> {
         return;
       else
         setState(() {
-          glucose.date = pickedDate;
+          pressure.date = pickedDate;
         });
     });
   }
-
- 
 
   Decoration _decoration = new BoxDecoration(
     border: new Border(
@@ -76,135 +75,147 @@ class _NewPressureState extends State<NewPressure> {
   int lower = 80;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      child: SingleChildScrollView(
-        child: Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Center(
+    return Scaffold(
+      body: Container(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Center(
+                      child: Text(
+                        'Pressure',
+                        style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(children: <Widget>[
+                  Expanded(
+                    child: Card(
+                      child: Column(
+                        children: <Widget>[
+                          Card(
+                            margin: EdgeInsets.all(10),
+                            elevation: 4,
+                            child: NumberPicker.integer(
+                              infiniteLoop: true,
+                              itemExtent: 40,
+                              decoration: _decoration,
+                              listViewWidth: 100,
+                              initialValue: upper,
+                              minValue: 100,
+                              maxValue: 170,
+                              onChanged: (newValue) =>
+                                  setState(() => upper = newValue),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: FittedBox(
+                              child: Text(
+                                'Upper: $upper mm hg',
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Card(
+                      child: Column(
+                        children: <Widget>[
+                          Card(
+                            margin: EdgeInsets.all(10),
+                            elevation: 4,
+                            child: NumberPicker.integer(
+                              infiniteLoop: true,
+                              itemExtent: 40,
+                              decoration: _decoration,
+                              listViewWidth: 100,
+                              initialValue: lower,
+                              minValue: 40,
+                              maxValue: 100,
+                              onChanged: (newValue) =>
+                                  setState(() => lower = newValue),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: FittedBox(
+                              child: Text(
+                                'Lower: $lower mm hg',
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ]),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: "Note",
+                    ),
+                    controller: noteController,
+                    keyboardType: TextInputType.text,
+                  ),
+                ),
+                Container(
+                  height: 10,
+                ),
+                Card(
+                  elevation: 4,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            pressure.date == null
+                                ? 'No date chosen'
+                                : 'Picked Date: ${DateFormat.yMd().format(pressure.date)}',
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                        ),
+                        FloatingActionButton(
+                          onPressed: displayDatePicker,
+                          child: Icon(
+                            Icons.date_range,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                FlatButton(
+                    padding: EdgeInsets.all(30),
+                    onPressed: null,
+                    color: Theme.of(context).accentColor,
                     child: Text(
-                      'Pressure',
+                      'Save',
                       style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-              Row(children: <Widget>[
-                Expanded(
-                  child: Card(
-                    child: Column(
-                      children: <Widget>[
-                        Card(
-                          margin: EdgeInsets.all(10),
-                          elevation: 4,
-                          child: NumberPicker.integer(
-                            infiniteLoop: true,
-                            itemExtent: 40,
-                            decoration: _decoration,
-                            listViewWidth: 100,
-                            initialValue: upper,
-                            minValue: 100,
-                            maxValue: 170,
-                            onChanged: (newValue) =>
-                                setState(() => upper = newValue),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: FittedBox(
-                            child: Text(
-                              'Upper: $upper mm hg',
-                              style: Theme.of(context).textTheme.title,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Card(
-                    child: Column(
-                      children: <Widget>[
-                        Card(
-                          margin: EdgeInsets.all(10),
-                          elevation: 4,
-                          child: NumberPicker.integer(
-                            infiniteLoop: true,
-                            itemExtent: 40,
-                            decoration: _decoration,
-                            listViewWidth: 100,
-                            initialValue: lower,
-                            minValue: 40,
-                            maxValue: 100,
-                            onChanged: (newValue) =>
-                                setState(() => lower = newValue),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: FittedBox(
-                            child: Text(
-                              'Lower: $lower mm hg',
-                              style: Theme.of(context).textTheme.title,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-              Container(
-                height: 10,
-              ),
-              Card(
-                elevation: 4,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          glucose.date == null
-                              ? 'No date chosen'
-                              : 'Picked Date: ${DateFormat.yMd().format(glucose.date)}',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                      ),
-                      FloatingActionButton(
-                        onPressed: displayDatePicker,
-                        child: Icon(
-                          Icons.date_range,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              FlatButton(
-                  padding: EdgeInsets.all(30),
-                  onPressed: null,
-                  color: Theme.of(context).accentColor,
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ))
-            ],
+                    ))
+              ],
+            ),
           ),
         ),
       ),
