@@ -1,4 +1,6 @@
+import 'package:amun/screens/blood_pressure_screen.dart';
 import 'package:amun/screens/categories_screen.dart';
+import 'package:amun/screens/glucose_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
@@ -16,9 +18,6 @@ class ReminderScreen extends StatefulWidget {
   @override
   _ReminderScreenState createState() => _ReminderScreenState();
 }
-
-
-
 
 class _ReminderScreenState extends State<ReminderScreen> {
   GlobalBloc globalBloc;
@@ -56,6 +55,16 @@ class _ReminderScreenState extends State<ReminderScreen> {
           ScannerScreen.routeName: (ctx) => ScannerScreen(),
           NewEntry.routeName: (ctx) => NewEntry(),
           ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
+          MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
+          AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
+          ScannerScreen.routeName: (ctx) => ScannerScreen(),
+          RemindersScreen.routeName: (ctx) => RemindersScreen(),
+          NewEntry.routeName: (ctx) => NewEntry(),
+          ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
+          // PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
+          BloodPressureScreen.routeName: (ctx) => BloodPressureScreen(),
+          BloodGlucoseScreen.routeName: (ctx) => BloodGlucoseScreen(),
+          ReminderScreen.routeName: (ctx) => ReminderScreen()
         },
       ),
     );

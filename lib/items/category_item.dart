@@ -22,13 +22,13 @@ class CategoryItem extends StatelessWidget {
 
         break;
       case '3':
-    //    Navigator.of(ctx).pushNamed(PrescriptionScreen.routeName);
+        Navigator.of(ctx).pushNamed(PrescriptionScreen.routeName);
         break;
       case '4':
         Navigator.of(ctx).pushNamed(ReminderScreen.routeName);
         break;
       case '5':
-      //  Navigator.of(ctx).pushNamed(PrescriptionScreen.routeName);
+        Navigator.of(ctx).pushNamed(PrescriptionScreen.routeName);
         break;
     }
     // Navigator.of(ctx).pushNamed(CategoryRecordsScreen.routeName, arguments: {

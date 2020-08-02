@@ -8,9 +8,9 @@ class Patient {
   String username;
   String password;
   String email;
-  int phone;
+  String phone;
   String name;
-  DateTime dateOfBirth;
+  String dateOfBirth;
   Gender gender;
   String bloodType;
   List<String> medecations;
