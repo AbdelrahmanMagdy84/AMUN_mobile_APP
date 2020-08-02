@@ -94,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
       }
     }
-    Navigator.of(ctx).pushNamed(CategoriesScreen.routeName);
+    Navigator.of(ctx).pushReplacementNamed(CategoriesScreen.routeName);
   }
 
   final _formKey = GlobalKey<FormState>();

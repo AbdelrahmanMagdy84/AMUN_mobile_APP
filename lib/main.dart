@@ -41,15 +41,13 @@ class MyApp extends StatelessWidget {
         '/': (ctx) => LoginScreen(),
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
-     
         MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
         AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
         ScannerScreen.routeName: (ctx) => ScannerScreen(),
         RemindersScreen.routeName: (ctx) => RemindersScreen(),
-
         NewEntry.routeName: (ctx) => NewEntry(),
         ShowImageScreen.routeName:(ctx)=>ShowImageScreen(),
-       // PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
+        PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
         BloodPressureScreen.routeName:(ctx)=>BloodPressureScreen(),
         BloodGlucoseScreen.routeName:(ctx)=>BloodGlucoseScreen(),
         ReminderScreen.routeName:(ctx)=>ReminderScreen()

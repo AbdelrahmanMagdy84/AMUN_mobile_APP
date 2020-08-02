@@ -1,11 +1,6 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:amun/Prescription_handler/bloc/prescription_bloc.dart';
-import 'package:amun/Prescription_handler/event/add_prescription.dart';
-import 'package:amun/db/database_provider.dart';
 import 'package:amun/models/Prescription.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NewPrescriptionOrRadiograph extends StatefulWidget {
@@ -97,9 +92,6 @@ class _NewPrescreptionOrRadiographState
         image: image,
         id: 1,
         note: note);
-    DatabaseProvider.db.insert(prescription).then((storedPrescription) =>
-        BlocProvider.of<PrescriptionBloc>(context)
-            .add(AddPrescription(storedPrescription)));
   }
 
   @override
@@ -171,12 +163,7 @@ class _NewPrescreptionOrRadiographState
               setImageView(),
               FlatButton(
                   padding: EdgeInsets.all(30),
-                  onPressed: () => save(
-                      date: dateTime,
-                      title: titleController.text,
-                      doctor: doctorNameController.text,
-                      note: noteController.text,
-                      image: "image"),
+                  onPressed: null,
                   color: Theme.of(context).accentColor,
                   child: Text(
                     'Save',
