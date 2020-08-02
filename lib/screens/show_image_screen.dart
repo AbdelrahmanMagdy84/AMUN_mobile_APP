@@ -13,7 +13,9 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
   didChangeDependencies() {
     final routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, String>;
+    print(routeArgs["image"]);
     image = routeArgs['image'];
+    
     super.didChangeDependencies();
   }
 
