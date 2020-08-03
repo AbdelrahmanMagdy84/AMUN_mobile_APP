@@ -5,21 +5,22 @@ import 'package:amun/items/pressure_item.dart';
 import 'package:flutter/material.dart';
 
 class BloodGlucoseScreen extends StatefulWidget {
-  static final String routeName="glucose route name";
+  static final String routeName = "glucose route name";
   @override
   _BloodGlucoseScreenState createState() => _BloodGlucoseScreenState();
 }
+
 void startAddNewRecord(BuildContext ctx) {
-    showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return GestureDetector(
-            child: NewGlucose() ,
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-          );
-        });
-  }
+  showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          child: NewGlucose(),
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+        );
+      });
+}
 
 class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
   @override
@@ -39,7 +40,7 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed:()=> startAddNewRecord(context),
+        onPressed: () => startAddNewRecord(context),
         child: Icon(
           Icons.add,
           size: 40,

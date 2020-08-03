@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
 import 'package:amun/reminders/ui/new_entry/new_entry.dart';
-import 'package:amun/screens/allergies_screen.dart';
-import 'package:amun/screens/my_doctors_screen.dart';
+import 'package:amun/drawer/allergies_screen.dart';
+import 'package:amun/drawer/my_doctors_screen.dart';
 import 'package:amun/screens/register_screen.dart';
 import 'package:amun/screens/scanner_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
@@ -48,8 +48,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
           RemindersScreen.routeName: (ctx) => RemindersScreen(),
           CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
           NewEntry.routeName: (ctx) => NewEntry(),
-          RegisterScreen.routeName: (ctx) => RegisterScreen(),
-          // CategoryRecordsScreen.routeName: (ctx) => CategoryRecordsScreen(),
+          RegisterScreen.routeName: (ctx) => RegisterScreen(),          
           MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
           AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
           ScannerScreen.routeName: (ctx) => ScannerScreen(),
@@ -61,7 +60,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
           RemindersScreen.routeName: (ctx) => RemindersScreen(),
           NewEntry.routeName: (ctx) => NewEntry(),
           ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
-          // PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
           BloodPressureScreen.routeName: (ctx) => BloodPressureScreen(),
           BloodGlucoseScreen.routeName: (ctx) => BloodGlucoseScreen(),
           ReminderScreen.routeName: (ctx) => ReminderScreen()

@@ -26,7 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  String _name;
+  String _firstName;
+  String _lastName;
   String _username;
   DateTime _dateOfBirth;
   String _email;
@@ -79,12 +80,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
 //    If all data are correct then save data to out variables
-        patient.name = _name;
+        patient.firstName = _firstName;
+        patient.lastName = _lastName;
         patient.username = _username;
         patient.email = _email;
-        patient.phone = _phone;
+        patient.mobile = _phone;
         patient.password = _password;
-        patient.dateOfBirth = DateFormat.yMMMd().format(_dateOfBirth);
+        patient.birthDate = _dateOfBirth;
         patient.gender = gender;
         patient.bloodType = selectedBloodtype;
       } else {
@@ -110,17 +112,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                buildTextField(
-                  title: 'Name',
-                  controller: nameController,
-                  textInputType: TextInputType.text,
-                  myValue: _name,
-                  validator: (String arg) {
-                    if (arg.length < 3)
-                      return 'Name must be more than 2 charater';
-                    else
-                      return null;
-                  },
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: buildTextField(
+                          title: 'First Name',
+                          controller: nameController,
+                          textInputType: TextInputType.text,
+                          myValue: _firstName,
+                          validator: (String arg) {
+                            if (arg.length < 3)
+                              return 'Name must be more than 2 charater';
+                            else
+                              return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: buildTextField(
+                          title: 'Last Name',
+                          controller: nameController,
+                          textInputType: TextInputType.text,
+                          myValue: _lastName,
+                          validator: (String arg) {
+                            if (arg.length < 3)
+                              return 'Name must be more than 2 charater';
+                            else
+                              return null;
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 buildTextField(
                   myValue: _username,
@@ -134,21 +162,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                   },
                 ),
-                Padding(padding: EdgeInsets.only(top:10),),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                ),
                 DateTimeFormField(
                   onlyDate: true,
                   initialValue: initialDateTime,
-                  label: "Date of Birth",
+                  label: "Birth Date",
                   validator: (DateTime dateTime) {
                     if (dateTime == null) {
-                      return "Date of Birth";
+                      return "Birth Date is required";
                     }
                     return null;
                   },
                   onSaved: (DateTime dateTime) => _dateOfBirth = dateTime,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -209,7 +239,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-    Widget buildDropDownSearch() {
+
+  Widget buildDropDownSearch() {
     List<String> bloodTyps = [
       "      O-",
       "      O+",
@@ -296,5 +327,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }),
     );
   }
-
 }

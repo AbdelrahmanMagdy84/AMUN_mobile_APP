@@ -10,7 +10,7 @@ class NewGlucose extends StatefulWidget {
 
 class _NewGlucoseState extends State<NewGlucose> {
   BloodGlucose glucose = new BloodGlucose();
-
+  final noteController = TextEditingController();
   void displayDatePicker() {
     showDatePicker(
             context: context,
@@ -44,19 +44,18 @@ class _NewGlucoseState extends State<NewGlucose> {
             if (value == TimeType.fasting) {
               min = 80;
               max = 300;
-              currentValue = 81 ;
+              currentValue = 81;
             }
             if (value == TimeType.afterEating) {
               min = 170;
               max = 300;
-               currentValue =171 ;
+              currentValue = 171;
             }
             if (value == TimeType.two_three_hours_aftrer_eating) {
               min = 120;
               max = 500;
-               currentValue = 131 ;
+              currentValue = 131;
             }
-            
           });
         },
       ),
@@ -76,10 +75,9 @@ class _NewGlucoseState extends State<NewGlucose> {
     ),
   );
 
-   int min = 1;
-   int max = 2;
-  int currentValue =2;
- 
+  int min = 1;
+  int max = 2;
+  int currentValue = 2;
 
   Widget buildNumberPicker({
     String title,
@@ -98,9 +96,9 @@ class _NewGlucoseState extends State<NewGlucose> {
             initialValue: currentValue,
             minValue: min,
             maxValue: max,
-            onChanged: (newValue) => setState(() {currentValue = newValue;
-            }
-            ),
+            onChanged: (newValue) => setState(() {
+              currentValue = newValue;
+            }),
           ),
         ),
         Padding(
@@ -119,92 +117,104 @@ class _NewGlucoseState extends State<NewGlucose> {
     var mediaQuery = MediaQuery.of(context).size.height;
 
     var postprandial;
-    return SingleChildScrollView(
-      child: Card(
-        elevation: 4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: Text(
-                  'Blood Glucose',
-                  style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Card(
+          elevation: 4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Text(
+                    'Blood Glucose',
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              width: double.infinity,
-              child: Container(
-                margin: const EdgeInsets.all(8.0),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                width: double.infinity,
+                child: Container(
+                  margin: const EdgeInsets.all(8.0),
+                  child: Card(
+                      elevation: 4,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "Type",
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          buildRadioListTile(TimeType.fasting, 'Fasting'),
+                          buildRadioListTile(
+                              TimeType.afterEating, 'After Eating'),
+                          buildRadioListTile(
+                              TimeType.two_three_hours_aftrer_eating,
+                              '2-3 hours after eating'),
+                        ],
+                      )),
+                ),
+              ),
+              Container(
+                height: 200,
+                width: double.infinity,
                 child: Card(
-                    elevation: 4,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          "Type",
+                  child: buildNumberPicker(
+                      title: 'Glucose', measureUnite: 'mg/dl'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: "Note",
+                  ),
+                  controller: noteController,
+                  keyboardType: TextInputType.text,
+                ),
+              ),
+              Card(
+                elevation: 4,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          glucose.date == null
+                              ? 'No date chosen'
+                              : 'Picked Date: ${DateFormat.yMd().format(glucose.date)}',
                           style: Theme.of(context).textTheme.title,
                         ),
-                        buildRadioListTile(TimeType.fasting, 'Fasting'),
-                        buildRadioListTile(
-                            TimeType.afterEating, 'After Eating'),
-                        buildRadioListTile(
-                            TimeType.two_three_hours_aftrer_eating,
-                            '2-3 hours after eating'),
-                      ],
-                    )),
-              ),
-            ),
-            Container( 
-              height: 200,
-              width: double.infinity,
-              child: Card(
-                child:
-                    buildNumberPicker(title: 'Glucose', measureUnite: 'mg/dl'),
-              ),
-            ),
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        glucose.date == null
-                            ? 'No date chosen'
-                            : 'Picked Date: ${DateFormat.yMd().format(glucose.date)}',
-                        style: Theme.of(context).textTheme.title,
                       ),
-                    ),
-                    FloatingActionButton(
-                      onPressed: displayDatePicker,
-                      child: Icon(
-                        Icons.date_range,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    )
-                  ],
+                      FloatingActionButton(
+                        onPressed: displayDatePicker,
+                        child: Icon(
+                          Icons.date_range,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            FlatButton(
-                padding: EdgeInsets.all(30),
-                onPressed: null,
-                color: Theme.of(context).accentColor,
-                child: Text(
-                  'Save',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ))
-          ],
+              FlatButton(
+                  padding: EdgeInsets.all(30),
+                  onPressed: null,
+                  color: Theme.of(context).accentColor,
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ))
+            ],
+          ),
         ),
       ),
     );

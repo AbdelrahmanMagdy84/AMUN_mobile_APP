@@ -1,6 +1,7 @@
+import 'package:amun/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
-import '../main_drawer.dart';
+
 
 class MyDoctorsScreen extends StatefulWidget {
   static final routeName = 'Doctors';

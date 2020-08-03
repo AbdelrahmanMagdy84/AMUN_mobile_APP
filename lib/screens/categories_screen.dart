@@ -2,7 +2,7 @@ import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/screens/scanner_screen.dart';
 import '../items/category_item.dart';
 import '../medical_categories_data.dart';
-import '../main_drawer.dart';
+import '../drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -35,7 +35,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 Navigator.of(context).pushNamed(ScannerScreen.routeName);
               })
         ],
-        //title: Text("AMUN MR"),
+    
       ),
       drawer: MainDrawer(),
       drawerScrimColor: Theme.of(context).primaryColor.withOpacity(0.5),
@@ -54,7 +54,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ...categories
                       .map(
                         (cat) => CategoryItem(
-                            cat.id, cat.title, cat.color, cat.image),
+                            cat.id, cat.title,cat.image),
                       )
                       .toList(),
                 ],

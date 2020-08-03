@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import '../models/blood_Pressure.dart';
 
 class PressureItem extends StatelessWidget {
+  String note =
+      "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
   DateTime date = DateTime.now();
   int upper = 180;
   int lower = 80;
@@ -116,6 +118,14 @@ class PressureItem extends StatelessWidget {
                 // widget.delete(widget.transaction.id),
                 ),
           ]),
+          Container(
+            padding: EdgeInsets.all(20),
+            width: double.infinity,
+            child: Text(
+              "Note: $note",
+              maxLines: 3,
+            ),
+          ),
         ],
       ),
     );

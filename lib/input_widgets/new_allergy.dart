@@ -1,4 +1,4 @@
-import 'package:amun/screens/allergies_screen.dart';
+import 'package:amun/drawer/allergies_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:intl/intl.dart';
 import '../allergy_data.dart';

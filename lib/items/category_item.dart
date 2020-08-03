@@ -7,10 +7,9 @@ import 'package:flutter/material.dart';
 
 class CategoryItem extends StatelessWidget {
   final String title;
-  final Color color;
   final String id;
   final String image;
-  CategoryItem(this.id, this.title, this.color, this.image);
+  CategoryItem(this.id, this.title, this.image);
 
   void selectCategory(BuildContext ctx) {
     switch (id) {
@@ -19,7 +18,6 @@ class CategoryItem extends StatelessWidget {
         break;
       case '2':
         Navigator.of(ctx).pushNamed(BloodPressureScreen.routeName);
-
         break;
       case '3':
         Navigator.of(ctx).pushNamed(PrescriptionScreen.routeName);
@@ -31,14 +29,11 @@ class CategoryItem extends StatelessWidget {
         Navigator.of(ctx).pushNamed(PrescriptionScreen.routeName);
         break;
     }
-    // Navigator.of(ctx).pushNamed(CategoryRecordsScreen.routeName, arguments: {
-    //   'id': id,
-    //   'title': title,
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    print("$image");
     return LayoutBuilder(
       builder: (ctx, constraints) {
         return InkWell(
