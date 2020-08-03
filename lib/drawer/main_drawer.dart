@@ -1,7 +1,7 @@
-import 'package:amun/screens/allergies_screen.dart';
-
-import './screens/categories_screen.dart';
-import './screens/my_doctors_screen.dart';
+import 'package:amun/drawer/allergies_screen.dart';
+import 'package:amun/drawer/condtions_screen.dart';
+import 'package:amun/drawer/my_doctors_screen.dart';
+import 'package:amun/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -102,10 +102,7 @@ class MainDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            // Container(
-            //   height: 1,
-            //   color: Theme.of(context).accentColor,
-            // ),
+           
             SizedBox(
               height: 20,
             ),
@@ -124,6 +121,9 @@ class MainDrawer extends StatelessWidget {
             //buildListTile(context, 'Medecines', Icons.healing, () {}),
             buildListTile(context, 'Allergies', Icons.tag_faces, () {
               Navigator.of(context).popAndPushNamed(AllergiesScreen.routeName);
+            }),
+             buildListTile(context, 'Conditions', Icons.tag_faces, () {
+              Navigator.of(context).popAndPushNamed(ConditionsScreen.routeName);
             }),
           ],
         ),

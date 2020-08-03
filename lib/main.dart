@@ -1,3 +1,6 @@
+import 'package:amun/drawer/allergies_screen.dart';
+import 'package:amun/drawer/condtions_screen.dart';
+import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
 import 'package:amun/reminders/ui/new_entry/new_entry.dart';
 import 'package:amun/screens/blood_pressure_screen.dart';
@@ -5,18 +8,13 @@ import 'package:amun/screens/glucose_screen.dart';
 import 'package:amun/screens/prescription_screen.dart';
 import 'package:amun/screens/reminder_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
-
-import './screens/allergies_screen.dart';
-import './screens/category_records_screen.dart';
 import './screens/login_screen.dart';
-import './screens/my_doctors_screen.dart';
-
 import './screens/register_screen.dart';
 import './screens/scanner_screen.dart';
-
-import './main_drawer.dart';
 import './screens/categories_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'drawer/my_doctors_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -50,6 +48,7 @@ class MyApp extends StatelessWidget {
         PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
         BloodPressureScreen.routeName:(ctx)=>BloodPressureScreen(),
         BloodGlucoseScreen.routeName:(ctx)=>BloodGlucoseScreen(),
+        ConditionsScreen.routeName:(ctx)=>ConditionsScreen(),
         ReminderScreen.routeName:(ctx)=>ReminderScreen()
       },
     );

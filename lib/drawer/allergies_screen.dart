@@ -1,5 +1,6 @@
+import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/input_widgets/new_allergy.dart';
-import 'package:amun/main_drawer.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

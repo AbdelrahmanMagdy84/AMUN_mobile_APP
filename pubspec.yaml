@@ -72,6 +72,7 @@ flutter:
     - images/pressure.jpg
     - images/radiograph.png
     - images/appointment.png
+    - images/lab.png
     - assets/animations/
     - assets/sound/
   # An image asset can refer to one or more resolution-specific "variants", see
