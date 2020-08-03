@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'APIClient.dart';
 import '../models/Patient.dart';
+import '../models/Responses/PatientResponse.dart';
 import 'package:http/http.dart' as http;
 
 class PatientService {
@@ -14,29 +15,27 @@ class PatientService {
 
   PatientService._getInstance();
 
-  Future<Patient> login(
+  Future<PatientResponse> login(
       {String username, String email, String password}) async {
-    final http.Response response = await http.post(
-        "${APIClient.baseUrl}/v1/auth",
+    final http.Response response = await http.post("${APIClient.baseUrl}/auth",
         body: jsonEncode(
             {"username": username, "email": email, "password": password}),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
     if (response.statusCode == 200) {
-      return Patient.fromJson(jsonDecode(response.body));
+      return PatientResponse.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to login");
     }
   }
 
-  /* Future<UserResponse> signup(User user) async {
-    final http.Response response = await http.post(
-        "${APIClient.baseUrl}/v1/auth/create",
-        body: jsonEncode(user.toJson()),
+  Future<PatientResponse> signup(Patient patient) async {
+    final http.Response response = await http.post("${APIClient.baseUrl}/",
+        body: jsonEncode(patient.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
     if (response.statusCode == 200) {
-      return UserResponse.fromJson(jsonDecode(response.body));
+      return PatientResponse.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to signup");
     }
-  } */
+  }
 }

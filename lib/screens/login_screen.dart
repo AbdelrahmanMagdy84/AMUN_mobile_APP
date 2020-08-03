@@ -36,9 +36,10 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Login')),
       body: SingleChildScrollView(
         child: Column(
-          
           children: <Widget>[
-            Divider(height: MediaQuery.of(context).size.height*0.15,),
+            Divider(
+              height: MediaQuery.of(context).size.height * 0.15,
+            ),
             buildTextField(
               'Username',
               usernameController,

@@ -1,7 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
-import 'package:intl/intl.dart';
 import '../models/patient.dart';
 import '../screens/categories_screen.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     PatternValidator(r'(?=.*?[#?!@$%^&*-])',
         errorText: 'passwords must have at least one special character')
   ]);
+
   String _validateEmail(String value) {
     if (value.isEmpty) {
       // The form is empty

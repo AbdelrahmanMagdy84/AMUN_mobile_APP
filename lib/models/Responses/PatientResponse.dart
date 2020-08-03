@@ -1,18 +1,18 @@
-import "../Patient.dart";
+import '../Patient.dart';
 
-class UserResponse {
+class PatientResponse {
   String message;
   bool success;
   Patient patient;
 
-  UserResponse({
+  PatientResponse({
     this.patient,
     this.message,
     this.success,
   });
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) {
-    return UserResponse(
+  factory PatientResponse.fromJson(Map<String, dynamic> json) {
+    return PatientResponse(
         success: json["success"],
         message: json["message"],
         patient:
