@@ -2,19 +2,19 @@ import 'package:amun/input_widgets/new_prescription.dart';
 import 'package:amun/items/medical_record_item.dart';
 import 'package:flutter/material.dart';
 
-class PrescriptionScreen extends StatefulWidget {
-  static final routeName = 'Prescription route name';
+class LabTestScreen extends StatefulWidget {
+  static final routeName = 'labTest route name';
   @override
-  _PrescriptionScreenState createState() => _PrescriptionScreenState();
+  _LabTestScreenState createState() => _LabTestScreenState();
 }
 
-class _PrescriptionScreenState extends State<PrescriptionScreen> {
+class _LabTestScreenState extends State<LabTestScreen> {
   void startAddNewRecord(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: NewPrescriptionOrRadiograph("New Prescription"),
+            child: NewPrescriptionOrRadiograph("New Lab Test"),
             onTap: () {},
             behavior: HitTestBehavior.opaque,
           );
@@ -24,7 +24,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Prescription")),
+      appBar: AppBar(title: Text("Lab Test")),
       body: Container(
         child: ListView.builder(
           itemBuilder: (ctx, index) {

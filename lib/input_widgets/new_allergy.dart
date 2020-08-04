@@ -1,7 +1,7 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:intl/intl.dart';
-import '../allergy_data.dart';
+import '../static_data/allergy_data.dart';
 import 'package:flutter/material.dart';
 
 class NewAllergy extends StatefulWidget {
