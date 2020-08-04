@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
-import '../models/blood_glucose.dart';
+import '../models/BloodGlucose.dart';
 import 'package:flutter/material.dart';
 
 class NewGlucose extends StatefulWidget {

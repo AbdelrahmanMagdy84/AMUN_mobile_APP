@@ -1,4 +1,4 @@
-import '../models/blood_glucose.dart';
+import '../models/BloodGlucose.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

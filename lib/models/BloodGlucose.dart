@@ -15,9 +15,8 @@ class BloodGlucose {
       value: json["value"],
       timeType: json["type"],
       note: json["note"],
-      date: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'])
-          : DateTime.now(),
+      date:
+          json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
     );
   }
 

@@ -17,7 +17,8 @@ class PatientService {
 
   Future<PatientResponse> login(
       {String username, String email, String password}) async {
-    final http.Response response = await http.post("${APIClient.baseUrl}/auth",
+    final http.Response response = await http.post(
+        "${APIClient.baseUrl}/$endPoint/auth",
         body: jsonEncode(
             {"username": username, "email": email, "password": password}),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
@@ -29,7 +30,8 @@ class PatientService {
   }
 
   Future<PatientResponse> signup(Patient patient) async {
-    final http.Response response = await http.post("${APIClient.baseUrl}/",
+    final http.Response response = await http.post(
+        "${APIClient.baseUrl}/$endPoint",
         body: jsonEncode(patient.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
     if (response.statusCode == 200) {
