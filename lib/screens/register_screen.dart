@@ -34,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _password;
   String _confirmPassword;
   String selectedBloodtype;
-  Gender gender = Gender.Male;
+  String gender = "male";
 
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'password is required'),

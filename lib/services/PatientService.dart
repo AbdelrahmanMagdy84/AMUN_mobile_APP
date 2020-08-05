@@ -6,7 +6,7 @@ import '../models/Responses/PatientResponse.dart';
 import 'package:http/http.dart' as http;
 
 class PatientService {
-  static final String endPoint = "api/v1/patient";
+  static final String endPoint = "api/v1/patients";
   static final PatientService _instance = PatientService._getInstance();
 
   factory PatientService() {
@@ -15,13 +15,22 @@ class PatientService {
 
   PatientService._getInstance();
 
-  Future<PatientResponse> login(
-      {String username, String email, String password}) async {
+  Future<PatientResponse> login(String input, String password) async {
+    Map<String, String> body;
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(input);
+    if (emailValid) {
+      body = {"email": input, "password": password};
+    } else {
+      body = {"username": input, "password": password};
+    }
+    print("${APIClient.baseUrl}/$endPoint/auth");
     final http.Response response = await http.post(
         "${APIClient.baseUrl}/$endPoint/auth",
-        body: jsonEncode(
-            {"username": username, "email": email, "password": password}),
+        body: jsonEncode(body),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       return PatientResponse.fromJson(jsonDecode(response.body));
     } else {
