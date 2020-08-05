@@ -4,6 +4,7 @@ import '../screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'categories_screen.dart';
 import '../input_widgets/DialogManager.dart';
+import '../utils/TokenStorage.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = 'login_register';
@@ -37,13 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
         .login(_usernameController.text, _passwordController.text)
         .then((PatientResponse patientResponse) {
       if (patientResponse.success) {
-        print(patientResponse.patient.pid);
         print("User Logged in!");
         DialogManager.stopLoadingDialog(context);
-        Navigator.of(context).pushReplacementNamed(CategoriesScreen.routeName);
-        /*LocalStorage().saveUser(patientResponse.patient).then((_) {
-          Navigator.pushReplacementNamed(context, "/home");
-        });*/
+        TokenStorage().saveUserToken(patientResponse.token).then((_) {
+          Navigator.of(context)
+              .pushReplacementNamed(CategoriesScreen.routeName);
+        });
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);
