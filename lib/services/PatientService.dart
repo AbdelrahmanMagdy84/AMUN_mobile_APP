@@ -30,7 +30,6 @@ class PatientService {
         "${APIClient.baseUrl}/$endPoint/auth",
         body: jsonEncode(body),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
-    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       return PatientResponse.fromJson(jsonDecode(response.body));
     } else {

@@ -1,9 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
-import '../models/patient.dart';
-import '../screens/categories_screen.dart';
+
+import 'package:amun/models/Responses/PatientResponse.dart';
+import 'package:amun/services/APIClient.dart';
+import '../models/Patient.dart';
+import '../screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import '../input_widgets/DialogManager.dart';
 
 class RegisterScreen extends StatefulWidget {
   static final String routeName = 'register';
@@ -14,10 +18,11 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _autoValidate = false;
-  Patient patient = new Patient();
+
   final DateTime initialDateTime = DateTime.now();
 
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final usernameController = TextEditingController();
   final dateOfBirthController = TextEditingController();
   final emailController = TextEditingController();
@@ -25,16 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  String _firstName;
-  String _lastName;
-  String _username;
   DateTime _dateOfBirth;
-  String _email;
-  String _phone;
-  String _password;
-  String _confirmPassword;
   String selectedBloodtype;
-  String gender = "male";
+  String gender;
 
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'password is required'),
@@ -67,27 +65,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   String validateMobile(String value) {
-// Indian Mobile number are of 10 digit only
-    if (value.length != 10)
-      return 'Mobile Number must be of 10 digit';
+    if (value.length != 11)
+      return 'Mobile Number must be of 11 digit';
     else
       return null;
   }
 
-  void register(BuildContext ctx, var formkey) {
+  void register(var formkey) {
     if (formkey.currentState.validate()) {
+      print("signing up");
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-//    If all data are correct then save data to out variables
-        patient.firstName = _firstName;
-        patient.lastName = _lastName;
-        patient.username = _username;
-        patient.email = _email;
-        patient.mobile = _phone;
-        patient.password = _password;
-        patient.birthDate = _dateOfBirth;
-        patient.gender = gender;
-        patient.bloodType = selectedBloodtype;
+        Patient patient = new Patient(
+            firstName: firstNameController.text,
+            lastName: lastNameController.text,
+            username: usernameController.text,
+            email: emailController.text,
+            mobile: phoneController.text,
+            password: passwordController.text,
+            birthDate: _dateOfBirth,
+            gender: gender,
+            bloodType: selectedBloodtype,
+            allergies: [],
+            medications: [],
+            conditions: []);
+        APIClient()
+            .getPatientService()
+            .signup(patient)
+            .then((PatientResponse patientResponse) {
+          if (patientResponse.success) {
+            DialogManager.stopLoadingDialog(context);
+            Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+          }
+        }).catchError((Object e) {
+          DialogManager.stopLoadingDialog(context);
+          print(e.toString());
+        });
       } else {
 //    If all data are not valid then start auto validation.
         setState(() {
@@ -95,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
       }
     }
-    Navigator.of(ctx).pushReplacementNamed(CategoriesScreen.routeName);
+    //Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -117,11 +130,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 15),
                         child: buildTextField(
-                          
                           title: 'First Name',
-                          controller: nameController,
+                          controller: firstNameController,
                           textInputType: TextInputType.text,
-                          myValue: _firstName,
                           validator: (String arg) {
                             if (arg.length < 3)
                               return 'Name must be more than 2 charater';
@@ -136,9 +147,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         padding: const EdgeInsets.only(left: 15),
                         child: buildTextField(
                           title: 'Last Name',
-                          controller: nameController,
+                          controller: lastNameController,
                           textInputType: TextInputType.text,
-                          myValue: _lastName,
                           validator: (String arg) {
                             if (arg.length < 3)
                               return 'Name must be more than 2 charater';
@@ -151,7 +161,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 buildTextField(
-                  myValue: _username,
                   title: 'Username',
                   controller: usernameController,
                   textInputType: TextInputType.text,
@@ -195,21 +204,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 buildTextField(
-                  myValue: _email,
                   title: 'Email',
                   controller: emailController,
                   textInputType: TextInputType.emailAddress,
                   validator: _validateEmail,
                 ),
                 buildTextField(
-                  myValue: _password,
                   title: 'Password',
                   controller: passwordController,
                   textInputType: TextInputType.visiblePassword,
                   validator: passwordValidator,
                 ),
                 buildTextField(
-                  myValue: _confirmPassword,
                   title: 'Confirm Password',
                   controller: confirmPasswordController,
                   textInputType: TextInputType.visiblePassword,
@@ -223,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Container(
                     padding: EdgeInsets.all(15),
                     child: FlatButton(
-                      onPressed: () => register(context, _formKey),
+                      onPressed: () => register(_formKey),
                       child: Text(
                         'Register',
                         style: TextStyle(
@@ -241,16 +247,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget buildDropDownSearch() {
-    List<String> bloodTyps = [
-      "      O-",
-      "      O+",
-      "      A-",
-      "      A+",
-      "      B-",
-      "      B+",
-      "      AB-",
-      "      AB+"
-    ];
+    List<String> bloodTyps = ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"];
     return Container(
       padding: EdgeInsets.only(left: 10),
       child: Container(
@@ -293,7 +290,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               fit: FlexFit.loose,
               child: RadioListTile(
                   title: Text('Male'),
-                  value: Gender.Male,
+                  value: "male",
                   groupValue: gender,
                   onChanged: (value) {
                     setState(() {
@@ -307,7 +304,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   title: Text(
                     'Female',
                   ),
-                  value: Gender.Female,
+                  value: "female",
                   groupValue: gender,
                   onChanged: (value) {
                     setState(() {
@@ -325,21 +322,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       {String title,
       TextEditingController controller,
       TextInputType textInputType,
-      Function validator,
-      var myValue}) {
+      Function validator}) {
     return Container(
       child: TextFormField(
-        maxLength: 15,
+          maxLength: 20,
           decoration: InputDecoration(
             labelText: "$title",
           ),
-          //controller: controller,
+          controller: controller,
           keyboardType: textInputType,
-          validator: validator,
-          onSaved: (String value) {
-            myValue = value;
-            //controller = value as TextEditingController;
-          }),
+          validator: validator),
     );
   }
 }
