@@ -6,49 +6,6 @@ class GlucoseItem extends StatelessWidget {
   DateTime date = DateTime.now();
   String note =
       "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
-  Map<String, Object> getGlucoseIndecator(BloodGlucose bloodGlocose) {
-    if (bloodGlocose.timeType == TimeType.fasting) {
-      if (80 <= bloodGlocose.value && bloodGlocose.value <= 100) {
-        return {'indecator': 'Normal', 'color': Colors.green};
-      } else if (101 <= bloodGlocose.value && bloodGlocose.value <= 125) {
-        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
-      } else if (126 <= bloodGlocose.value) {
-        return {'indecator': "Diabetic", 'color': Colors.red};
-      }
-    } else if (bloodGlocose.timeType == TimeType.afterEating) {
-      if (170 <= bloodGlocose.value && bloodGlocose.value <= 200) {
-        return {'indecator': 'Normal', 'color': Colors.green};
-      } else if (190 <= bloodGlocose.value && bloodGlocose.value <= 230) {
-        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
-      } else if (231 <= bloodGlocose.value && bloodGlocose.value <= 300) {
-        return {'indecator': "Diabetic", 'color': Colors.red};
-      }
-    } else if (bloodGlocose.timeType ==
-        TimeType.two_three_hours_aftrer_eating) {
-      if (120 <= bloodGlocose.value && bloodGlocose.value <= 140) {
-        return {'indecator': 'Normal', 'color': Colors.green};
-      } else if (141 <= bloodGlocose.value && bloodGlocose.value <= 199) {
-        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
-      } else if (200 <= bloodGlocose.value) {
-        return {'indecator': "Diabetic", 'color': Colors.red};
-      }
-    }
-    return null;
-  }
-
-  String getTimeTypeText(TimeType timeType) {
-    switch (timeType) {
-      case TimeType.fasting:
-        return 'Fasting';
-
-      case TimeType.afterEating:
-        return 'After Eating';
-
-      case TimeType.two_three_hours_aftrer_eating:
-        return '2-3 Hours After Eating';
-    }
-    return '';
-  }
 
   Widget buildListTile(BuildContext ctx, BloodGlucose bloodGlucose) {
     Map<String, Object> obj = getGlucoseIndecator(bloodGlucose);
@@ -132,11 +89,12 @@ class GlucoseItem extends StatelessWidget {
                 // widget.delete(widget.transaction.id),
                 ),
           ]),
+          
           Container(
             padding: EdgeInsets.all(20),
             width: double.infinity,
             child: Text(
-              "Note: $note",
+              "Note: ${bloodGlucose.note}",
               maxLines: 3,
             ),
           ),
@@ -148,11 +106,55 @@ class GlucoseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BloodGlucose bloodGlucose = BloodGlucose(
-        date: DateTime.now(), value: 185, timeType: TimeType.fasting);
+        date: DateTime.now(), value: 185, timeType: TimeType.fasting,note: note);
     return Card(
       elevation: 10,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: buildListTile(context, bloodGlucose),
     );
+  }
+
+  Map<String, Object> getGlucoseIndecator(BloodGlucose bloodGlocose) {
+    if (bloodGlocose.timeType == TimeType.fasting) {
+      if (80 <= bloodGlocose.value && bloodGlocose.value <= 100) {
+        return {'indecator': 'Normal', 'color': Colors.green};
+      } else if (101 <= bloodGlocose.value && bloodGlocose.value <= 125) {
+        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
+      } else if (126 <= bloodGlocose.value) {
+        return {'indecator': "Diabetic", 'color': Colors.red};
+      }
+    } else if (bloodGlocose.timeType == TimeType.afterEating) {
+      if (170 <= bloodGlocose.value && bloodGlocose.value <= 200) {
+        return {'indecator': 'Normal', 'color': Colors.green};
+      } else if (190 <= bloodGlocose.value && bloodGlocose.value <= 230) {
+        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
+      } else if (231 <= bloodGlocose.value && bloodGlocose.value <= 300) {
+        return {'indecator': "Diabetic", 'color': Colors.red};
+      }
+    } else if (bloodGlocose.timeType ==
+        TimeType.two_three_hours_aftrer_eating) {
+      if (120 <= bloodGlocose.value && bloodGlocose.value <= 140) {
+        return {'indecator': 'Normal', 'color': Colors.green};
+      } else if (141 <= bloodGlocose.value && bloodGlocose.value <= 199) {
+        return {'indecator': 'Pre-diabetic', 'color': Colors.yellow};
+      } else if (200 <= bloodGlocose.value) {
+        return {'indecator': "Diabetic", 'color': Colors.red};
+      }
+    }
+    return null;
+  }
+
+  String getTimeTypeText(TimeType timeType) {
+    switch (timeType) {
+      case TimeType.fasting:
+        return 'Fasting';
+
+      case TimeType.afterEating:
+        return 'After Eating';
+
+      case TimeType.two_three_hours_aftrer_eating:
+        return '2-3 Hours After Eating';
+    }
+    return '';
   }
 }

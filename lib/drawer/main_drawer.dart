@@ -9,13 +9,8 @@ class MainDrawer extends StatelessWidget {
   final username = "Ab!223344";
   final String age = "55";
   final String bloodType = "A Positive";
-  Widget buildListTile(
-      BuildContext ctx, String title, IconData icon, Function tabHandler) {
+  Widget buildListTile(BuildContext ctx, String title, Function tabHandler) {
     return ListTile(
-      // leading: Icon(
-      //   icon,
-      //   size: 26,
-      //),
       title: Card(
         elevation: 1,
         child: Center(
@@ -102,27 +97,30 @@ class MainDrawer extends StatelessWidget {
                 ),
               ),
             ),
-           
+
             SizedBox(
               height: 20,
             ),
-            buildListTile(context, 'Home', Icons.home, () {
-              Navigator.of(context)
-                  .popAndPushNamed(CategoriesScreen.routeName);
+            buildListTile(context, 'Home', () {
+              Navigator.pop(context);
+              Navigator.of(context).popAndPushNamed(CategoriesScreen.routeName);
             }),
-            buildListTile(context, 'My Doctors', Icons.settings, () {
+            buildListTile(context, 'My Doctors', () {
+              Navigator.pop(context);
               Navigator.of(context).popAndPushNamed(MyDoctorsScreen.routeName,
                   arguments: {'screen title': 'My Doctors'});
             }),
-            buildListTile(context, 'Facilities', Icons.settings, () {
+            buildListTile(context, 'Facilities', () {
+              Navigator.pop(context);
               Navigator.of(context).popAndPushNamed(MyDoctorsScreen.routeName,
                   arguments: {'screen title': 'Facilities'});
             }),
-            //buildListTile(context, 'Medecines', Icons.healing, () {}),
-            buildListTile(context, 'Allergies', Icons.tag_faces, () {
+            buildListTile(context, 'Allergies', () {
+              Navigator.pop(context);
               Navigator.of(context).popAndPushNamed(AllergiesScreen.routeName);
             }),
-             buildListTile(context, 'Conditions', Icons.tag_faces, () {
+            buildListTile(context, 'Conditions', () {
+              Navigator.pop(context);
               Navigator.of(context).popAndPushNamed(ConditionsScreen.routeName);
             }),
           ],
