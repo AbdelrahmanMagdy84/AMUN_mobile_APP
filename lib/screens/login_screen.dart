@@ -1,12 +1,20 @@
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/models/Responses/PatientResponse.dart';
 import '../screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'categories_screen.dart';
+import '../input_widgets/DialogManager.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const routeName = 'login_register';
 
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   Widget buildTextField(String title, TextEditingController controller,
       TextInputType textInputType) {
@@ -22,8 +30,26 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void login(BuildContext ctx) {
-    Navigator.of(ctx).pushReplacementNamed(CategoriesScreen.routeName);
+  void login() {
+    DialogManager.showLoadingDialog(context);
+    APIClient()
+        .getPatientService()
+        .login(_usernameController.text, _passwordController.text)
+        .then((PatientResponse patientResponse) {
+      if (patientResponse.success) {
+        print(patientResponse.patient.pid);
+        print("User Logged in!");
+        DialogManager.stopLoadingDialog(context);
+        Navigator.of(context).pushReplacementNamed(CategoriesScreen.routeName);
+        /*LocalStorage().saveUser(patientResponse.patient).then((_) {
+          Navigator.pushReplacementNamed(context, "/home");
+        });*/
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Wrong email/password");
+      print(e.toString());
+    });
   }
 
   void createNewAcount(BuildContext ctx) {
@@ -42,18 +68,18 @@ class LoginScreen extends StatelessWidget {
             ),
             buildTextField(
               'Username',
-              usernameController,
+              _usernameController,
               TextInputType.text,
             ),
             buildTextField(
               'Password',
-              passwordController,
+              _passwordController,
               TextInputType.text,
             ),
             Container(
                 padding: EdgeInsets.only(top: 15, bottom: 10),
                 child: FlatButton(
-                  onPressed: () => login(context),
+                  onPressed: () => login(),
                   child: Text(
                     'Login',
                     style: TextStyle(

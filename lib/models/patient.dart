@@ -1,7 +1,4 @@
-enum Gender {
-  Male,
-  Female,
-}
+enum Gender { Male, Female }
 
 class Patient {
   String pid;
@@ -12,7 +9,7 @@ class Patient {
   String firstName;
   String lastName;
   DateTime birthDate;
-  Gender gender;
+  String gender;
   String bloodType;
   List<String> medications;
   List<String> allergies;
