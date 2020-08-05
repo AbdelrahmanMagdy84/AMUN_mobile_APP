@@ -1,4 +1,4 @@
-import 'package:amun/input_widgets/new_prescription.dart';
+import 'package:amun/input_widgets/new_medical_record.dart';
 import 'package:amun/items/medical_record_item.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: NewPrescriptionOrRadiograph("New Prescription"),
+            child: NewMedicalRecord("New Prescription"),
             onTap: () {},
             behavior: HitTestBehavior.opaque,
           );
