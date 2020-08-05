@@ -102,26 +102,36 @@ class MainDrawer extends StatelessWidget {
               height: 20,
             ),
             buildListTile(context, 'Home', () {
-              Navigator.pop(context);
-              Navigator.of(context).popAndPushNamed(CategoriesScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, CategoriesScreen.routeName, (r) => false);
             }),
             buildListTile(context, 'My Doctors', () {
-              Navigator.pop(context);
-              Navigator.of(context).popAndPushNamed(MyDoctorsScreen.routeName,
+              Navigator.pushNamedAndRemoveUntil(
+                  context, CategoriesScreen.routeName, (r) => false);
+              Navigator.pushNamed(context, MyDoctorsScreen.routeName,
                   arguments: {'screen title': 'My Doctors'});
             }),
             buildListTile(context, 'Facilities', () {
-              Navigator.pop(context);
-              Navigator.of(context).popAndPushNamed(MyDoctorsScreen.routeName,
+              Navigator.pushNamedAndRemoveUntil(
+                  context, CategoriesScreen.routeName, (r) => false);
+              Navigator.pushNamed(context, MyDoctorsScreen.routeName,
                   arguments: {'screen title': 'Facilities'});
             }),
             buildListTile(context, 'Allergies', () {
-              Navigator.pop(context);
-              Navigator.of(context).popAndPushNamed(AllergiesScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, CategoriesScreen.routeName, (r) => false);
+              Navigator.pushNamed(
+                context,
+                AllergiesScreen.routeName,
+              );
             }),
             buildListTile(context, 'Conditions', () {
-              Navigator.pop(context);
-              Navigator.of(context).popAndPushNamed(ConditionsScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, CategoriesScreen.routeName, (r) => false);
+              Navigator.pushNamed(
+                context,
+                ConditionsScreen.routeName,
+              );
             }),
           ],
         ),
