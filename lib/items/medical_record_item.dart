@@ -82,15 +82,15 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                             Icons.share,
                             color: Theme.of(context).primaryColor,
                           ),
-                          onPressed: text.isEmpty
+                          onPressed: image.isEmpty
                               ? null
                               : () async {
                                   try {
                                     final ByteData bytes = await rootBundle
                                         .load('$image');
                                     await Share.file('esys image', 'esys.png',
-                                        bytes.buffer.asUint8List(), '$image',
-                                        text: '$title');
+                                        bytes.buffer.asUint8List(), 'image/png',
+                                        text: 'My optional text.');
                                   } catch (e) {
                                     print('error: $e');
                                   }

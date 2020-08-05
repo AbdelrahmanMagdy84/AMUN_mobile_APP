@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:amun/models/Prescription.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
-class NewPrescriptionOrRadiograph extends StatefulWidget {
+class NewMedicalRecord extends StatefulWidget {
   final String title;
-  NewPrescriptionOrRadiograph(this.title);
+  NewMedicalRecord(this.title);
 
   @override
   _NewPrescreptionOrRadiographState createState() =>
@@ -13,7 +14,7 @@ class NewPrescriptionOrRadiograph extends StatefulWidget {
 }
 
 class _NewPrescreptionOrRadiographState
-    extends State<NewPrescriptionOrRadiograph> {
+    extends State<NewMedicalRecord> {
   DateTime dateTime = DateTime.now();
   // String title;
   // String doctor;
@@ -21,10 +22,11 @@ class _NewPrescreptionOrRadiographState
   // String image;
 
   final titleController = TextEditingController();
-  //final facilityNameController = TextEditingController();
+  final facilityNameController = TextEditingController();
   final doctorNameController = TextEditingController();
-  //final clerkNameController = TextEditingController();
+  final clerkNameController = TextEditingController();
   final noteController = TextEditingController();
+  DateTime date;
 
   Widget buildTextField(String title, TextEditingController controller,
       TextInputType textInputType) {
@@ -83,6 +85,22 @@ class _NewPrescreptionOrRadiographState
     }
   }
 
+  void displayDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null)
+        return;
+      else
+        setState(() {
+          date = pickedDate;
+        });
+    });
+  }
+
   void save(
       {DateTime date, String title, String doctor, String note, String image}) {
     Prescription prescription = Prescription(
@@ -119,26 +137,45 @@ class _NewPrescreptionOrRadiographState
                 titleController,
                 TextInputType.text,
               ),
-              // Divider(),
-              // buildTextField(
-              //   'Facility',
-              //   facilityNameController,
-              //   TextInputType.text,
-              // ),
+              Divider(),
+              buildTextField(
+                'Facility',
+                facilityNameController,
+                TextInputType.text,
+              ),
               buildTextField(
                 'Doctor',
                 doctorNameController,
                 TextInputType.text,
               ),
-              // buildTextField(
-              //   'Clerk',
-              //   clerkNameController,
-              //   TextInputType.text,
-              // ),
+              buildTextField(
+                'Clerk',
+                clerkNameController,
+                TextInputType.text,
+              ),
               buildTextField(
                 'Note',
                 noteController,
                 TextInputType.text,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      date == null
+                          ? 'No date chosen'
+                          : 'Picked Date: ${DateFormat.yMd().format(date)}',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ),
+                  FloatingActionButton(
+                    onPressed: displayDatePicker,
+                    child: Icon(
+                      Icons.date_range,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  )
+                ],
               ),
               Row(
                 children: <Widget>[
@@ -163,7 +200,7 @@ class _NewPrescreptionOrRadiographState
               setImageView(),
               FlatButton(
                   padding: EdgeInsets.all(30),
-                  onPressed: null,
+                  onPressed: save,
                   color: Theme.of(context).accentColor,
                   child: Text(
                     'Save',

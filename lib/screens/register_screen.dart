@@ -117,6 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 15),
                         child: buildTextField(
+                          
                           title: 'First Name',
                           controller: nameController,
                           textInputType: TextInputType.text,
@@ -328,6 +329,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       var myValue}) {
     return Container(
       child: TextFormField(
+        maxLength: 15,
           decoration: InputDecoration(
             labelText: "$title",
           ),
