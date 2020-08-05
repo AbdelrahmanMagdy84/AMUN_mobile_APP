@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/blood_Pressure.dart';
+import '../models/BloodPressure.dart';
 
 class PressureItem extends StatelessWidget {
   String note =
