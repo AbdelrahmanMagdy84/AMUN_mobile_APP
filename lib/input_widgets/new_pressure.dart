@@ -1,4 +1,4 @@
-import 'package:amun/models/blood_Pressure.dart';
+import 'package:amun/models/BloodPressure.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -10,69 +10,9 @@ class NewPressure extends StatefulWidget {
 }
 
 class _NewPressureState extends State<NewPressure> {
-  BloodPressure pressure = new BloodPressure();
+  BloodPressure pressure = new BloodPressure(lower: 80, upper: 120);
   final noteController = TextEditingController();
 
-  void displayDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      if (pickedDate == null)
-        return;
-      else
-        setState(() {
-          pressure.date = pickedDate;
-        });
-    });
-  }
-
-  Decoration _decoration = new BoxDecoration(
-    border: new Border(
-      top: new BorderSide(
-        style: BorderStyle.solid,
-        color: Colors.black26,
-      ),
-      bottom: new BorderSide(
-        style: BorderStyle.solid,
-        color: Colors.black26,
-      ),
-    ),
-  );
-
-  Widget buildNumberPicker(
-      {String title, String measureUnite, int min, int max, value}) {
-    return Column(
-      children: <Widget>[
-        Card(
-          margin: EdgeInsets.all(10),
-          elevation: 4,
-          child: NumberPicker.integer(
-            infiniteLoop: true,
-            itemExtent: 40,
-            decoration: _decoration,
-            listViewWidth: 100,
-            initialValue: upper,
-            minValue: min,
-            maxValue: max,
-            onChanged: (newValue) => setState(() => upper = newValue),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Text(
-            'Upper: $upper $measureUnite',
-            style: Theme.of(context).textTheme.title,
-          ),
-        ),
-      ],
-    );
-  }
-
-  int upper = 120;
-  int lower = 80;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,11 +50,11 @@ class _NewPressureState extends State<NewPressure> {
                               itemExtent: 40,
                               decoration: _decoration,
                               listViewWidth: 100,
-                              initialValue: upper,
+                              initialValue: pressure.upper,
                               minValue: 100,
                               maxValue: 170,
                               onChanged: (newValue) =>
-                                  setState(() => upper = newValue),
+                                  setState(() => pressure.upper = newValue),
                             ),
                           ),
                           Padding(
@@ -122,7 +62,7 @@ class _NewPressureState extends State<NewPressure> {
                                 horizontal: 10, vertical: 10),
                             child: FittedBox(
                               child: Text(
-                                'Upper: $upper mm hg',
+                                'Upper: ${pressure.upper} mm hg',
                                 style: Theme.of(context).textTheme.title,
                               ),
                             ),
@@ -143,11 +83,11 @@ class _NewPressureState extends State<NewPressure> {
                               itemExtent: 40,
                               decoration: _decoration,
                               listViewWidth: 100,
-                              initialValue: lower,
+                              initialValue: pressure.lower,
                               minValue: 40,
                               maxValue: 100,
                               onChanged: (newValue) =>
-                                  setState(() => lower = newValue),
+                                  setState(() => pressure.lower = newValue),
                             ),
                           ),
                           Padding(
@@ -155,7 +95,7 @@ class _NewPressureState extends State<NewPressure> {
                                 horizontal: 10, vertical: 10),
                             child: FittedBox(
                               child: Text(
-                                'Lower: $lower mm hg',
+                                'Lower: ${pressure.lower} mm hg',
                                 style: Theme.of(context).textTheme.title,
                               ),
                             ),
@@ -180,8 +120,8 @@ class _NewPressureState extends State<NewPressure> {
                 ),
                 Card(
                   elevation: 4,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -203,17 +143,25 @@ class _NewPressureState extends State<NewPressure> {
                     ),
                   ),
                 ),
-                FlatButton(
-                    padding: EdgeInsets.all(30),
-                    onPressed: null,
-                    color: Theme.of(context).accentColor,
-                    child: Text(
-                      'Save',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ))
+                Container(
+                  margin: EdgeInsets.only(top: 20, bottom: 30),
+                  child: FlatButton(
+                      onPressed: () {
+                        pressure.note = noteController.text;
+                        print(pressure.date);
+                        print(pressure.lower);
+                        print(pressure.upper);
+                        print(pressure.note);
+                      },
+                      color: Theme.of(context).accentColor,
+                      child: Text(
+                        'Save',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold),
+                      )),
+                )
               ],
             ),
           ),
@@ -221,4 +169,35 @@ class _NewPressureState extends State<NewPressure> {
       ),
     );
   }
+
+  void displayDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null)
+        return;
+      else
+        setState(() {
+          pressure.date = pickedDate;
+        });
+    });
+  }
+
+  Decoration _decoration = new BoxDecoration(
+    border: new Border(
+      top: new BorderSide(
+        style: BorderStyle.solid,
+        color: Colors.black26,
+      ),
+      bottom: new BorderSide(
+        style: BorderStyle.solid,
+        color: Colors.black26,
+      ),
+    ),
+  );
+
+
 }

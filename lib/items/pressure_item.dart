@@ -1,14 +1,21 @@
+import 'package:amun/models/BloodPressure.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/blood_Pressure.dart';
 
-class PressureItem extends StatelessWidget {
-  String note =
-      "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
-  DateTime date = DateTime.now();
-  int upper = 180;
-  int lower = 80;
-  //int heartRate = 80;
+class PressureItem extends StatefulWidget {
+  @override
+  _PressureItemState createState() => _PressureItemState();
+}
+
+class _PressureItemState extends State<PressureItem> {
+  BloodPressure bloodPressure = BloodPressure(
+      id: "1",
+      lower: 80,
+      upper: 180,
+      date: DateTime.now(),
+      note:
+          "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ");
+
   Widget buildCircleAvatar(int value, BuildContext ctx) {
     return CircleAvatar(
       backgroundColor: Theme.of(ctx).accentColor,
@@ -74,10 +81,15 @@ class PressureItem extends StatelessWidget {
     } else if ((180 <= upper) || (120 < lower)) {
       return {'indecator': "Hypertensive crisis", 'color': Colors.red[400]};
     }
+    return {
+        'indecator': "Not identfied",
+        'color': Colors.white
+      };
+
   }
 
   Widget buildPressureItem(
-      BuildContext ctx, int upper, int lower, DateTime date) {
+      {BuildContext ctx, int upper, int lower, DateTime date, String note}) {
     Map<String, Object> obj = getPressureIndecator(upper, lower);
     return Container(
       child: Column(
@@ -137,7 +149,12 @@ class PressureItem extends StatelessWidget {
     return Card(
       elevation: 10,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      child: buildPressureItem(context, upper, lower, date),
+      child: buildPressureItem(
+          ctx: context,
+          date: bloodPressure.date,
+          lower: bloodPressure.lower,
+          upper: bloodPressure.upper,
+          note: bloodPressure.note),
     );
   }
 }

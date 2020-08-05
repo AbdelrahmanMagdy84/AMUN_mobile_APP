@@ -1,6 +1,6 @@
+import 'package:amun/models/BloodGlucose.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
-import '../models/blood_glucose.dart';
 import 'package:flutter/material.dart';
 
 class NewGlucose extends StatefulWidget {
@@ -11,6 +11,128 @@ class NewGlucose extends StatefulWidget {
 class _NewGlucoseState extends State<NewGlucose> {
   BloodGlucose glucose = new BloodGlucose();
   final noteController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Card(
+          elevation: 4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Text(
+                    'Blood Glucose',
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                width: double.infinity,
+                child: Container(
+                  margin: const EdgeInsets.all(8.0),
+                  child: Card(
+                      elevation: 4,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "Type",
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          buildRadioListTile(TimeType.fasting, 'Fasting'),
+                          buildRadioListTile(
+                              TimeType.afterEating, 'After Eating'),
+                          buildRadioListTile(
+                              TimeType.two_three_hours_aftrer_eating,
+                              '2-3 hours after eating'),
+                        ],
+                      )),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                child: Card(
+                  elevation: 2,
+                  margin: EdgeInsets.symmetric(horizontal:30),
+                  child: buildNumberPicker(
+                      title: 'Glucose', measureUnite: 'mg/dl'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: "Note",
+                  ),
+                  controller: noteController,
+                  keyboardType: TextInputType.text,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20),
+                child: Card(
+                  elevation: 4,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            glucose.date == null
+                                ? 'No date chosen'
+                                : 'Picked Date: ${DateFormat.yMd().format(glucose.date)}',
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                        ),
+                        FloatingActionButton(
+                          onPressed: displayDatePicker,
+                          child: Icon(
+                            Icons.date_range,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 30),
+                child: FlatButton(
+                    onPressed: () {
+                      glucose.note = noteController.text;
+                      glucose.value = currentValue;
+
+                      print(glucose.timeType);
+                      print(glucose.value);
+                      print(glucose.note);
+                      print(glucose.date);
+                      print(glucose.id);
+                    },
+                    color: Theme.of(context).accentColor,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    )),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void displayDatePicker() {
     showDatePicker(
             context: context,
@@ -109,114 +231,6 @@ class _NewGlucoseState extends State<NewGlucose> {
           ),
         ),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context).size.height;
-
-    var postprandial;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Card(
-          elevation: 4,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Text(
-                    'Blood Glucose',
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                width: double.infinity,
-                child: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  child: Card(
-                      elevation: 4,
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            "Type",
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                          buildRadioListTile(TimeType.fasting, 'Fasting'),
-                          buildRadioListTile(
-                              TimeType.afterEating, 'After Eating'),
-                          buildRadioListTile(
-                              TimeType.two_three_hours_aftrer_eating,
-                              '2-3 hours after eating'),
-                        ],
-                      )),
-                ),
-              ),
-              Container(
-                height: 200,
-                width: double.infinity,
-                child: Card(
-                  child: buildNumberPicker(
-                      title: 'Glucose', measureUnite: 'mg/dl'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "Note",
-                  ),
-                  controller: noteController,
-                  keyboardType: TextInputType.text,
-                ),
-              ),
-              Card(
-                elevation: 4,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          glucose.date == null
-                              ? 'No date chosen'
-                              : 'Picked Date: ${DateFormat.yMd().format(glucose.date)}',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                      ),
-                      FloatingActionButton(
-                        onPressed: displayDatePicker,
-                        child: Icon(
-                          Icons.date_range,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              FlatButton(
-                  padding: EdgeInsets.all(30),
-                  onPressed: null,
-                  color: Theme.of(context).accentColor,
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ))
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
