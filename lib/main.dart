@@ -5,7 +5,9 @@ import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
 import 'package:amun/reminders/ui/new_entry/new_entry.dart';
 import 'package:amun/screens/blood_pressure_screen.dart';
 import 'package:amun/screens/glucose_screen.dart';
+import 'package:amun/screens/lab_test_screen.dart';
 import 'package:amun/screens/prescription_screen.dart';
+import 'package:amun/screens/radiograph_screen.dart';
 import 'package:amun/screens/reminder_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
 import './screens/login_screen.dart';
@@ -13,7 +15,6 @@ import './screens/register_screen.dart';
 import './screens/scanner_screen.dart';
 import './screens/categories_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'drawer/my_doctors_screen.dart';
 
 void main() => runApp(MyApp());
@@ -39,17 +40,19 @@ class MyApp extends StatelessWidget {
         '/': (ctx) => LoginScreen(),
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
+        ScannerScreen.routeName: (ctx) => ScannerScreen(),
         MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
         AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
-        ScannerScreen.routeName: (ctx) => ScannerScreen(),
+        ConditionsScreen.routeName: (ctx) => ConditionsScreen(),
         RemindersScreen.routeName: (ctx) => RemindersScreen(),
         NewEntry.routeName: (ctx) => NewEntry(),
-        ShowImageScreen.routeName:(ctx)=>ShowImageScreen(),
-        PrescriptionScreen.routeName:(ctx)=>PrescriptionScreen(),
-        BloodPressureScreen.routeName:(ctx)=>BloodPressureScreen(),
-        BloodGlucoseScreen.routeName:(ctx)=>BloodGlucoseScreen(),
-        ConditionsScreen.routeName:(ctx)=>ConditionsScreen(),
-        ReminderScreen.routeName:(ctx)=>ReminderScreen()
+        ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
+        PrescriptionScreen.routeName: (ctx) => PrescriptionScreen(),
+        BloodPressureScreen.routeName: (ctx) => BloodPressureScreen(),
+        BloodGlucoseScreen.routeName: (ctx) => BloodGlucoseScreen(),
+        ReminderScreen.routeName: (ctx) => ReminderScreen(),
+        RadiographScreen.routeName: (ctx) => RadiographScreen(),
+        LabTestScreen.routeName: (ctx) => LabTestScreen(),
       },
     );
   }

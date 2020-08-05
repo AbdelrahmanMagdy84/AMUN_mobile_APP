@@ -1,6 +1,9 @@
+import 'package:amun/drawer/condtions_screen.dart';
 import 'package:amun/screens/blood_pressure_screen.dart';
 import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/screens/glucose_screen.dart';
+import 'package:amun/screens/lab_test_screen.dart';
+import 'package:amun/screens/radiograph_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
@@ -46,23 +49,19 @@ class _ReminderScreenState extends State<ReminderScreen> {
         debugShowCheckedModeBanner: false,
         routes: {
           RemindersScreen.routeName: (ctx) => RemindersScreen(),
+          ReminderScreen.routeName: (ctx) => ReminderScreen(),
           CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
           NewEntry.routeName: (ctx) => NewEntry(),
-          RegisterScreen.routeName: (ctx) => RegisterScreen(),          
+          RegisterScreen.routeName: (ctx) => RegisterScreen(),
           MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
           AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
           ScannerScreen.routeName: (ctx) => ScannerScreen(),
-          NewEntry.routeName: (ctx) => NewEntry(),
-          ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
-          MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
-          AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
-          ScannerScreen.routeName: (ctx) => ScannerScreen(),
-          RemindersScreen.routeName: (ctx) => RemindersScreen(),
-          NewEntry.routeName: (ctx) => NewEntry(),
           ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
           BloodPressureScreen.routeName: (ctx) => BloodPressureScreen(),
           BloodGlucoseScreen.routeName: (ctx) => BloodGlucoseScreen(),
-          ReminderScreen.routeName: (ctx) => ReminderScreen()
+          ConditionsScreen.routeName: (ctx) => ConditionsScreen(),
+          RadiographScreen.routeName: (ctx) => RadiographScreen(),
+          LabTestScreen.routeName: (ctx) => LabTestScreen(),
         },
       ),
     );

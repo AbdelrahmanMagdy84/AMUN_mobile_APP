@@ -108,7 +108,7 @@ class MainDrawer extends StatelessWidget {
             ),
             buildListTile(context, 'Home', Icons.home, () {
               Navigator.of(context)
-                  .pushReplacementNamed(CategoriesScreen.routeName);
+                  .popAndPushNamed(CategoriesScreen.routeName);
             }),
             buildListTile(context, 'My Doctors', Icons.settings, () {
               Navigator.of(context).popAndPushNamed(MyDoctorsScreen.routeName,

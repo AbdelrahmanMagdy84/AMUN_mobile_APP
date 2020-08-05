@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
-import '../models/Patient.dart';
+import '../models/patient.dart';
 import '../screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     PatternValidator(r'(?=.*?[#?!@$%^&*-])',
         errorText: 'passwords must have at least one special character')
   ]);
-
   String _validateEmail(String value) {
     if (value.isEmpty) {
       // The form is empty
@@ -253,58 +252,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ];
     return Container(
       padding: EdgeInsets.only(left: 10),
-      child: Column(
-        children: <Widget>[
-          DropdownSearch<String>(
-            maxHeight: 150,
-
-            selectedItem: selectedBloodtype,
-            //showSearchBox: true,
-            mode: Mode.MENU,
-            showSelectedItem: true,
-            items: bloodTyps,
-            label: "Blood Type",
-            hint: 'choose',
-            //popupItemDisabled: (String s) => s.endsWith(':'),
-            onChanged: (bloodType) {
-              selectedBloodtype = bloodType;
-            },
-            //selectedItem: "Brazil"
-          )
-        ],
+      child: Container(
+        color: Theme.of(context).primaryColor.withOpacity(0.7),
+        child: Column(
+          children: <Widget>[
+            DropdownSearch<String>(
+              maxHeight: 150,
+              selectedItem: selectedBloodtype,
+              //showSearchBox: true,
+              mode: Mode.MENU,
+              showSelectedItem: true,
+              items: bloodTyps,
+              label: "Blood Type",
+              hint: 'choose',
+              //popupItemDisabled: (String s) => s.endsWith(':'),
+              onChanged: (bloodType) {
+                selectedBloodtype = bloodType;
+              },
+              //selectedItem: "Brazil"
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget buildGenderRadiolistTile() {
     return Card(
-        child: Column(children: <Widget>[
-      Text('Gender', style: TextStyle(fontSize: 16)),
-      Container(
-        child: RadioListTile(
-            title: Text('Male'),
-            value: Gender.Male,
-            groupValue: gender,
-            onChanged: (value) {
-              setState(() {
-                gender = value;
-              });
-            }),
-      ),
-      Container(
-        child: RadioListTile(
-            title: Text(
-              'Female',
+        child: Container(
+      color: Theme.of(context).primaryColor.withOpacity(0.7),
+      child: Column(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text('Gender', style: TextStyle(fontSize: 18)),
+        ),
+        Row(
+          children: <Widget>[
+            Flexible(
+              fit: FlexFit.loose,
+              child: RadioListTile(
+                  title: Text('Male'),
+                  value: Gender.Male,
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value;
+                    });
+                  }),
             ),
-            value: Gender.Female,
-            groupValue: gender,
-            onChanged: (value) {
-              setState(() {
-                gender = value;
-              });
-            }),
-      )
-    ]));
+            Flexible(
+              fit: FlexFit.loose,
+              child: RadioListTile(
+                  title: Text(
+                    'Female',
+                  ),
+                  value: Gender.Female,
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value;
+                    });
+                  }),
+            )
+          ],
+        )
+      ]),
+    ));
   }
 
   Widget buildTextField(

@@ -1,7 +1,7 @@
 import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/screens/scanner_screen.dart';
+import 'package:amun/static_data/medical_categories_data.dart';
 import '../items/category_item.dart';
-import '../medical_categories_data.dart';
 import '../drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 Navigator.of(context).pushNamed(ScannerScreen.routeName);
               })
         ],
-    
       ),
       drawer: MainDrawer(),
       drawerScrimColor: Theme.of(context).primaryColor.withOpacity(0.5),
@@ -53,8 +52,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 children: <Widget>[
                   ...categories
                       .map(
-                        (cat) => CategoryItem(
-                            cat.id, cat.title,cat.image),
+                        (cat) => CategoryItem(cat.id, cat.title, cat.image),
                       )
                       .toList(),
                 ],

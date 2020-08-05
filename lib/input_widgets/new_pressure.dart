@@ -1,4 +1,4 @@
-import 'package:amun/models/BloodPressure.dart';
+import 'package:amun/models/blood_Pressure.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 
