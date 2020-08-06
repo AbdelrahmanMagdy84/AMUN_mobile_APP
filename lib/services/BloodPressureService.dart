@@ -35,6 +35,7 @@ class BloodPressureService {
         "${APIClient.baseUrl}/$endPoint",
         headers: {"Content-Type": "application/json", "authorization": token},
         body: jsonEncode(bloodPressure.toJson()));
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       return BloodPressureResponse.fromJson(jsonDecode(response.body));
     } else {

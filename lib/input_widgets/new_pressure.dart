@@ -17,7 +17,6 @@ class _NewPressureState extends State<NewPressure> {
   final noteController = TextEditingController();
   String _patientToken;
 
-
   @override
   void initState() {
     super.initState();
@@ -32,20 +31,20 @@ class _NewPressureState extends State<NewPressure> {
       });
     });
   }
+
 /*------------------------------- */
 /*add function */
   void addMeasure() {
     pressure.note = noteController.text;
-    pressure.id="1";
-                        print(pressure.date);
-                        print(pressure.lower);
-                        print(pressure.upper);
-                        print(pressure.note);
- //   print(_patientToken);
+    print(pressure.date);
+    print(pressure.lower);
+    print(pressure.upper);
+    print(pressure.note);
+    //   print(_patientToken);
     DialogManager.showLoadingDialog(context);
     APIClient()
         .getBloodPressureService()
-        .addBloodPressureMeasure(bloodPressure: pressure,token:_patientToken)
+        .addBloodPressureMeasure(bloodPressure: pressure, token: _patientToken)
         .then((BloodPressureResponse bloodPressureResponse) {
       if (bloodPressureResponse.success) {
         DialogManager.stopLoadingDialog(context);
