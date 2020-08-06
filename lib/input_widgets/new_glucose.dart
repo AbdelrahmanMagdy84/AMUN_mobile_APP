@@ -17,6 +17,7 @@ class _NewGlucoseState extends State<NewGlucose> {
   BloodGlucose glucose = new BloodGlucose();
   final noteController = TextEditingController();
   String _patientToken;
+  
   /* init state for token */
   @override
   void initState() {

@@ -86,11 +86,11 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                               ? null
                               : () async {
                                   try {
-                                    final ByteData bytes = await rootBundle
-                                        .load('$image');
-                                    await Share.file('esys image', 'esys.png',
-                                        bytes.buffer.asUint8List(), 'image/png',
-                                        text: 'My optional text.');
+                                    final ByteData bytes =
+                                        await rootBundle.load('$image');
+                                    await Share.file('esys image', '$image',
+                                        bytes.buffer.asUint8List(), '$image',
+                                        text: '$title');
                                   } catch (e) {
                                     print('error: $e');
                                   }

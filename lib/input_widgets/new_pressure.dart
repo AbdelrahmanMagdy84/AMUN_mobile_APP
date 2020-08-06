@@ -1,8 +1,11 @@
 import 'package:amun/models/BloodPressure.dart';
+import 'package:amun/models/Responses/BloodPressureResponse.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
-
 import 'package:flutter/material.dart';
+import '../services/APIClient.dart';
+import '../utils/TokenStorage.dart';
+import 'DialogManager.dart';
 
 class NewPressure extends StatefulWidget {
   @override
@@ -12,6 +15,48 @@ class NewPressure extends StatefulWidget {
 class _NewPressureState extends State<NewPressure> {
   BloodPressure pressure = new BloodPressure(lower: 80, upper: 120);
   final noteController = TextEditingController();
+  String _patientToken;
+
+
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+    });
+  }
+/*------------------------------- */
+/*add function */
+  void addMeasure() {
+    pressure.note = noteController.text;
+    pressure.id="1";
+                        print(pressure.date);
+                        print(pressure.lower);
+                        print(pressure.upper);
+                        print(pressure.note);
+ //   print(_patientToken);
+    DialogManager.showLoadingDialog(context);
+    APIClient()
+        .getBloodPressureService()
+        .addBloodPressureMeasure(bloodPressure: pressure,token:_patientToken)
+        .then((BloodPressureResponse bloodPressureResponse) {
+      if (bloodPressureResponse.success) {
+        DialogManager.stopLoadingDialog(context);
+        print("succuss-------------------");
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Couldn't add measure");
+      print(e.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,13 +191,7 @@ class _NewPressureState extends State<NewPressure> {
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 30),
                   child: FlatButton(
-                      onPressed: () {
-                        pressure.note = noteController.text;
-                        print(pressure.date);
-                        print(pressure.lower);
-                        print(pressure.upper);
-                        print(pressure.note);
-                      },
+                      onPressed: addMeasure,
                       color: Theme.of(context).accentColor,
                       child: Text(
                         'Save',
@@ -198,6 +237,4 @@ class _NewPressureState extends State<NewPressure> {
       ),
     ),
   );
-
-
 }
