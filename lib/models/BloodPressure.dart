@@ -24,7 +24,7 @@ class BloodPressure {
       "diastolic": this.upper,
       "systolic": this.lower,
       "note": this.note,
-      "date": this.date
+      "date": this.date.toIso8601String()
     };
   }
 }

@@ -15,7 +15,7 @@ class BloodGlucoseService {
   }
   BloodGlucoseService._getInstance();
 
-  Future<BloodGlucoseResponse> getBloodPressureMeasure(String token) async {
+  Future<BloodGlucoseResponse> getBloodGlucoseMeasure(String token) async {
     final http.Response response = await http.get(
         "${APIClient.baseUrl}/$endPoint",
         headers: {"Content-Type": "application/json", "authorization": token});
@@ -26,16 +26,18 @@ class BloodGlucoseService {
     }
   }
 
-  Future<BloodGlucoseResponse> addBloodPressureMeasure(
-      {BloodGlucose bloodGlucose, String token}) async {
+  Future<BloodGlucoseResponse> addBloodGlucoseMeasure(
+      BloodGlucose bloodGlucose, String token) async {
+    print(token);
     final http.Response response = await http.post(
         "${APIClient.baseUrl}/$endPoint",
         headers: {"Content-Type": "application/json", "authorization": token},
         body: jsonEncode(bloodGlucose.toJson()));
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       return BloodGlucoseResponse.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Failed to fetch data");
+      throw Exception("Failed to post data");
     }
   }
 }

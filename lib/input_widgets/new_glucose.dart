@@ -1,8 +1,12 @@
-import 'package:amun/models/BloodGlucose.dart';
 import 'package:intl/intl.dart';
-import 'package:numberpicker/numberpicker.dart';
-import '../models/BloodGlucose.dart';
 import 'package:flutter/material.dart';
+
+import 'package:amun/input_widgets/DialogManager.dart';
+import 'package:amun/models/BloodGlucose.dart';
+import 'package:numberpicker/numberpicker.dart';
+import '../services/APIClient.dart';
+import '../models/Responses/BloodGlucoseResponse.dart';
+import '../utils/TokenStorage.dart';
 
 class NewGlucose extends StatefulWidget {
   @override
@@ -12,10 +16,47 @@ class NewGlucose extends StatefulWidget {
 class _NewGlucoseState extends State<NewGlucose> {
   BloodGlucose glucose = new BloodGlucose();
   final noteController = TextEditingController();
+  String _patientToken;
+  /* init state for token */
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      //print(_patientToken);
+    });
+  }
+
+/*------------------------------- */
+/*add function */
+  void addMeasure() {
+    print(_patientToken);
+    glucose.note = noteController.text;
+    glucose.value = currentValue;
+    DialogManager.showLoadingDialog(context);
+    APIClient()
+        .getBloodGlucoseService()
+        .addBloodGlucoseMeasure(glucose, _patientToken)
+        .then((BloodGlucoseResponse bloodGlucoseResponse) {
+      if (bloodGlucoseResponse.success) {
+        DialogManager.stopLoadingDialog(context);
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Couldn't add measure");
+      print(e.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Card(
@@ -62,7 +103,7 @@ class _NewGlucoseState extends State<NewGlucose> {
                 width: double.infinity,
                 child: Card(
                   elevation: 2,
-                  margin: EdgeInsets.symmetric(horizontal:30),
+                  margin: EdgeInsets.symmetric(horizontal: 30),
                   child: buildNumberPicker(
                       title: 'Glucose', measureUnite: 'mg/dl'),
                 ),
@@ -108,16 +149,7 @@ class _NewGlucoseState extends State<NewGlucose> {
               Container(
                 margin: EdgeInsets.only(top: 20, bottom: 30),
                 child: FlatButton(
-                    onPressed: () {
-                      glucose.note = noteController.text;
-                      glucose.value = currentValue;
-
-                      print(glucose.timeType);
-                      print(glucose.value);
-                      print(glucose.note);
-                      print(glucose.date);
-                      print(glucose.id);
-                    },
+                    onPressed: addMeasure,
                     color: Theme.of(context).accentColor,
                     child: Text(
                       'Save',

@@ -1,17 +1,15 @@
 import 'package:amun/input_widgets/new_pressure.dart';
 import 'package:amun/items/pressure_item.dart';
-import 'package:amun/screens/glucose_screen.dart';
 import 'package:flutter/material.dart';
 
 class BloodPressureScreen extends StatefulWidget {
-  static final String routeName="pressure route name";
+  static final String routeName = "pressure route name";
   @override
   _BloodPressureScreenState createState() => _BloodPressureScreenState();
 }
 
 class _BloodPressureScreenState extends State<BloodPressureScreen> {
-  
- void startAddNewRecord(BuildContext ctx) {
+  void startAddNewRecord(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
@@ -22,8 +20,6 @@ class _BloodPressureScreenState extends State<BloodPressureScreen> {
           );
         });
   }
-
-      
 
   @override
   Widget build(BuildContext context) {

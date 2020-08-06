@@ -89,7 +89,6 @@ class GlucoseItem extends StatelessWidget {
                 // widget.delete(widget.transaction.id),
                 ),
           ]),
-          
           Container(
             padding: EdgeInsets.all(20),
             width: double.infinity,
@@ -106,7 +105,10 @@ class GlucoseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BloodGlucose bloodGlucose = BloodGlucose(
-        date: DateTime.now(), value: 185, timeType: TimeType.fasting,note: note);
+        date: DateTime.now(),
+        value: 185,
+        timeType: TimeType.fasting,
+        note: note);
     return Card(
       elevation: 10,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
