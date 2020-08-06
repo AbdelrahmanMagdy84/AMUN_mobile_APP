@@ -4,18 +4,37 @@ import 'package:intl/intl.dart';
 import '../models/BloodPressure.dart';
 
 class PressureItem extends StatefulWidget {
+  final BloodPressure bloodPressureObj;
+  PressureItem(this.bloodPressureObj);
   @override
   _PressureItemState createState() => _PressureItemState();
 }
 
 class _PressureItemState extends State<PressureItem> {
-  BloodPressure bloodPressure = BloodPressure(
-      id: "1",
-      lower: 80,
-      upper: 180,
-      date: DateTime.now(),
-      note:
-          "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ");
+
+  BloodPressure bloodPressure;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     bloodPressure = widget.bloodPressureObj;
+
+  }
+  @override
+  Widget build(BuildContext context) {
+   
+    // hna hn3ml return lee list mn pressure item (buildPressureItem)
+    return Card(
+      elevation: 10,
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      child: buildPressureItem(
+          ctx: context,
+          date: bloodPressure.date,
+          lower: bloodPressure.lower,
+          upper: bloodPressure.upper,
+          note: bloodPressure.note),
+    );
+  }
 
   Widget buildCircleAvatar(int value, BuildContext ctx) {
     return CircleAvatar(
@@ -82,11 +101,7 @@ class _PressureItemState extends State<PressureItem> {
     } else if ((180 <= upper) || (120 < lower)) {
       return {'indecator': "Hypertensive crisis", 'color': Colors.red[400]};
     }
-    return {
-        'indecator': "Not identfied",
-        'color': Colors.white
-      };
-
+    return {'indecator': "Not identfied", 'color': Colors.white};
   }
 
   Widget buildPressureItem(
@@ -141,21 +156,6 @@ class _PressureItemState extends State<PressureItem> {
           ),
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // hna hn3ml return lee list mn pressure item (buildPressureItem)
-    return Card(
-      elevation: 10,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      child: buildPressureItem(
-          ctx: context,
-          date: bloodPressure.date,
-          lower: bloodPressure.lower,
-          upper: bloodPressure.upper,
-          note: bloodPressure.note),
     );
   }
 }

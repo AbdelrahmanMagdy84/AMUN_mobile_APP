@@ -1,5 +1,10 @@
+import 'package:amun/input_widgets/DialogManager.dart';
 import 'package:amun/input_widgets/new_pressure.dart';
 import 'package:amun/items/pressure_item.dart';
+import 'package:amun/models/BloodPressure.dart';
+import 'package:amun/models/Responses/BloodPressureResponseList.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 
 class BloodPressureScreen extends StatefulWidget {
@@ -9,16 +14,32 @@ class BloodPressureScreen extends StatefulWidget {
 }
 
 class _BloodPressureScreenState extends State<BloodPressureScreen> {
-  void startAddNewRecord(BuildContext ctx) {
-    showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return GestureDetector(
-            child: NewPressure(),
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-          );
-        });
+  List<BloodPressure> pressureList;
+  Future userFuture;
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  String _patientToken;
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      userFuture = APIClient()
+          .getBloodPressureService()
+          .getBloodPressureMeasure(_patientToken)
+          .then((BloodPressureResponseList responseList) {
+        if (responseList.success) {
+          //  DialogManager.stopLoadingDialog(context);
+          pressureList = responseList.bloodPressure;
+          print(responseList.bloodPressure.length);
+        }
+      });
+    });
   }
 
   @override
@@ -30,11 +51,33 @@ class _BloodPressureScreenState extends State<BloodPressureScreen> {
           style: Theme.of(context).textTheme.title,
         ),
       ),
-      body: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return PressureItem();
-        },
-        itemCount: 1,
+      body: Container(
+        child: FutureBuilder(
+          future: userFuture,
+          builder: (ctx, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text("none");
+                break;
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return Center(
+                    child: Text(
+                  "Loading ",
+                  style: Theme.of(context).textTheme.title,
+                ));
+                break;
+              case ConnectionState.done:
+                return ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    return PressureItem(pressureList[index]);
+                  },
+                  itemCount: pressureList.length,
+                );
+                break;
+            }
+          },
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
@@ -47,4 +90,35 @@ class _BloodPressureScreenState extends State<BloodPressureScreen> {
       ),
     );
   }
+
+  void startAddNewRecord(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GestureDetector(
+            child: NewPressure(),
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+          );
+        });
+  }
 }
+/*------------------------------- */
+/*add function */
+// void getPressureList() {
+//   // DialogManager.showLoadingDialog(context);
+//   APIClient()
+//       .getBloodPressureService()
+//       .getBloodPressureMeasure(_patientToken)
+//       .then((BloodPressureResponseList responseList) {
+//     if (responseList.success) {
+//       //  DialogManager.stopLoadingDialog(context);
+//       pressureList = responseList.bloodPressure;
+//       print(responseList.bloodPressure.length);
+//     }
+//   }).catchError((Object e) {
+//     DialogManager.stopLoadingDialog(context);
+//     DialogManager.showErrorDialog(context, "Couldn't get measures");
+//     print(e.toString());
+//   });
+// }
