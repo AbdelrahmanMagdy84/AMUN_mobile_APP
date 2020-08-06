@@ -1,5 +1,3 @@
-enum Gender { Male, Female }
-
 class Patient {
   String pid;
   String username;
@@ -74,7 +72,6 @@ class Patient {
 
   Map<String, dynamic> toJson() {
     return {
-      "_id": this.pid,
       "password": this.password,
       "email": this.email,
       "username": this.username,
@@ -82,7 +79,7 @@ class Patient {
       "lastName": this.lastName,
       "mobile": this.mobile,
       "gender": this.gender,
-      "birthDate": this.birthDate,
+      "birthDate": this.birthDate.toIso8601String(),
       "medications": this.medications,
       "bloodType": this.bloodType,
       "allergies": this.allergies,
