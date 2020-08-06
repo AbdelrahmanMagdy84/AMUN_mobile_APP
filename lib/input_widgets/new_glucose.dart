@@ -38,7 +38,6 @@ class _NewGlucoseState extends State<NewGlucose> {
 /*------------------------------- */
 /*add function */
   void addMeasure() {
-    print(_patientToken);
     glucose.note = noteController.text;
     glucose.value = currentValue;
     DialogManager.showLoadingDialog(context);
@@ -48,6 +47,7 @@ class _NewGlucoseState extends State<NewGlucose> {
         .then((BloodGlucoseResponse bloodGlucoseResponse) {
       if (bloodGlucoseResponse.success) {
         DialogManager.stopLoadingDialog(context);
+        print("measure added");
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);

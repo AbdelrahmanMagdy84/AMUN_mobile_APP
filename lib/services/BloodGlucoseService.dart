@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/BloodGlucose.dart';
 import '../models/Responses/BloodGlucoseResponse.dart';
+import '../models/Responses/BloodGlucoseResponseList.dart';
 
 class BloodGlucoseService {
   static final String endPoint = "api/v1/blood-glucose";
@@ -15,12 +16,12 @@ class BloodGlucoseService {
   }
   BloodGlucoseService._getInstance();
 
-  Future<BloodGlucoseResponse> getBloodGlucoseMeasure(String token) async {
+  Future<BloodGlucoseResponseList> getBloodGlucoseMeasure(String token) async {
     final http.Response response = await http.get(
         "${APIClient.baseUrl}/$endPoint",
         headers: {"Content-Type": "application/json", "authorization": token});
     if (response.statusCode == 200) {
-      return BloodGlucoseResponse.fromJson(jsonDecode(response.body));
+      return BloodGlucoseResponseList.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to fetch data");
     }

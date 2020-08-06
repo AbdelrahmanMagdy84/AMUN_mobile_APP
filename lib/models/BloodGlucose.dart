@@ -10,11 +10,12 @@ class BloodGlucose {
   BloodGlucose({this.id, this.value, this.date, this.timeType, this.note});
 
   factory BloodGlucose.fromJson(Map<String, dynamic> json) {
+    TimeType timeType = TimeType.values
+        .firstWhere((e) => e.toString() == 'TimeType.' + json["type"]);
     return BloodGlucose(
       id: json["_id"],
       value: json["value"],
-      timeType: TimeType.values
-          .firstWhere((e) => e.toString() == json["type"]), //string to enum
+      timeType: timeType, //string to enum
       note: json["note"],
       date:
           json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
@@ -26,7 +27,7 @@ class BloodGlucose {
       "value": this.value,
       "type": this.timeType.toString().split('.').last, //enum to string
       "note": this.note,
-      "date": this.date.toIso8601String()
+      "date": this.date.toIso8601String(),
     };
   }
 }
