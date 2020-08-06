@@ -13,25 +13,81 @@ class ConditionsScreen extends StatefulWidget {
 class _ConditionsScreenState extends State<ConditionsScreen> {
   String condition =
       "asasasasaaaaaaaaaaaaaaaaaaaaaasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaax";
+  final conditionController = TextEditingController();
+  void startAddNewRecord(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Scaffold(
+                body: SingleChildScrollView(
+                                  child: Column(
+                    children: <Widget>[
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "Condition",
+                        ),
+                        controller: conditionController,
+                        keyboardType: TextInputType.text,
+                        maxLength: 60,
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(30),
+                        child: FlatButton(
+                          onPressed: null,
+                          color: Theme.of(context).accentColor,
+                          child: Text(
+                            'Save',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("--------------");
+    print(condition.length);
     return Scaffold(
-        drawer: MainDrawer(),
-        appBar: AppBar(
-          title: Text('conditions'),
+      drawer: MainDrawer(),
+      appBar: AppBar(
+        title: Text('conditions'),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(10),
+        child: GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: 1 / 1,
+            crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
+            mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
+            children: <Widget>[
+              buildItem(),
+            ]),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => startAddNewRecord(context),
+        child: Icon(
+          Icons.add,
+          size: 40,
+          color: Theme.of(context).primaryColor,
         ),
-        body: Container(
-          padding: EdgeInsets.all(10),
-          child: GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 1 / 1,
-              crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
-              mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
-              children: <Widget>[
-                buildItem(),
-              ]),
-        ));
+      ),
+    );
   }
 
   Widget buildItem() {

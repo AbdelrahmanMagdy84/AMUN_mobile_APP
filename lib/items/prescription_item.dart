@@ -1,7 +1,7 @@
 import 'package:amun/screens/show_image_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view.dart';
+
 
 class PrescriptionItemOrRadiograph extends StatelessWidget {
   @override
@@ -14,7 +14,7 @@ class PrescriptionItemOrRadiograph extends StatelessWidget {
     String note =
         "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
     DateTime date = DateTime.now();
-
+    print(note.length);
     return Container(
       child: Card(
         elevation: 4,
