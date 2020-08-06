@@ -48,4 +48,16 @@ class PatientService {
       throw Exception("Failed to signup");
     }
   }
+
+  Future<PatientResponse> updatePatient(Patient patient) async {
+    final http.Response response = await http.patch(
+        "${APIClient.baseUrl}/$endPoint",
+        body: jsonEncode(patient.toJson()),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    if (response.statusCode == 200) {
+      return PatientResponse.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to update");
+    }
+  }
 }
