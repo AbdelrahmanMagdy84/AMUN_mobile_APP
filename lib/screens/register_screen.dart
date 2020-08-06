@@ -5,7 +5,6 @@ import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
 import 'package:amun/models/Responses/PatientResponse.dart';
 import 'package:amun/services/APIClient.dart';
 import '../models/Patient.dart';
-import '../screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../input_widgets/DialogManager.dart';
 
@@ -72,6 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void register(var formkey) {
+    DialogManager.showLoadingDialog(context);
     if (formkey.currentState.validate()) {
       print("signing up");
       if (_formKey.currentState.validate()) {
@@ -95,7 +95,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .then((PatientResponse patientResponse) {
           if (patientResponse.success) {
             DialogManager.stopLoadingDialog(context);
-            Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
           }
         }).catchError((Object e) {
           DialogManager.stopLoadingDialog(context);
