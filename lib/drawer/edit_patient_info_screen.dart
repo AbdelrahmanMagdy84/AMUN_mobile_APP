@@ -2,6 +2,7 @@ import 'package:amun/drawer/main_drawer.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 
 class EditPatientInfo extends StatefulWidget {
@@ -21,7 +22,8 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
   Widget buildTextField(
       {String title,
       TextEditingController controller,
-      TextInputType textInputType}) {
+      TextInputType textInputType,
+      Function validator}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
       child: TextField(
@@ -30,6 +32,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
         ),
         controller: controller,
         keyboardType: textInputType,
+        onChanged: validator,
       ),
     );
   }
@@ -64,9 +67,11 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                       Padding(
                         padding: const EdgeInsets.all(20),
                         child: buildTextField(
-                            title: 'new password',
-                            controller: _newPasswordConroller,
-                            textInputType: TextInputType.visiblePassword),
+                          title: 'new password',
+                          controller: _newPasswordConroller,
+                          textInputType: TextInputType.visiblePassword,
+                          validator: passwordValidator,
+                        ),
                       ),
                     ],
                   ),
@@ -92,13 +97,15 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                                 fontSize: 16, fontWeight: FontWeight.w500)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20,horizontal:70),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 70),
                         child: DateTimeFormField(
                           formatter: DateFormat.yMd(),
                           onlyDate: true,
                           initialValue: oldBirthDate,
                           label: "Birth Date",
-                          onSaved: (DateTime dateTime) => newBirthDate = dateTime,
+                          onSaved: (DateTime dateTime) =>
+                              newBirthDate = dateTime,
                           validator: (DateTime dateTime) {
                             if (dateTime == null) {
                               return "Birth Date is required";
@@ -135,6 +142,12 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
     );
   }
 
+  final passwordValidator = MultiValidator([
+    RequiredValidator(errorText: 'password is required'),
+    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
+    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+        errorText: 'passwords must have at least one special character')
+  ]);
   Widget buildDropDownSearch() {
     List<String> bloodTyps = [
       "      O-",
