@@ -1,3 +1,4 @@
+import 'package:amun/screens/glucose_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class _NewGlucoseState extends State<NewGlucose> {
   BloodGlucose glucose = new BloodGlucose();
   final noteController = TextEditingController();
   String _patientToken;
-  
+
   /* init state for token */
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _NewGlucoseState extends State<NewGlucose> {
   void addMeasure() {
     glucose.note = noteController.text;
     glucose.value = currentValue;
+    glucose.date = DateTime.now();
     DialogManager.showLoadingDialog(context);
     APIClient()
         .getBloodGlucoseService()
@@ -47,7 +49,9 @@ class _NewGlucoseState extends State<NewGlucose> {
         .then((BloodGlucoseResponse bloodGlucoseResponse) {
       if (bloodGlucoseResponse.success) {
         DialogManager.stopLoadingDialog(context);
-        print("measure added");
+        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacementNamed(BloodGlucoseScreen.routeName);
+        
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);
@@ -120,34 +124,6 @@ class _NewGlucoseState extends State<NewGlucose> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Card(
-                  elevation: 4,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            glucose.date == null
-                                ? 'No date chosen'
-                                : 'Picked Date: ${DateFormat.yMd().format(glucose.date)}',
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                        ),
-                        FloatingActionButton(
-                          onPressed: displayDatePicker,
-                          child: Icon(
-                            Icons.date_range,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Container(
                 margin: EdgeInsets.only(top: 20, bottom: 30),
                 child: FlatButton(
                     onPressed: addMeasure,
@@ -165,22 +141,6 @@ class _NewGlucoseState extends State<NewGlucose> {
         ),
       ),
     );
-  }
-
-  void displayDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      if (pickedDate == null)
-        return;
-      else
-        setState(() {
-          glucose.date = pickedDate;
-        });
-    });
   }
 
   Widget buildRadioListTile(

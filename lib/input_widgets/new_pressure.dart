@@ -1,5 +1,6 @@
 import 'package:amun/models/BloodPressure.dart';
 import 'package:amun/models/Responses/BloodPressureResponse.dart';
+import 'package:amun/screens/blood_pressure_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:flutter/material.dart';
@@ -36,11 +37,7 @@ class _NewPressureState extends State<NewPressure> {
 /*add function */
   void addMeasure() {
     pressure.note = noteController.text;
-    print(pressure.date);
-    print(pressure.lower);
-    print(pressure.upper);
-    print(pressure.note);
-    //   print(_patientToken);
+    pressure.date = DateTime.now();
     DialogManager.showLoadingDialog(context);
     APIClient()
         .getBloodPressureService()
@@ -48,7 +45,9 @@ class _NewPressureState extends State<NewPressure> {
         .then((BloodPressureResponse bloodPressureResponse) {
       if (bloodPressureResponse.success) {
         DialogManager.stopLoadingDialog(context);
-        print("succuss-------------------");
+        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacementNamed(BloodPressureScreen.routeName);
+        
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);
@@ -162,31 +161,6 @@ class _NewPressureState extends State<NewPressure> {
                 Container(
                   height: 10,
                 ),
-                Card(
-                  elevation: 4,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            pressure.date == null
-                                ? 'No date chosen'
-                                : 'Picked Date: ${DateFormat.yMd().format(pressure.date)}',
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                        ),
-                        FloatingActionButton(
-                          onPressed: displayDatePicker,
-                          child: Icon(
-                            Icons.date_range,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 30),
                   child: FlatButton(
@@ -206,22 +180,6 @@ class _NewPressureState extends State<NewPressure> {
         ),
       ),
     );
-  }
-
-  void displayDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      if (pickedDate == null)
-        return;
-      else
-        setState(() {
-          pressure.date = pickedDate;
-        });
-    });
   }
 
   Decoration _decoration = new BoxDecoration(
