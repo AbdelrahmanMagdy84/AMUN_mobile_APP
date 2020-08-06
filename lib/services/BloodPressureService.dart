@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/BloodPressure.dart';
 import '../models/Responses/BloodPressureResponse.dart';
+import '../models/Responses/BloodPressureResponseList.dart';
 
 class BloodPressureService {
   static final String endPoint = "api/v1/blood-pressure";
@@ -16,12 +17,13 @@ class BloodPressureService {
 
   BloodPressureService._getInstance();
 
-  Future<BloodPressureResponse> getBloodPressureMeasure(String token) async {
+  Future<BloodPressureResponseList> getBloodPressureMeasure(
+      String token) async {
     final http.Response response = await http.get(
         "${APIClient.baseUrl}/$endPoint",
         headers: {"Content-Type": "application/json", "authorization": token});
     if (response.statusCode == 200) {
-      return BloodPressureResponse.fromJson(jsonDecode(response.body));
+      return BloodPressureResponseList.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to fetch data");
     }
@@ -36,7 +38,7 @@ class BloodPressureService {
     if (response.statusCode == 200) {
       return BloodPressureResponse.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Failed to fetch data");
+      throw Exception("Failed to post data");
     }
   }
 }
