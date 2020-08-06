@@ -11,7 +11,6 @@ class GlucoseItem extends StatefulWidget {
 
 class _GlucoseItemState extends State<GlucoseItem> {
   DateTime date = DateTime.now();
-
   String note =
       "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
 
@@ -93,8 +92,8 @@ class _GlucoseItemState extends State<GlucoseItem> {
               padding: const EdgeInsets.only(right: 10),
               child: Column(
                 children: <Widget>[
-                  Text(DateFormat.Hm().format(date)),
-                  Text(DateFormat.yMMMd().format(date)),
+                  Text(DateFormat.Hm().format(bloodGlucose.date)),
+                  Text(DateFormat.yMMMd().format(bloodGlucose.date)),
                 ],
               ),
             ),

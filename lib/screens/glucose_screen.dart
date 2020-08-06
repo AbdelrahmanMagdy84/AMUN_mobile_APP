@@ -1,13 +1,9 @@
-import 'package:amun/input_widgets/DialogManager.dart';
 import 'package:amun/input_widgets/new_glucose.dart';
-
 import 'package:amun/items/glucose_item.dart';
 import 'package:amun/models/BloodGlucose.dart';
-import 'package:amun/models/Responses/BloodGlucoseResponse.dart';
 import 'package:amun/models/Responses/BloodGlucoseResponseList.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
-
 import 'package:flutter/material.dart';
 
 class BloodGlucoseScreen extends StatefulWidget {
@@ -17,61 +13,35 @@ class BloodGlucoseScreen extends StatefulWidget {
 }
 
 class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
-  String _patientToken;
   List<BloodGlucose> glucoseList;
 
-  /* init state for token */
+  Future userFuture;
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-     getUserToken();
-    super.didChangeDependencies();
-    
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
   }
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   print("getting user token");
-   
-  // }
 
+  String _patientToken;
   void getUserToken() {
     TokenStorage().getUserToken().then((value) async {
       setState(() {
         _patientToken = value;
       });
-      getGlucoseList();
-     
-    });
-  }
-
-/*------------------------------- */
-/*add function */
-  void getGlucoseList() {
-   // DialogManager.showLoadingDialog(context);
-    APIClient()
-        .getBloodGlucoseService()
-        .getBloodGlucoseMeasure(_patientToken)
-        .then((BloodGlucoseResponseList responseList) {
-            
-      if (responseList.success) {
-     //  DialogManager.stopLoadingDialog(context);
-        glucoseList = responseList.bloodGlucose;
-        print("---------------------------");
-        print(responseList.bloodGlucose.length);
-        print("---------------------------");
-      }
-    }).catchError((Object e) {
-        print("---------------------------x");
-      DialogManager.stopLoadingDialog(context);
-      DialogManager.showErrorDialog(context, "Couldn't get measures");
-      print(e.toString());
+      userFuture = APIClient()
+          .getBloodGlucoseService()
+          .getBloodGlucoseMeasure(_patientToken)
+          .then((BloodGlucoseResponseList responseList) {
+        if (responseList.success) {
+          glucoseList = responseList.bloodGlucose;
+        }
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -79,14 +49,34 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
           style: Theme.of(context).textTheme.title,
         ),
       ),
-      body: glucoseList == null
-          ? Center(child: Text('no data to show !'))
-          : ListView.builder(
-              itemBuilder: (ctx, index) {
-                return GlucoseItem(glucoseList[index]);
-              },
-              itemCount: glucoseList.length,
-            ),
+      body: Container(
+        child: FutureBuilder(
+          future: userFuture,
+          builder: (ctx, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text("none");
+                break;
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return Center(
+                    child: Text(
+                  "Loading ",
+                  style: Theme.of(context).textTheme.title,
+                ));
+                break;
+              case ConnectionState.done:
+                return ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    return GlucoseItem(glucoseList[index]);
+                  },
+                  itemCount: glucoseList.length,
+                );
+                break;
+            }
+          },
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () => startAddNewRecord(context),
@@ -111,3 +101,25 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
         });
   }
 }
+/*------------------------------- */
+/*add function */
+// void getGlucoseList() {
+//   // DialogManager.showLoadingDialog(context);
+//   APIClient()
+//       .getBloodGlucoseService()
+//       .getBloodGlucoseMeasure(_patientToken)
+//       .then((BloodGlucoseResponseList responseList) {
+//     if (responseList.success) {
+//       //  DialogManager.stopLoadingDialog(context);
+//       glucoseList = responseList.bloodGlucose;
+//       print("---------------------------");
+//       print(responseList.bloodGlucose.length);
+//       print("---------------------------");
+//     }
+//   }).catchError((Object e) {
+//     print("---------------------------x");
+//     DialogManager.stopLoadingDialog(context);
+//     DialogManager.showErrorDialog(context, "Couldn't get measures");
+//     print(e.toString());
+//   });
+// }
