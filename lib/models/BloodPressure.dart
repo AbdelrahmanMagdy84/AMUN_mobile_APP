@@ -10,8 +10,8 @@ class BloodPressure {
   factory BloodPressure.fromJson(Map<String, dynamic> json) {
     return BloodPressure(
       id: json["_id"],
-      upper: json["diastolic"],
-      lower: json["systolic"],
+      upper: json["value"]["diastolic"],
+      lower: json["value"]["systolic"],
       note: json["note"],
       date:
           json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
@@ -20,9 +20,10 @@ class BloodPressure {
 
   Map<String, dynamic> toJson() {
     return {
-      "_id": this.id,
-      "diastolic": this.upper,
-      "systolic": this.lower,
+      "value": {
+        "diastolic": this.upper,
+        "systolic": this.lower,
+      },
       "note": this.note,
       "date": this.date.toIso8601String()
     };
