@@ -17,6 +17,7 @@ import './screens/scanner_screen.dart';
 import './screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'drawer/facility_screen.dart';
+import 'drawer/medications_screen.dart';
 import 'drawer/my_doctors_screen.dart';
 
 void main() => runApp(MyApp());
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         LabTestScreen.routeName: (ctx) => LabTestScreen(),
         FacilityScreen.routeName: (ctx) => FacilityScreen(),
         EditPatientInfo.routeName: (ctx) => EditPatientInfo(),
+        MedicationsScreen.routeName:(ctx)=>MedicationsScreen(),
       },
     );
   }

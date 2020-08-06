@@ -122,8 +122,8 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
                         padding: EdgeInsets.all(5),
                         child: Text(
                           '$condition',
-                          maxLines: 4,
-                          style: TextStyle(fontSize: 16),
+                          maxLines: 5,
+                          style: TextStyle(fontSize: 18),
                         ),
                       ),
                     ],
