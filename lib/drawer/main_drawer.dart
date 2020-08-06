@@ -11,6 +11,7 @@ class MainDrawer extends StatelessWidget {
   final username = "Ab!223344";
   final String age = "55";
   final String bloodType = "A Positive";
+  
   Widget buildListTile(BuildContext ctx, String title, Function tabHandler) {
     return ListTile(
       title: Card(
@@ -21,7 +22,7 @@ class MainDrawer extends StatelessWidget {
             title,
             style: TextStyle(
                 fontFamily: 'RobotoCondenced',
-                fontSize: 26,
+                fontSize: 18,
                 color: Theme.of(ctx).primaryColor,
                 fontWeight: FontWeight.bold),
           ),
@@ -31,18 +32,18 @@ class MainDrawer extends StatelessWidget {
     );
   }
 
-  Widget buildMyText(BuildContext ctx, String lead, String rhs) {
+  Widget buildMyText(BuildContext ctx, String title, String value) {
     return Container(
         child: Row(
       children: <Widget>[
-        Text("$lead: ",
+        Text("$title: ",
             style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 16,
                 color: Theme.of(ctx).accentColor)),
         FittedBox(
           fit: BoxFit.scaleDown,
-          child: Text("$rhs",
+          child: Text("$value",
               style: TextStyle(
                 fontSize: 16,
               )),
@@ -55,95 +56,97 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context).size;
     return Drawer(
-      child: Container(
-        padding: EdgeInsets.only(top: mediaQuery.height * 0.07),
-        child: Column(
-          children: <Widget>[
-            // Container(
-            //   height: 1,
-            //   color: Theme.of(context).accentColor,
-            // ),
-            ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+      child: SingleChildScrollView(
               child: Container(
-                height: mediaQuery.height * 0.25,
-                width: double.infinity,
-                alignment: Alignment.centerLeft,
-                color: Theme.of(context).primaryColor,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      //margin: EdgeInsets.only(top:20),
-                      child: Container(
-                          margin: EdgeInsets.only(top: 15, left: 15),
-                          child: buildMyText(context, "Name", name)),
-                    ),
-                    Divider(),
-                    Container(
-                        margin: EdgeInsets.only(left: 15),
+          padding: EdgeInsets.only(top: mediaQuery.height * 0.07),
+          child: Column(
+            children: <Widget>[
+              // Container(
+              //   height: 1,
+              //   color: Theme.of(context).accentColor,
+              // ),
+              ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                child: Container(
+                  height: mediaQuery.height * 0.25,
+                  width: double.infinity,
+                  alignment: Alignment.centerLeft,
+                  color: Theme.of(context).primaryColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Username", username)),
-                    Divider(),
-                    Container(
-                        margin: EdgeInsets.only(left: 15),
-                        alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Age", age)),
-                    Divider(),
-                    Container(
-                        margin: EdgeInsets.only(left: 15, bottom: 15),
-                        alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Blood Type", bloodType)),
-                  ],
+                        //margin: EdgeInsets.only(top:20),
+                        child: Container(
+                            margin: EdgeInsets.only(top: 15, left: 15),
+                            child: buildMyText(context, "Name", name)),
+                      ),
+                      Divider(),
+                      Container(
+                          margin: EdgeInsets.only(left: 15),
+                          alignment: Alignment.centerLeft,
+                          child: buildMyText(context, "Username", username)),
+                      Divider(),
+                      Container(
+                          margin: EdgeInsets.only(left: 15),
+                          alignment: Alignment.centerLeft,
+                          child: buildMyText(context, "Age", age)),
+                      Divider(),
+                      Container(
+                          margin: EdgeInsets.only(left: 15, bottom: 15),
+                          alignment: Alignment.centerLeft,
+                          child: buildMyText(context, "Blood Type", bloodType)),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(
-              height: 20,
-            ),
-            buildListTile(context, 'Home', () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, CategoriesScreen.routeName, (r) => false);
-            }),
-            buildListTile(context, 'My Doctors', () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, CategoriesScreen.routeName, (r) => false);
-              Navigator.pushNamed(context, MyDoctorsScreen.routeName,
-                  arguments: {'screen title': 'My Doctors'});
-            }),
-            buildListTile(context, 'Facilities', () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, CategoriesScreen.routeName, (r) => false);
-              Navigator.pushNamed(context, FacilityScreen.routeName);
-            }),
-            buildListTile(context, 'Allergies', () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, CategoriesScreen.routeName, (r) => false);
-              Navigator.pushNamed(
-                context,
-                AllergiesScreen.routeName,
-              );
-            }),
+              SizedBox(
+                height: 10,
+              ),
+              buildListTile(context, 'Home', () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, CategoriesScreen.routeName, (r) => false);
+              }),
+              buildListTile(context, 'My Doctors', () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, CategoriesScreen.routeName, (r) => false);
+                Navigator.pushNamed(context, MyDoctorsScreen.routeName,
+                    arguments: {'screen title': 'My Doctors'});
+              }),
+              buildListTile(context, 'Facilities', () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, CategoriesScreen.routeName, (r) => false);
+                Navigator.pushNamed(context, FacilityScreen.routeName);
+              }),
+              buildListTile(context, 'Allergies', () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, CategoriesScreen.routeName, (r) => false);
+                Navigator.pushNamed(
+                  context,
+                  AllergiesScreen.routeName,
+                );
+              }),
 
-            buildListTile(context, 'Conditions', () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, CategoriesScreen.routeName, (r) => false);
-              Navigator.pushNamed(
-                context,
-                ConditionsScreen.routeName,
-              );
-            }),
-             buildListTile(context, 'Edit information', () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, CategoriesScreen.routeName, (r) => false);
-              Navigator.pushNamed(
-                context,
-                EditPatientInfo.routeName,
-              );
-            })
-          ],
+              buildListTile(context, 'Conditions', () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, CategoriesScreen.routeName, (r) => false);
+                Navigator.pushNamed(
+                  context,
+                  ConditionsScreen.routeName,
+                );
+              }),
+               buildListTile(context, 'Edit information', () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, CategoriesScreen.routeName, (r) => false);
+                Navigator.pushNamed(
+                  context,
+                  EditPatientInfo.routeName,
+                );
+              })
+            ],
+          ),
         ),
       ),
     );
