@@ -1,4 +1,5 @@
 import 'package:amun/drawer/condtions_screen.dart';
+import 'package:amun/drawer/facility_screen.dart';
 import 'package:amun/screens/blood_pressure_screen.dart';
 import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/screens/glucose_screen.dart';
@@ -62,6 +63,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
           ConditionsScreen.routeName: (ctx) => ConditionsScreen(),
           RadiographScreen.routeName: (ctx) => RadiographScreen(),
           LabTestScreen.routeName: (ctx) => LabTestScreen(),
+          FacilityScreen.routeName: (ctx) => FacilityScreen(),
         },
       ),
     );

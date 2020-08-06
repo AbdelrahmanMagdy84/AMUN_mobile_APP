@@ -1,33 +1,23 @@
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
-class MyDoctorsScreen extends StatefulWidget {
-  static final routeName = 'Doctors';
+class FacilityScreen extends StatefulWidget {
+  static final routeName = 'facility route name';
 
   @override
-  _MyDoctorsScreenState createState() => _MyDoctorsScreenState();
+  _FacilityScreenState createState() => _FacilityScreenState();
 }
 
-class _MyDoctorsScreenState extends State<MyDoctorsScreen> {
-  // String doctorName = 'Ahmed Abdelrahman';
-  // String specialization = 'x';
-  // String facilityName = 'Dar eh foad';
+class _FacilityScreenState extends State<FacilityScreen> {
 
   String screenTitle;
-  @override
-  didChangeDependencies() {
-    final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    screenTitle = routeArgs['screen title'];
-
-    super.didChangeDependencies();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(screenTitle),
+        title: Text("Facilities"),
       ),
       drawer: MainDrawer(),
       body: Column(

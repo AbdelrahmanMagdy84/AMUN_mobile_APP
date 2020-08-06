@@ -1,5 +1,7 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:amun/drawer/condtions_screen.dart';
+import 'package:amun/drawer/edit_patient_info_screen.dart';
+import 'package:amun/drawer/facility_screen.dart';
 import 'package:amun/drawer/my_doctors_screen.dart';
 import 'package:amun/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
@@ -114,8 +116,7 @@ class MainDrawer extends StatelessWidget {
             buildListTile(context, 'Facilities', () {
               Navigator.pushNamedAndRemoveUntil(
                   context, CategoriesScreen.routeName, (r) => false);
-              Navigator.pushNamed(context, MyDoctorsScreen.routeName,
-                  arguments: {'screen title': 'Facilities'});
+              Navigator.pushNamed(context, FacilityScreen.routeName);
             }),
             buildListTile(context, 'Allergies', () {
               Navigator.pushNamedAndRemoveUntil(
@@ -125,6 +126,7 @@ class MainDrawer extends StatelessWidget {
                 AllergiesScreen.routeName,
               );
             }),
+
             buildListTile(context, 'Conditions', () {
               Navigator.pushNamedAndRemoveUntil(
                   context, CategoriesScreen.routeName, (r) => false);
@@ -133,6 +135,14 @@ class MainDrawer extends StatelessWidget {
                 ConditionsScreen.routeName,
               );
             }),
+             buildListTile(context, 'Edit information', () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, CategoriesScreen.routeName, (r) => false);
+              Navigator.pushNamed(
+                context,
+                EditPatientInfo.routeName,
+              );
+            })
           ],
         ),
       ),
