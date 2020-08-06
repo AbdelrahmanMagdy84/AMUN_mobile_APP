@@ -2,10 +2,29 @@ import '../models/BloodGlucose.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class GlucoseItem extends StatelessWidget {
+class GlucoseItem extends StatefulWidget {
+  final BloodGlucose glucoseObj;
+  GlucoseItem(this.glucoseObj);
+  @override
+  _GlucoseItemState createState() => _GlucoseItemState();
+}
+
+class _GlucoseItemState extends State<GlucoseItem> {
   DateTime date = DateTime.now();
+
   String note =
       "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
+
+  @override
+  Widget build(BuildContext context) {
+    BloodGlucose bloodGlucose = widget.glucoseObj;
+      
+    return Card(
+      elevation: 10,
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      child: buildListTile(context, bloodGlucose),
+    );
+  }
 
   Widget buildListTile(BuildContext ctx, BloodGlucose bloodGlucose) {
     Map<String, Object> obj = getGlucoseIndecator(bloodGlucose);
@@ -99,20 +118,6 @@ class GlucoseItem extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    BloodGlucose bloodGlucose = BloodGlucose(
-        date: DateTime.now(),
-        value: 185,
-        timeType: TimeType.fasting,
-        note: note);
-    return Card(
-      elevation: 10,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      child: buildListTile(context, bloodGlucose),
     );
   }
 
