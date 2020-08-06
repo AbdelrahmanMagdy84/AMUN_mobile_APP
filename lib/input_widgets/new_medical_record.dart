@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:amun/models/Prescription.dart';
+import 'package:amun/models/MedicalRecord.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +13,7 @@ class NewMedicalRecord extends StatefulWidget {
       _NewPrescreptionOrRadiographState();
 }
 
-class _NewPrescreptionOrRadiographState
-    extends State<NewMedicalRecord> {
+class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
   DateTime dateTime = DateTime.now();
   // String title;
   // String doctor;
@@ -103,7 +102,7 @@ class _NewPrescreptionOrRadiographState
 
   void save(
       {DateTime date, String title, String doctor, String note, String image}) {
-    Prescription prescription = Prescription(
+    MedicalRecord medicalRecord = MedicalRecord(
         date: date,
         title: title,
         doctor: doctor,
