@@ -1,5 +1,5 @@
 class MedicalFacility {
-  int id;
+  String id;
   String name;
   String email;
   String username;

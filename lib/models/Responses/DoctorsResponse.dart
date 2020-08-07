@@ -10,11 +10,19 @@ class DoctorsResponse {
   });
 
   factory DoctorsResponse.fromJson(Map<String, dynamic> json) {
-    List<dynamic> parsedDoctors = json["facilitiesPatients"]['doctor'] != null
-        ? json["facilitiesPatients"]['doctor']
+    List<dynamic> parsed = json["facilitiesPatients"] != null
+        ? json["facilitiesPatients"]
         : new List<dynamic>();
+    List<dynamic> parsedDoctors = [];
+
+    for (final object in parsed) {
+      parsedDoctors.add(object["doctor"]);
+    }
+    print(parsedDoctors);
     List<Doctor> doctors =
         parsedDoctors.map((i) => Doctor.fromJson(i)).toList();
+
+    print(doctors);
     return DoctorsResponse(success: json["success"], doctors: doctors);
   }
 }

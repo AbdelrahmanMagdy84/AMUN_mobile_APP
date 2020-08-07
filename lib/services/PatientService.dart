@@ -60,4 +60,15 @@ class PatientService {
       throw Exception("Failed to update");
     }
   }
+
+  Future<PatientResponse> getPatient(String token) async {
+    final http.Response response = await http.get(
+        "${APIClient.baseUrl}/$endPoint",
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    if (response.statusCode == 200) {
+      return PatientResponse.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to update");
+    }
+  }
 }

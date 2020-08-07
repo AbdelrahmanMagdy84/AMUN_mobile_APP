@@ -1,8 +1,8 @@
-import 'package:amun/drawer/clerk_profile_screen.dart';
 import 'package:amun/drawer/doctor_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/Doctor.dart';
 import 'package:amun/models/Responses/DoctorsResponse.dart';
+import 'package:amun/reminders/ui/success_screen/success_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +25,8 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
     super.didChangeDependencies();
   }
 
-  List<Doctor> doctorList;
+  List<Doctor> doctorList = List();
   Future userFuture;
-  @override
-  void initState() {
-    super.initState();
-    print("getting user token");
-    //getUserToken();
-  }
 
   String _patientToken;
   void getUserToken() {
@@ -40,20 +34,16 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
       setState(() {
         _patientToken = value;
       });
-      print("token = $_patientToken");
 
-      print("x------------------------------");
       userFuture = APIClient()
           .getFacilityPatientService()
           .getDoctors(_patientToken)
           .then((DoctorsResponse responseList) {
         if (responseList.success) {
-          //  DialogManager.stopLoadingDialog(context);
+          print("success");
           doctorList = responseList.doctors;
-          print("------------------------------");
+          print(doctorList);
           print(responseList.doctors.length);
-        } else {
-          print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         }
       });
     });
@@ -68,42 +58,35 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
       ),
       drawer: MainDrawer(),
       body: Container(
-        child: Column(
-          children: <Widget>[
-            buildSearch(),
-            Container(
-              child: FutureBuilder(
-                future: userFuture,
-                builder: (ctx, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return Text("none");
-                      break;
-                    case ConnectionState.active:
-                    case ConnectionState.waiting:
-                      return Center(
-                          child: Text(
-                        "Loading ",
-                        style: Theme.of(context).textTheme.title,
-                      ));
-                      break;
-                    case ConnectionState.done:
-                      return ListView.builder(
-                        itemBuilder: (ctx, index) {
-                          return item(
-                              "${doctorList[index].firstName} ${doctorList[index].lastName}",
-                              doctorList[index].username,
-                              doctorList[index].specialization,
-                              context);
-                        },
-                        itemCount: doctorList.length,
-                      );
-                      break;
-                  }
-                },
-              ),
-            ),
-          ],
+        child: FutureBuilder(
+          future: userFuture,
+          builder: (ctx, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text("none");
+                break;
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return Center(
+                    child: Text(
+                  "Loading ",
+                  style: Theme.of(context).textTheme.title,
+                ));
+                break;
+              case ConnectionState.done:
+                return ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    return Doctoritem(
+                        "${doctorList[index].firstName} ${doctorList[index].lastName}",
+                        doctorList[index].username,
+                        doctorList[index].specialization,
+                        context);
+                  },
+                  itemCount: doctorList.length,
+                );
+                break;
+            }
+          },
         ),
       ),
     );
@@ -138,7 +121,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
     );
   }
 
-  Widget item(String name, String username, String specializationOrRole,
+  Widget Doctoritem(String name, String username, String specializationOrRole,
       BuildContext ctx) {
     return GestureDetector(
       onTap: () {

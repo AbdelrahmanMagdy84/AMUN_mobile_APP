@@ -32,6 +32,7 @@ class FacilityPatientService {
         "${APIClient.baseUrl}/$endPoint/doctor",
         headers: {"Content-Type": "application/json", "authorization": token});
     if (response.statusCode == 200) {
+      //print(jsonDecode(response.body));
       return DoctorsResponse.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to fetch data");
