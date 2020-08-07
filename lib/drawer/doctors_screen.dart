@@ -67,43 +67,45 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
         title: Text(screenTitle),
       ),
       drawer: MainDrawer(),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            buildSearch(),
-            Container(
-              child: FutureBuilder(
-                future: userFuture,
-                builder: (ctx, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return Text("none");
-                      break;
-                    case ConnectionState.active:
-                    case ConnectionState.waiting:
-                      return Center(
-                          child: Text(
-                        "Loading ",
-                        style: Theme.of(context).textTheme.title,
-                      ));
-                      break;
-                    case ConnectionState.done:
-                      return ListView.builder(
-                        itemBuilder: (ctx, index) {
-                          return item(
-                              "${doctorList[index].firstName} ${doctorList[index].lastName}",
-                              doctorList[index].username,
-                              doctorList[index].specialization,
-                              context);
-                        },
-                        itemCount: doctorList.length,
-                      );
-                      break;
-                  }
-                },
+      body: SingleChildScrollView(
+              child: Container(
+          child: Column(
+            children: <Widget>[
+              buildSearch(),
+              Container(
+                child: FutureBuilder(
+                  future: userFuture,
+                  builder: (ctx, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text("none");
+                        break;
+                      case ConnectionState.active:
+                      case ConnectionState.waiting:
+                        return Center(
+                            child: Text(
+                          "Loading ",
+                          style: Theme.of(context).textTheme.title,
+                        ));
+                        break;
+                      case ConnectionState.done:
+                        return ListView.builder(
+                          itemBuilder: (ctx, index) {
+                            return item(
+                                "${doctorList[index].firstName} ${doctorList[index].lastName}",
+                                doctorList[index].username,
+                                doctorList[index].specialization,
+                                context);
+                          },
+                          itemCount: doctorList.length,
+                        );
+                        break;
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

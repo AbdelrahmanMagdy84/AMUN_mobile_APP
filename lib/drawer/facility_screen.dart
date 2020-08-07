@@ -1,4 +1,9 @@
 import 'package:amun/drawer/main_drawer.dart';
+import 'package:amun/models/MedicalFacility.dart';
+import 'package:amun/models/Responses/MedicalFacilitiesResponse.dart';
+import 'package:amun/models/Responses/MedicalFacilityResponse.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 
 import 'package:flutter/material.dart';
 
@@ -12,6 +17,40 @@ class FacilityScreen extends StatefulWidget {
 class _FacilityScreenState extends State<FacilityScreen> {
   String screenTitle;
   final usernameController = TextEditingController();
+
+  List<MedicalFacility> facilityList;
+  Future userFuture;
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  String _patientToken;
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      print("token = $_patientToken");
+      print("x------------------------------");
+      userFuture = APIClient()
+          .getFacilityPatientService()
+          .getMedicalFacilities(_patientToken)
+          .then(( MedicalFacilitiesResponse responseList) {
+        if (responseList.success) {
+          //  DialogManager.stopLoadingDialog(context);
+          facilityList = responseList.medicalFacilities;
+          print("------------------------------");
+          print(responseList.medicalFacilities.length);
+        } else {
+          print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +58,45 @@ class _FacilityScreenState extends State<FacilityScreen> {
         title: Text("Facilities"),
       ),
       drawer: MainDrawer(),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            buildSearch(),
-          ],
+      body: SingleChildScrollView(
+              child: Container(
+          child: Column(
+            children: <Widget>[
+              buildSearch(),
+               Container(
+                child: FutureBuilder(
+                  future: userFuture,
+                  builder: (ctx, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text("none");
+                        break;
+                      case ConnectionState.active:
+                      case ConnectionState.waiting:
+                        return Center(
+                            child: Text(
+                          "Loading ",
+                          style: Theme.of(context).textTheme.title,
+                        ));
+                        break;
+                      case ConnectionState.done:
+                        return ListView.builder(
+                          itemBuilder: (ctx, index) {
+                            return item(
+                                "${facilityList[index].name}",
+                                facilityList[index].username,
+                                facilityList[index].description,
+                                context);
+                          },
+                          itemCount: facilityList.length,
+                        );
+                        break;
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -58,7 +131,7 @@ class _FacilityScreenState extends State<FacilityScreen> {
   }
 }
 
-Widget item(String name, String username, String specialization) {
+Widget item(String name, String username, String specialization, BuildContext context) {
   return LayoutBuilder(
     builder: (context, constraints) {
       return Container(
