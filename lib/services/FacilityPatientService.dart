@@ -17,9 +17,8 @@ class FacilityPatientService {
   FacilityPatientService._getInstance();
 
   Future<MedicalFacilitiesResponse> getMedicalFacilities(String token) async {
-    final newURI =
-        Uri.http("${APIClient.baseUrl}", "$endPoint/medicalFacility");
-    final http.Response response = await http.get(newURI,
+    final http.Response response = await http.get(
+        "${APIClient.baseUrl}/$endPoint/medicalFacility",
         headers: {"Content-Type": "application/json", "authorization": token});
     if (response.statusCode == 200) {
       return MedicalFacilitiesResponse.fromJson(jsonDecode(response.body));
@@ -29,8 +28,8 @@ class FacilityPatientService {
   }
 
   Future<DoctorsResponse> getDoctors(String token) async {
-    final newURI = Uri.http("${APIClient.baseUrl}", "$endPoint/doctor");
-    final http.Response response = await http.get(newURI,
+    final http.Response response = await http.get(
+        "${APIClient.baseUrl}/$endPoint/doctor",
         headers: {"Content-Type": "application/json", "authorization": token});
     if (response.statusCode == 200) {
       return DoctorsResponse.fromJson(jsonDecode(response.body));
