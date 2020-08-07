@@ -13,45 +13,6 @@ class MainDrawer extends StatelessWidget {
   final String age = "55";
   final String bloodType = "A Positive";
   
-  Widget buildListTile(BuildContext ctx, String title, Function tabHandler) {
-    return ListTile(
-      title: Card(
-        elevation: 1,
-        child: Center(
-          heightFactor: 2,
-          child: Text(
-            title,
-            style: TextStyle(
-                fontFamily: 'RobotoCondenced',
-                fontSize: 18,
-                color: Theme.of(ctx).primaryColor,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      onTap: tabHandler,
-    );
-  }
-
-  Widget buildMyText(BuildContext ctx, String title, String value) {
-    return Container(
-        child: Row(
-      children: <Widget>[
-        Text("$title: ",
-            style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 16,
-                color: Theme.of(ctx).accentColor)),
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text("$value",
-              style: TextStyle(
-                fontSize: 16,
-              )),
-        ),
-      ],
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,4 +123,44 @@ class MainDrawer extends StatelessWidget {
       ),
     );
   }
+    Widget buildListTile(BuildContext ctx, String title, Function tabHandler) {
+    return ListTile(
+      title: Card(
+        elevation: 1,
+        child: Center(
+          heightFactor: 2,
+          child: Text(
+            title,
+            style: TextStyle(
+                fontFamily: 'RobotoCondenced',
+                fontSize: 18,
+                color: Theme.of(ctx).primaryColor,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      onTap: tabHandler,
+    );
+  }
+
+  Widget buildMyText(BuildContext ctx, String title, String value) {
+    return Container(
+        child: Row(
+      children: <Widget>[
+        Text("$title: ",
+            style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 16,
+                color: Theme.of(ctx).accentColor)),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text("$value",
+              style: TextStyle(
+                fontSize: 16,
+              )),
+        ),
+      ],
+    ));
+  }
+
 }

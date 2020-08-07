@@ -9,17 +9,7 @@ class PrescriptionScreen extends StatefulWidget {
 }
 
 class _PrescriptionScreenState extends State<PrescriptionScreen> {
-  void startAddNewRecord(BuildContext ctx) {
-    showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return GestureDetector(
-            child: NewMedicalRecord("New Prescription"),
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-          );
-        });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -43,5 +33,16 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
         ),
       ),
     );
+  }
+  void startAddNewRecord(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GestureDetector(
+            child: NewMedicalRecord("New Prescription"),
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+          );
+        });
   }
 }

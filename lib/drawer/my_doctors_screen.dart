@@ -1,4 +1,5 @@
 import 'package:amun/drawer/main_drawer.dart';
+import 'package:amun/drawer/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class MyDoctorsScreen extends StatefulWidget {
@@ -49,17 +50,12 @@ class _MyDoctorsScreenState extends State<MyDoctorsScreen> {
               ),
             ),
           ),
-          item('ahmed', 'ahmedMecky123', 'عظام'),
+          GestureDetector(
+            child: item('ahmed', 'ahmedMecky123', 'عظام'),
+            onTap: () =>
+                Navigator.of(context).pushNamed(ProfileScreen.routeName),
+          ),
         ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.add,
-          size: 40,
-          color: Theme.of(context).primaryColor,
-        ),
       ),
     );
   }
@@ -88,7 +84,7 @@ Widget item(String name, String username, String specialization) {
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               'Name: $name',
-                          
+                              overflow: TextOverflow.visible,
                               style: Theme.of(context).textTheme.title,
                             ),
                           ),
@@ -96,15 +92,16 @@ Widget item(String name, String username, String specialization) {
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               'Username: $username ',
+                              overflow: TextOverflow.visible,
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                           ),
                           Container(
-                           // padding: EdgeInsets.symmetric(vertical: 10),
+                            // padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               'Specialization: $specialization ',
-                                  maxLines: 2,
+                              overflow: TextOverflow.visible,
                               style: TextStyle(fontSize: 18),
                             ),
                           )
