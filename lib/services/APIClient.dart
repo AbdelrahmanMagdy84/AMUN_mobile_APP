@@ -1,12 +1,10 @@
-import 'package:amun/models/MedicalFacility.dart';
-
 import 'BloodGlucoseService.dart';
 import 'BloodPressureService.dart';
 import 'DoctorService.dart';
 import 'PatientService.dart';
-
 import 'ClerkService.dart';
 import 'MedicalFacilityService.dart';
+import 'FacilityPatientService.dart';
 
 class APIClient {
   static final String baseUrl = "https://amonmr.herokuapp.com";
@@ -19,7 +17,8 @@ class APIClient {
   static final ClerkService _clerkService = ClerkService();
   static final MedicalFacilityService _medicalFacilityService =
       MedicalFacilityService();
-
+  static final FacilityPatientService _facilityPatientService =
+      FacilityPatientService();
   factory APIClient() {
     return _instance;
   }
@@ -48,5 +47,9 @@ class APIClient {
 
   MedicalFacilityService getMedicalFacilityService() {
     return _medicalFacilityService;
+  }
+
+  FacilityPatientService getFacilityPatientService() {
+    return _facilityPatientService;
   }
 }
