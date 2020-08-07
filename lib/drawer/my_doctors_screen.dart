@@ -1,5 +1,6 @@
+import 'package:amun/drawer/doctor_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
-import 'package:amun/drawer/profile_screen.dart';
+
 import 'package:flutter/material.dart';
 
 class MyDoctorsScreen extends StatefulWidget {
@@ -53,7 +54,7 @@ class _MyDoctorsScreenState extends State<MyDoctorsScreen> {
           GestureDetector(
             child: item('ahmed', 'ahmedMecky123', 'عظام'),
             onTap: () =>
-                Navigator.of(context).pushNamed(ProfileScreen.routeName),
+                Navigator.of(context).pushNamed(DoctorProfileScreen.routeName),
           ),
         ],
       ),

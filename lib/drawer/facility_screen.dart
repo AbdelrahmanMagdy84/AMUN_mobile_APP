@@ -1,4 +1,8 @@
 import 'package:amun/drawer/main_drawer.dart';
+import 'package:amun/models/Doctor.dart';
+import 'package:amun/models/Responses/DoctorResponse.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 
 class FacilityScreen extends StatefulWidget {
@@ -9,9 +13,8 @@ class FacilityScreen extends StatefulWidget {
 }
 
 class _FacilityScreenState extends State<FacilityScreen> {
-
   String screenTitle;
- 
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +81,6 @@ Widget item(String name, String username, String specialization) {
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               'Name: $name',
-                          
                               style: Theme.of(context).textTheme.title,
                             ),
                           ),
@@ -91,10 +93,10 @@ Widget item(String name, String username, String specialization) {
                             ),
                           ),
                           Container(
-                           // padding: EdgeInsets.symmetric(vertical: 10),
+                            // padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               'Specialization: $specialization ',
-                                  maxLines: 2,
+                              maxLines: 2,
                               style: TextStyle(fontSize: 18),
                             ),
                           )

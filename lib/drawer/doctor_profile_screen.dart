@@ -1,27 +1,52 @@
+import 'package:amun/models/Doctor.dart';
+import 'package:amun/models/Responses/DoctorResponse.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class ProfileScreen extends StatefulWidget {
-  static final String routeName = "Profile route name";
+class DoctorProfileScreen extends StatefulWidget {
+  static final String routeName = "Doctor Profile route name";
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _DoctorProfileScreenState createState() => _DoctorProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  String profileType;
-  String firstName = "Abdelrahman ";
-  String lastName = " Magdy";
-  String email = "boody8@gmail.com";
-  String username = "abdelrahman84";
-  String role = "نسا و توليد";
-  String mobile = "01110207908";
-  String gender = "male";
+class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
+  Future userFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  String _patientToken;
+  String userName;//required
+  Doctor doctor;
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      userFuture = APIClient()
+          .getDoctorService()
+          .getDoctorByUsername(_patientToken, userName)
+          .then((DoctorResponse doctorResponse) {
+        if (doctorResponse.success) {
+          doctor = doctorResponse.doctor;
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     const double h = 50;
     return Scaffold(
         appBar: AppBar(
-          title: Text("profile: $profileType"),
+          title: Text("Doctor: ${doctor.firstName}"),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -45,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Container(
                               margin: EdgeInsets.only(top: 15, left: 15),
                               child: buildMyText(context, "Full Name",
-                                  "$firstName $lastName")),
+                                  "${doctor.firstName} ${doctor.lastName}")),
                         ),
                         Divider(
                           height: h,
@@ -53,14 +78,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Container(
                             margin: EdgeInsets.only(left: 15),
                             alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Username", username)),
+                            child: buildMyText(
+                                context, "Username", doctor.username)),
                         Divider(
                           height: h,
                         ),
                         Container(
                             margin: EdgeInsets.only(left: 15),
                             alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Email", email)),
+                            child: buildMyText(context, "Email", doctor.email)),
                         Divider(
                           height: h,
                         ),
@@ -69,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               left: 15,
                             ),
                             alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Role", role)),
+                            child: buildMyText(context, "Bio", doctor.bio)),
                         Divider(
                           height: h,
                         ),
@@ -78,7 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               left: 15,
                             ),
                             alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Mobile", mobile)),
+                            child:
+                                buildMyText(context, "Mobile", doctor.mobile)),
                         Divider(
                           height: h,
                         ),
@@ -87,7 +114,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               left: 15,
                             ),
                             alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Gender", gender)),
+                            child:
+                                buildMyText(context, "Gender", doctor.gender)),
+                        Divider(
+                          height: h,
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(
+                              left: 15,
+                            ),
+                            alignment: Alignment.centerLeft,
+                            child: buildMyText(
+                                context, "Address", doctor.address)),
+                        Divider(
+                          height: h,
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(
+                              left: 15,
+                            ),
+                            alignment: Alignment.centerLeft,
+                            child: buildMyText(context, "Birth Date:",
+                                DateFormat.yMd().format(doctor.birthDate))),
+                        Divider(
+                          height: h,
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(
+                              left: 15,
+                            ),
+                            alignment: Alignment.centerLeft,
+                            child: buildMyText(context, "Specialization:",
+                                doctor.specialization)),
                         Divider(
                           height: h,
                         ),
