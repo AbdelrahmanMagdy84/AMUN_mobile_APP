@@ -1,8 +1,5 @@
 import 'package:amun/drawer/main_drawer.dart';
-import 'package:amun/models/Doctor.dart';
-import 'package:amun/models/Responses/DoctorResponse.dart';
-import 'package:amun/services/APIClient.dart';
-import 'package:amun/utils/TokenStorage.dart';
+
 import 'package:flutter/material.dart';
 
 class FacilityScreen extends StatefulWidget {
@@ -14,8 +11,7 @@ class FacilityScreen extends StatefulWidget {
 
 class _FacilityScreenState extends State<FacilityScreen> {
   String screenTitle;
-
-
+  final usernameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,35 +19,39 @@ class _FacilityScreenState extends State<FacilityScreen> {
         title: Text("Facilities"),
       ),
       drawer: MainDrawer(),
-      body: Column(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            child: ListTile(
-              leading: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "search",
-                  ),
-                ),
-              ),
-              title: Icon(
-                Icons.search,
-                size: 34,
-              ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            buildSearch(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildSearch() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.1,
+      child: ListTile(
+        leading: Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: TextField(
+            controller: usernameController,
+            decoration: InputDecoration(
+              labelText: "search by Username",
             ),
           ),
-          item('ahmed', 'ahmedMecky123', 'عظام'),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.add,
-          size: 40,
-          color: Theme.of(context).primaryColor,
+        ),
+        title: IconButton(
+          icon: Icon(
+            Icons.search,
+            size: 34,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(FacilityScreen.routeName,
+                arguments: {'userName': usernameController.text});
+          },
         ),
       ),
     );

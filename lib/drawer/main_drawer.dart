@@ -3,8 +3,9 @@ import 'package:amun/drawer/condtions_screen.dart';
 import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/facility_screen.dart';
 import 'package:amun/drawer/medications_screen.dart';
-import 'package:amun/drawer/doctors_or_clerks_screen.dart';
+import 'package:amun/drawer/doctors_screen.dart';
 import 'package:amun/screens/categories_screen.dart';
+import 'package:amun/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -12,14 +13,13 @@ class MainDrawer extends StatelessWidget {
   final username = "Ab!223344";
   final String age = "55";
   final String bloodType = "A Positive";
-  
 
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context).size;
     return Drawer(
       child: SingleChildScrollView(
-              child: Container(
+        child: Container(
           padding: EdgeInsets.only(top: mediaQuery.height * 0.07),
           child: Column(
             children: <Widget>[
@@ -74,15 +74,10 @@ class MainDrawer extends StatelessWidget {
               buildListTile(context, 'My Doctors', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(context, DoctorsOrClerksScreen.routeName,
+                Navigator.pushNamed(context, DoctorsScreen.routeName,
                     arguments: {'screen title': 'My Doctors'});
               }),
-              buildListTile(context, 'Clerks', () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(context, DoctorsOrClerksScreen.routeName,
-                    arguments: {'screen title': 'Clerks'});
-              }),
+
               buildListTile(context, 'Facilities', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
@@ -95,7 +90,6 @@ class MainDrawer extends StatelessWidget {
                   context,
                   AllergiesScreen.routeName,
                 );
-                
               }),
               buildListTile(context, 'Medications', () {
                 Navigator.pushNamedAndRemoveUntil(
@@ -104,9 +98,7 @@ class MainDrawer extends StatelessWidget {
                   context,
                   MedicationsScreen.routeName,
                 );
-                
               }),
-
               buildListTile(context, 'Conditions', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
@@ -115,21 +107,29 @@ class MainDrawer extends StatelessWidget {
                   ConditionsScreen.routeName,
                 );
               }),
-               buildListTile(context, 'Edit information', () {
+              buildListTile(context, 'Edit information', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
                 Navigator.pushNamed(
                   context,
                   EditPatientInfo.routeName,
                 );
-              })
+              }),
+              Container(
+                color: Theme.of(context).accentColor,
+                child: buildListTile(context, 'Logout', () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context,'/', (r) => false);
+                }),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-    Widget buildListTile(BuildContext ctx, String title, Function tabHandler) {
+
+  Widget buildListTile(BuildContext ctx, String title, Function tabHandler) {
     return ListTile(
       title: Card(
         elevation: 1,
@@ -168,5 +168,4 @@ class MainDrawer extends StatelessWidget {
       ],
     ));
   }
-
 }

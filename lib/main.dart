@@ -1,7 +1,7 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:amun/drawer/condtions_screen.dart';
 import 'package:amun/drawer/doctor_profile_screen.dart';
-import 'package:amun/drawer/doctors_or_clerks_screen.dart';
+import 'package:amun/drawer/doctors_screen.dart';
 import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/clerk_profile_screen.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
         ScannerScreen.routeName: (ctx) => ScannerScreen(),
-        DoctorsOrClerksScreen.routeName: (ctx) => DoctorsOrClerksScreen(),
+        DoctorsScreen.routeName: (ctx) => DoctorsScreen(),
         AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
         ConditionsScreen.routeName: (ctx) => ConditionsScreen(),
         RemindersScreen.routeName: (ctx) => RemindersScreen(),
