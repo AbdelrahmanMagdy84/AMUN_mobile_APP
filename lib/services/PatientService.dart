@@ -49,11 +49,14 @@ class PatientService {
     }
   }
 
-  Future<PatientResponse> updatePatient(Patient patient) async {
+  Future<PatientResponse> updatePatient(Patient patient, String token) async {
     final http.Response response = await http.patch(
         "${APIClient.baseUrl}/$endPoint",
         body: jsonEncode(patient.toJson()),
-        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+          "authorization": token
+        });
     if (response.statusCode == 200) {
       return PatientResponse.fromJson(jsonDecode(response.body));
     } else {
@@ -62,13 +65,15 @@ class PatientService {
   }
 
   Future<PatientResponse> getPatient(String token) async {
-    final http.Response response = await http.get(
-        "${APIClient.baseUrl}/$endPoint",
-        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    final http.Response response = await http
+        .get("${APIClient.baseUrl}/$endPoint", headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      "authorization": token
+    });
     if (response.statusCode == 200) {
       return PatientResponse.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Failed to update");
+      throw Exception("Failed to fetch data");
     }
   }
 }
