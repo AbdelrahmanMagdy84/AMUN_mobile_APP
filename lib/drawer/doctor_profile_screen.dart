@@ -43,12 +43,38 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double h = 50;
+    
     return Scaffold(
         appBar: AppBar(
           title: Text("Doctor: ${doctor.firstName}"),
         ),
-        body: Center(
+        body: Container(
+        child: FutureBuilder(
+          future: userFuture,
+          builder: (ctx, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text("none");
+                break;
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return Center(
+                    child: Text(
+                  "Loading ",
+                  style: Theme.of(context).textTheme.title,
+                ));
+                break;
+              case ConnectionState.done:
+                return buildItem();
+                break;
+            }
+          },
+        ),
+      ),);
+  }
+Widget buildItem()
+{const double h = 50;
+  return Center(
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -156,9 +182,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
               ],
             ),
           ),
-        ));
-  }
-
+        );
+}
   Widget buildMyText(BuildContext ctx, String title, String value) {
     return Container(
         child: Row(

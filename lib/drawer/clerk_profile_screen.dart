@@ -42,90 +42,115 @@ class _ClerkProfileScreenState extends State<ClerkProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double h = 50;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Clerk: ${clerk.firstName}"),
+      appBar: AppBar(
+        title: Text("Clerk: ${clerk.firstName}"),
+      ),
+      body: Container(
+        child: FutureBuilder(
+          future: userFuture,
+          builder: (ctx, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text("none");
+                break;
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return Center(
+                    child: Text(
+                  "Loading ",
+                  style: Theme.of(context).textTheme.title,
+                ));
+                break;
+              case ConnectionState.done:
+                return buildItem();
+                break;
+            }
+          },
         ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  child: Container(
-                    //height: mediaQuery.height * 0.25,
-                    width: double.infinity,
-                    alignment: Alignment.centerLeft,
-                    color: Theme.of(context).primaryColor,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                              margin: EdgeInsets.only(top: 15, left: 15),
-                              child: buildMyText(context, "Full Name",
-                                  "${clerk.firstName} ${clerk.lastName}")),
-                        ),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 15),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(
-                                context, "Username", clerk.username)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 15),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Email", clerk.email)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Role", clerk.role)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child:
-                                buildMyText(context, "Mobile", clerk.mobile)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child:
-                                buildMyText(context, "Gender", clerk.gender)),
-                        Divider(
-                          height: h,
-                        ),
-                      ],
+      ),
+    );
+  }
+
+  Widget buildItem() {
+    const double h = 50;
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              child: Container(
+                //height: mediaQuery.height * 0.25,
+                width: double.infinity,
+                alignment: Alignment.centerLeft,
+                color: Theme.of(context).primaryColor,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Divider(
+                      height: h,
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                          margin: EdgeInsets.only(top: 15, left: 15),
+                          child: buildMyText(context, "Full Name",
+                              "${clerk.firstName} ${clerk.lastName}")),
+                    ),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: 15),
+                        alignment: Alignment.centerLeft,
+                        child:
+                            buildMyText(context, "Username", clerk.username)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: 15),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Email", clerk.email)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Role", clerk.role)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Mobile", clerk.mobile)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Gender", clerk.gender)),
+                    Divider(
+                      height: h,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildMyText(BuildContext ctx, String title, String value) {
