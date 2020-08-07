@@ -10,7 +10,7 @@ import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
 import 'package:amun/reminders/ui/new_entry/new_entry.dart';
 import 'package:amun/drawer/allergies_screen.dart';
-import 'package:amun/drawer/my_doctors_screen.dart';
+import 'package:amun/drawer/doctors_or_clerks_screen.dart';
 import 'package:amun/screens/register_screen.dart';
 import 'package:amun/screens/scanner_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
@@ -54,7 +54,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
           CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
           NewEntry.routeName: (ctx) => NewEntry(),
           RegisterScreen.routeName: (ctx) => RegisterScreen(),
-          MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
+          DoctorsOrClerksScreen.routeName: (ctx) => DoctorsOrClerksScreen(),
           AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
           ScannerScreen.routeName: (ctx) => ScannerScreen(),
           ShowImageScreen.routeName: (ctx) => ShowImageScreen(),

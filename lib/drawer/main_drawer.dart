@@ -3,7 +3,7 @@ import 'package:amun/drawer/condtions_screen.dart';
 import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/facility_screen.dart';
 import 'package:amun/drawer/medications_screen.dart';
-import 'package:amun/drawer/my_doctors_screen.dart';
+import 'package:amun/drawer/doctors_or_clerks_screen.dart';
 import 'package:amun/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -74,8 +74,14 @@ class MainDrawer extends StatelessWidget {
               buildListTile(context, 'My Doctors', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(context, MyDoctorsScreen.routeName,
+                Navigator.pushNamed(context, DoctorsOrClerksScreen.routeName,
                     arguments: {'screen title': 'My Doctors'});
+              }),
+              buildListTile(context, 'Clerks', () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, CategoriesScreen.routeName, (r) => false);
+                Navigator.pushNamed(context, DoctorsOrClerksScreen.routeName,
+                    arguments: {'screen title': 'Clerks'});
               }),
               buildListTile(context, 'Facilities', () {
                 Navigator.pushNamedAndRemoveUntil(

@@ -13,6 +13,17 @@ class DoctorProfileScreen extends StatefulWidget {
 
 class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   Future userFuture;
+  String _patientToken;
+  String userName; //required
+  Doctor doctor;
+  @override
+  didChangeDependencies() {
+    final routeArgs =
+        ModalRoute.of(context).settings.arguments as Map<String, String>;
+    userName = routeArgs['userName'];
+
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -20,10 +31,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     print("getting user token");
     getUserToken();
   }
-
-  String _patientToken;
-  String userName;//required
-  Doctor doctor;
 
   void getUserToken() {
     TokenStorage().getUserToken().then((value) async {
@@ -43,12 +50,11 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Doctor: ${doctor.firstName}"),
-        ),
-        body: Container(
+      appBar: AppBar(
+        title: Text("Doctor: ${doctor.firstName}"),
+      ),
+      body: Container(
         child: FutureBuilder(
           future: userFuture,
           builder: (ctx, snapshot) {
@@ -70,120 +76,120 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
             }
           },
         ),
-      ),);
+      ),
+    );
   }
-Widget buildItem()
-{const double h = 50;
-  return Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  child: Container(
-                    //height: mediaQuery.height * 0.25,
-                    width: double.infinity,
-                    alignment: Alignment.centerLeft,
-                    color: Theme.of(context).primaryColor,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                              margin: EdgeInsets.only(top: 15, left: 15),
-                              child: buildMyText(context, "Full Name",
-                                  "${doctor.firstName} ${doctor.lastName}")),
-                        ),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 15),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(
-                                context, "Username", doctor.username)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 15),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Email", doctor.email)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Bio", doctor.bio)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child:
-                                buildMyText(context, "Mobile", doctor.mobile)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child:
-                                buildMyText(context, "Gender", doctor.gender)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(
-                                context, "Address", doctor.address)),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Birth Date:",
-                                DateFormat.yMd().format(doctor.birthDate))),
-                        Divider(
-                          height: h,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 15,
-                            ),
-                            alignment: Alignment.centerLeft,
-                            child: buildMyText(context, "Specialization:",
-                                doctor.specialization)),
-                        Divider(
-                          height: h,
-                        ),
-                      ],
+
+  Widget buildItem() {
+    const double h = 50;
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              child: Container(
+                //height: mediaQuery.height * 0.25,
+                width: double.infinity,
+                alignment: Alignment.centerLeft,
+                color: Theme.of(context).primaryColor,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Divider(
+                      height: h,
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-}
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                          margin: EdgeInsets.only(top: 15, left: 15),
+                          child: buildMyText(context, "Full Name",
+                              "${doctor.firstName} ${doctor.lastName}")),
+                    ),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: 15),
+                        alignment: Alignment.centerLeft,
+                        child:
+                            buildMyText(context, "Username", doctor.username)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: 15),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Email", doctor.email)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Bio", doctor.bio)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Mobile", doctor.mobile)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Gender", doctor.gender)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Address", doctor.address)),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(context, "Birth Date:",
+                            DateFormat.yMd().format(doctor.birthDate))),
+                    Divider(
+                      height: h,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: 15,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: buildMyText(
+                            context, "Specialization:", doctor.specialization)),
+                    Divider(
+                      height: h,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildMyText(BuildContext ctx, String title, String value) {
     return Container(
         child: Row(

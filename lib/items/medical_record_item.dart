@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:amun/screens/show_image_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -85,15 +89,16 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                           onPressed: image.isEmpty
                               ? null
                               : () async {
-                                  try {
-                                    final ByteData bytes =
-                                        await rootBundle.load('$image');
-                                    await Share.file('esys image', '$image',
-                                        bytes.buffer.asUint8List(), '$image',
-                                        text: '$title');
-                                  } catch (e) {
-                                    print('error: $e');
-                                  }
+                                  var request = await HttpClient()
+                                      .getUrl(Uri.parse('https://shop.esys.eu/media/image/6f/8f/af/amlog_transport-berwachung.jpg')); //image url
+                                  var response = await request.close();
+                                  Uint8List bytes =
+                                      await consolidateHttpClientResponseBytes(
+                                          response);
+                                  await Share.file(
+                                      '$title', 'amlog.jpg', bytes, 'image/jpg',
+                                      text:
+                                          "$title\n $doctor\n $clerk\n$note\n");
                                 }
                           // widget.delete(widget.transaction.id),
                           );

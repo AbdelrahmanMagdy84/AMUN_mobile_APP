@@ -1,6 +1,7 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:amun/drawer/condtions_screen.dart';
 import 'package:amun/drawer/doctor_profile_screen.dart';
+import 'package:amun/drawer/doctors_or_clerks_screen.dart';
 import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/clerk_profile_screen.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
@@ -19,7 +20,7 @@ import './screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'drawer/facility_screen.dart';
 import 'drawer/medications_screen.dart';
-import 'drawer/my_doctors_screen.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
         ScannerScreen.routeName: (ctx) => ScannerScreen(),
-        MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
+        DoctorsOrClerksScreen.routeName: (ctx) => DoctorsOrClerksScreen(),
         AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
         ConditionsScreen.routeName: (ctx) => ConditionsScreen(),
         RemindersScreen.routeName: (ctx) => RemindersScreen(),
