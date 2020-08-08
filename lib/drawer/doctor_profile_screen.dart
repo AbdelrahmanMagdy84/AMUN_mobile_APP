@@ -9,42 +9,40 @@ class DoctorProfileScreen extends StatefulWidget {
 }
 
 class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
-  Future userFuture;
-  
-  //String userName; //required
+  String userName;
   Doctor doctor;
   @override
   didChangeDependencies() {
     final routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
     doctor = routeArgs['doctor'];
-    print('ssssssssssssssssssssssss');
-    print(doctor);
     super.didChangeDependencies();
   }
-/**get doctor by username */
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   print("getting user token");
-  //   getUserToken();
-  // }
 
-  // void getUserToken() {
-  //   TokenStorage().getUserToken().then((value) async {
-  //     setState(() {
-  //       _patientToken = value;
-  //     });
-  //     userFuture = APIClient()
-  //         .getDoctorService()
-  //         .getDoctorByUsername(_patientToken, userName)
-  //         .then((DoctorResponse doctorResponse) {
-  //       if (doctorResponse.success) {
-  //         doctor = doctorResponse.doctor;
-  //       }
-  //     });
-  //   });
-  // }
+  /* @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      print(_patientToken);
+      userFuture = APIClient()
+          .getDoctorService()
+          .getDoctorByUsername(userName, _patientToken)
+          .then((DoctorResponse doctorResponse) {
+        if (doctorResponse.success) {
+          doctor = doctorResponse.doctor;
+          print("doctor");
+        }
+      });
+    });
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +125,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                     Divider(
                       height: h,
                     ),
-                    Container(
-                        margin: EdgeInsets.only(
-                          left: 15,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Address", doctor.address)),
                     Divider(
                       height: h,
                     ),

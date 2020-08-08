@@ -18,11 +18,9 @@ class DoctorsResponse {
     for (final object in parsed) {
       parsedDoctors.add(object["doctor"]);
     }
-    print(parsedDoctors);
     List<Doctor> doctors =
         parsedDoctors.map((i) => Doctor.fromJson(i)).toList();
 
-    print(doctors);
     return DoctorsResponse(success: json["success"], doctors: doctors);
   }
 }

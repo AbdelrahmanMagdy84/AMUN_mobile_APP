@@ -2,7 +2,6 @@ import 'package:amun/drawer/doctor_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/Doctor.dart';
 import 'package:amun/models/Responses/DoctorsResponse.dart';
-import 'package:amun/reminders/ui/success_screen/success_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +80,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                           "${doctorList[index].firstName} ${doctorList[index].lastName}",
                           doctorList[index].username,
                           doctorList[index].specialization,
-                           doctorList[index],
+                          doctorList[index],
                           context);
                     },
                     itemCount: doctorList.length,
@@ -124,11 +123,10 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
     );
   }
 
-  Widget item(String name, String username, String specializationOrRole,Doctor myDoctor,
-      BuildContext ctx) {
+  Widget item(String name, String username, String specializationOrRole,
+      Doctor myDoctor, BuildContext ctx) {
     return GestureDetector(
       onTap: () {
-        
         Navigator.of(ctx).pushNamed(DoctorProfileScreen.routeName,
             arguments: {'doctor': myDoctor});
       },

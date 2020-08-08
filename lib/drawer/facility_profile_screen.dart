@@ -10,8 +10,6 @@ class FacilityProfileScreen extends StatefulWidget {
 }
 
 class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
-  Future userFuture;
-  
   //String userName; //required
   MedicalFacility facility;
   @override
@@ -19,8 +17,6 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
     final routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
     facility = routeArgs['facility'];
-    print('ssssssssssssssssssssssss');
-    print(facility);
     super.didChangeDependencies();
   }
 /**get doctor by username */
@@ -80,8 +76,8 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                           margin: EdgeInsets.only(top: 15, left: 15),
-                          child: buildMyText(context, "Name",
-                              "${facility.name}")),
+                          child:
+                              buildMyText(context, "Name", "${facility.name}")),
                     ),
                     Divider(
                       height: h,
@@ -89,8 +85,8 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
                     Container(
                         margin: EdgeInsets.only(left: 15),
                         alignment: Alignment.centerLeft,
-                        child:
-                            buildMyText(context, "Username", facility.username)),
+                        child: buildMyText(
+                            context, "Username", facility.username)),
                     Divider(
                       height: h,
                     ),
@@ -106,7 +102,8 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
                           left: 15,
                         ),
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Description", facility.description)),
+                        child: buildMyText(
+                            context, "Description", facility.description)),
                     Divider(
                       height: h,
                     ),
@@ -133,12 +130,11 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
                           left: 15,
                         ),
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Address", facility.address)),
+                        child:
+                            buildMyText(context, "Address", facility.address)),
                     Divider(
                       height: h,
                     ),
-                    
-                   
                   ],
                 ),
               ),

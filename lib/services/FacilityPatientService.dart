@@ -20,6 +20,7 @@ class FacilityPatientService {
     final http.Response response = await http.get(
         "${APIClient.baseUrl}/$endPoint/medicalFacility",
         headers: {"Content-Type": "application/json", "authorization": token});
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       return MedicalFacilitiesResponse.fromJson(jsonDecode(response.body));
     } else {
