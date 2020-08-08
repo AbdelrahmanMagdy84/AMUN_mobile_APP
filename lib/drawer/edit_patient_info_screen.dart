@@ -1,9 +1,14 @@
 import 'package:amun/drawer/main_drawer.dart';
+import 'package:amun/input_widgets/DialogManager.dart';
+import 'package:amun/models/Responses/PatientResponse.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
+import '../models/Patient.dart';
 
 class EditPatientInfo extends StatefulWidget {
   static final String routeName = "edt info route";
@@ -12,33 +17,65 @@ class EditPatientInfo extends StatefulWidget {
 }
 
 class _EditPatientInfoState extends State<EditPatientInfo> {
+  Patient patient;
+  @override
+  didChangeDependencies() {
+    final routeArgs =
+        ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    setState(() {
+      if (routeArgs != null) {
+        patient = routeArgs['information'];
+      }
+    });
+    super.didChangeDependencies();
+  }
+
   final _newPasswordConroller = TextEditingController();
-  String oldPassword = "7amobyka55";
-  DateTime oldBirthDate = DateTime.now();
+
   DateTime newBirthDate = DateTime.now();
   String gender;
-  String bloodType = "     O-";
+  String bloodType;
 
-  Widget buildTextField(
-      {String title,
-      TextEditingController controller,
-      TextInputType textInputType,
-      Function validator}) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: "$title",
-        ),
-        controller: controller,
-        keyboardType: textInputType,
-        onChanged: validator,
-      ),
-    );
+  String _patientToken;
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+    });
+  }
+
+  void updatePatient() {
+    Patient newpatient;
+    newpatient.password = _newPasswordConroller.text;
+    newpatient.birthDate = newBirthDate;
+    newpatient.bloodType = bloodType;
+    DialogManager.showLoadingDialog(context);
+    APIClient()
+        .getPatientService()
+        .updatePatient(newpatient, _patientToken)
+        .then((PatientResponse patientResponse) {
+      if (patientResponse.success) {
+        DialogManager.stopLoadingDialog(context);
+        Navigator.of(context).pop();
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Couldn't Edit");
+      print(e.toString());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    bloodType = patient.bloodType;
     return Scaffold(
       appBar: AppBar(title: Text("Edit information")),
       drawer: MainDrawer(),
@@ -60,7 +97,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                             top: 40,
                           ),
                           child: Text(
-                            "Password: $oldPassword",
+                            "Password: ${patient.password}",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           )),
@@ -92,7 +129,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                           top: 40,
                         ),
                         child: Text(
-                            "Birth Date:  ${DateFormat.yMd().format(oldBirthDate)}",
+                            "Birth Date:  ${DateFormat.yMd().format(patient.birthDate)}",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500)),
                       ),
@@ -102,7 +139,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                         child: DateTimeFormField(
                           formatter: DateFormat.yMd(),
                           onlyDate: true,
-                          initialValue: oldBirthDate,
+                          initialValue: patient.birthDate,
                           label: "Birth Date",
                           onSaved: (DateTime dateTime) =>
                               newBirthDate = dateTime,
@@ -127,7 +164,9 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(15),
                 child: FlatButton(
-                  onPressed: null,
+                  onPressed: () {
+                    updatePatient();
+                  },
                   child: Text(
                     'Save Changes',
                     style: TextStyle(
@@ -138,6 +177,24 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                 ))
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildTextField(
+      {String title,
+      TextEditingController controller,
+      TextInputType textInputType,
+      Function validator}) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+      child: TextField(
+        decoration: InputDecoration(
+          labelText: "$title",
+        ),
+        controller: controller,
+        keyboardType: textInputType,
+        onChanged: validator,
       ),
     );
   }

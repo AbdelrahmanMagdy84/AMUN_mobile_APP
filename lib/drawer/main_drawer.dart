@@ -4,15 +4,55 @@ import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/facility_screen.dart';
 import 'package:amun/drawer/medications_screen.dart';
 import 'package:amun/drawer/doctors_screen.dart';
-import 'package:amun/screens/categories_screen.dart';
-import 'package:amun/screens/login_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:amun/models/Responses/PatientResponse.dart';
+import 'package:amun/models/Patient.dart';
 
-class MainDrawer extends StatelessWidget {
+import 'package:amun/screens/categories_screen.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:amun/models/Patient.dart';
+
+class MainDrawer extends StatefulWidget {
+  @override
+  _MainDrawerState createState() => _MainDrawerState();
+}
+
+class _MainDrawerState extends State<MainDrawer> {
   final String name = "Abdelrahman Magdy";
   final username = "Ab!223344";
   final String age = "55";
   final String bloodType = "A Positive";
+
+  Patient patient;
+  Future userFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  String _patientToken;
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      userFuture = APIClient()
+          .getPatientService()
+          .getPatient(_patientToken)
+          .then((PatientResponse response) {
+        if (response.success) {
+          //  DialogManager.stopLoadingDialog(context);
+          patient = response.patient;
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,40 +67,68 @@ class MainDrawer extends StatelessWidget {
               //   height: 1,
               //   color: Theme.of(context).accentColor,
               // ),
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                child: Container(
-                  height: mediaQuery.height * 0.25,
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  color: Theme.of(context).primaryColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        //margin: EdgeInsets.only(top:20),
-                        child: Container(
-                            margin: EdgeInsets.only(top: 15, left: 15),
-                            child: buildMyText(context, "Name", name)),
-                      ),
-                      Divider(),
-                      Container(
-                          margin: EdgeInsets.only(left: 15),
-                          alignment: Alignment.centerLeft,
-                          child: buildMyText(context, "Username", username)),
-                      Divider(),
-                      Container(
-                          margin: EdgeInsets.only(left: 15),
-                          alignment: Alignment.centerLeft,
-                          child: buildMyText(context, "Age", age)),
-                      Divider(),
-                      Container(
-                          margin: EdgeInsets.only(left: 15, bottom: 15),
-                          alignment: Alignment.centerLeft,
-                          child: buildMyText(context, "Blood Type", bloodType)),
-                    ],
-                  ),
+              Container(
+                child: FutureBuilder(
+                  future: userFuture,
+                  builder: (ctx, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text("none");
+                        break;
+                      case ConnectionState.active:
+                      case ConnectionState.waiting:
+                        return Center(
+                            child: Text(
+                          "Loading ",
+                          style: Theme.of(context).textTheme.title,
+                        ));
+                        break;
+                      case ConnectionState.done:
+                        return ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          child: Container(
+                            height: mediaQuery.height * 0.25,
+                            width: double.infinity,
+                            alignment: Alignment.centerLeft,
+                            color: Theme.of(context).primaryColor,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  //margin: EdgeInsets.only(top:20),
+                                  child: Container(
+                                      margin:
+                                          EdgeInsets.only(top: 15, left: 15),
+                                      child: buildMyText(context, "Name",
+                                          "${patient.firstName} ${patient.lastName}")),
+                                ),
+                                Divider(),
+                                Container(
+                                    margin: EdgeInsets.only(left: 15),
+                                    alignment: Alignment.centerLeft,
+                                    child: buildMyText(
+                                        context, "Username", patient.username)),
+                                Divider(),
+                                Container(
+                                    margin: EdgeInsets.only(left: 15),
+                                    alignment: Alignment.centerLeft,
+                                    child: buildMyText(context, "Birth Date",
+                                        "${DateFormat.yMd().format(patient.birthDate)}")),
+                                Divider(),
+                                Container(
+                                    margin:
+                                        EdgeInsets.only(left: 15, bottom: 15),
+                                    alignment: Alignment.centerLeft,
+                                    child: buildMyText(context, "Blood Type",
+                                        patient.bloodType)),
+                              ],
+                            ),
+                          ),
+                        );
+                        break;
+                    }
+                  },
                 ),
               ),
 
@@ -86,40 +154,31 @@ class MainDrawer extends StatelessWidget {
               buildListTile(context, 'Allergies', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(
-                  context,
-                  AllergiesScreen.routeName,
-                );
+                Navigator.pushNamed(context, AllergiesScreen.routeName,
+                    arguments: {'allergies': patient.allergies});
               }),
               buildListTile(context, 'Medications', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(
-                  context,
-                  MedicationsScreen.routeName,
-                );
+                Navigator.pushNamed(context, MedicationsScreen.routeName,
+                    arguments: {'medications': patient.medications});
               }),
               buildListTile(context, 'Conditions', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(
-                  context,
-                  ConditionsScreen.routeName,
-                );
+                Navigator.pushNamed(context, ConditionsScreen.routeName,
+                    arguments: {'conditions': patient.conditions});
               }),
               buildListTile(context, 'Edit information', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(
-                  context,
-                  EditPatientInfo.routeName,
-                );
+                Navigator.pushNamed(context, EditPatientInfo.routeName,
+                    arguments: {'information': patient});
               }),
               Container(
                 color: Theme.of(context).accentColor,
                 child: buildListTile(context, 'Logout', () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context,'/', (r) => false);
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false);
                 }),
               ),
             ],

@@ -1,25 +1,26 @@
 import 'package:amun/models/Doctor.dart';
+import 'package:amun/models/MedicalFacility.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DoctorProfileScreen extends StatefulWidget {
-  static final String routeName = "Doctor Profile route name";
+class FacilityProfileScreen extends StatefulWidget {
+  static final String routeName = "facility profile route name";
   @override
-  _DoctorProfileScreenState createState() => _DoctorProfileScreenState();
+  _FacilityProfileScreenState createState() => _FacilityProfileScreenState();
 }
 
-class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
+class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
   Future userFuture;
   
   //String userName; //required
-  Doctor doctor;
+  MedicalFacility facility;
   @override
   didChangeDependencies() {
     final routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
-    doctor = routeArgs['doctor'];
+    facility = routeArgs['facility'];
     print('ssssssssssssssssssssssss');
-    print(doctor);
+    print(facility);
     super.didChangeDependencies();
   }
 /**get doctor by username */
@@ -50,7 +51,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doctor: ${doctor.firstName}"),
+        title: Text("Facility: ${facility.name}"),
       ),
       body: buildItem(),
     );
@@ -79,8 +80,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                           margin: EdgeInsets.only(top: 15, left: 15),
-                          child: buildMyText(context, "Full Name",
-                              "${doctor.firstName} ${doctor.lastName}")),
+                          child: buildMyText(context, "Name",
+                              "${facility.name}")),
                     ),
                     Divider(
                       height: h,
@@ -89,14 +90,14 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                         margin: EdgeInsets.only(left: 15),
                         alignment: Alignment.centerLeft,
                         child:
-                            buildMyText(context, "Username", doctor.username)),
+                            buildMyText(context, "Username", facility.username)),
                     Divider(
                       height: h,
                     ),
                     Container(
                         margin: EdgeInsets.only(left: 15),
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Email", doctor.email)),
+                        child: buildMyText(context, "Email", facility.email)),
                     Divider(
                       height: h,
                     ),
@@ -105,7 +106,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           left: 15,
                         ),
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Bio", doctor.bio)),
+                        child: buildMyText(context, "Description", facility.description)),
                     Divider(
                       height: h,
                     ),
@@ -114,7 +115,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           left: 15,
                         ),
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Mobile", doctor.mobile)),
+                        child: buildMyText(context, "Mobile", facility.mobile)),
                     Divider(
                       height: h,
                     ),
@@ -123,7 +124,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           left: 15,
                         ),
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Gender", doctor.gender)),
+                        child: buildMyText(context, "Type", facility.type)),
                     Divider(
                       height: h,
                     ),
@@ -132,30 +133,12 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           left: 15,
                         ),
                         alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Address", doctor.address)),
+                        child: buildMyText(context, "Address", facility.address)),
                     Divider(
                       height: h,
                     ),
-                    Container(
-                        margin: EdgeInsets.only(
-                          left: 15,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        child: buildMyText(context, "Birth Date:",
-                            DateFormat.yMd().format(doctor.birthDate))),
-                    Divider(
-                      height: h,
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(
-                          left: 15,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        child: buildMyText(
-                            context, "Specialization:", doctor.specialization)),
-                    Divider(
-                      height: h,
-                    ),
+                    
+                   
                   ],
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:amun/drawer/facility_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -11,13 +12,23 @@ class MedicationsScreen extends StatefulWidget {
 }
 
 class _MedicationsScreenState extends State<MedicationsScreen> {
-  String medication =
-      "asasasasaaaaaaaaaaaaaaaaaaaaaasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaax";
+  
+  List<String> medications;
+  @override
+  didChangeDependencies() {
+    final routeArgs =
+        ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    setState(() {
+      if (routeArgs != null) {
+        medications = routeArgs['medications'];
+      }
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print("--------------");
-    print(medication.length);
+   print(medications);
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
@@ -25,14 +36,18 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
       ),
       body: Container(
         padding: EdgeInsets.only(left: 10, right: 10, top: 20),
-        child: GridView.count(
-            crossAxisCount: 2,
-            childAspectRatio: 1 / 1,
-            crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
-            mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
-            children: <Widget>[
-              buildItem(),
-            ]),
+        child: medications == null
+            ? Center(
+                child: Text("No Medications Add"),
+              )
+            : GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 1 / 1,
+                crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
+                mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
+                children: List.generate(medications.length, (index) {
+                  return buildItem(medications[index]);
+                })),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
@@ -46,7 +61,7 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
     );
   }
 
-  Widget buildItem() {
+  Widget buildItem(String medication) {
     return Container(
       child: LayoutBuilder(
         builder: (ctx, constraints) {

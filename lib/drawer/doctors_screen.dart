@@ -57,44 +57,38 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
         title: Text(screenTitle),
       ),
       drawer: MainDrawer(),
-      body: SingleChildScrollView(
+      body: Container(
         child: Container(
-          child: Column(
-            children: <Widget>[
-              buildSearch(),
-              Container(
-                child: FutureBuilder(
-                  future: userFuture,
-                  builder: (ctx, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                        return Text("none");
-                        break;
-                      case ConnectionState.active:
-                      case ConnectionState.waiting:
-                        return Center(
-                            child: Text(
-                          "Loading ",
-                          style: Theme.of(context).textTheme.title,
-                        ));
-                        break;
-                      case ConnectionState.done:
-                        return ListView.builder(
-                          itemBuilder: (ctx, index) {
-                            return item(
-                                "${doctorList[index].firstName} ${doctorList[index].lastName}",
-                                doctorList[index].username,
-                                doctorList[index].specialization,
-                                context);
-                          },
-                          itemCount: doctorList.length,
-                        );
-                        break;
-                    }
-                  },
-                ),
-              ),
-            ],
+          child: FutureBuilder(
+            future: userFuture,
+            builder: (ctx, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Text("none");
+                  break;
+                case ConnectionState.active:
+                case ConnectionState.waiting:
+                  return Center(
+                      child: Text(
+                    "Loading ",
+                    style: Theme.of(context).textTheme.title,
+                  ));
+                  break;
+                case ConnectionState.done:
+                  return ListView.builder(
+                    itemBuilder: (ctx, index) {
+                      return item(
+                          "${doctorList[index].firstName} ${doctorList[index].lastName}",
+                          doctorList[index].username,
+                          doctorList[index].specialization,
+                           doctorList[index],
+                          context);
+                    },
+                    itemCount: doctorList.length,
+                  );
+                  break;
+              }
+            },
           ),
         ),
       ),
@@ -130,12 +124,13 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
     );
   }
 
-  Widget item(String name, String username, String specializationOrRole,
+  Widget item(String name, String username, String specializationOrRole,Doctor myDoctor,
       BuildContext ctx) {
     return GestureDetector(
       onTap: () {
+        
         Navigator.of(ctx).pushNamed(DoctorProfileScreen.routeName,
-            arguments: {'userName': username});
+            arguments: {'doctor': myDoctor});
       },
       child: LayoutBuilder(
         builder: (context, constraints) {

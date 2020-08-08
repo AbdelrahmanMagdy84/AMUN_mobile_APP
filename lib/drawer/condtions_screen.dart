@@ -11,9 +11,102 @@ class ConditionsScreen extends StatefulWidget {
 }
 
 class _ConditionsScreenState extends State<ConditionsScreen> {
-  String condition =
-      "asasasasaaaaaaaaaaaaaaaaaaaaaasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaax";
+  List<String> conditions;
+  @override
+  didChangeDependencies() {
+    final routeArgs =
+        ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    setState(() {
+      if (routeArgs != null) {
+        conditions = routeArgs['conditions'];
+      }
+    });
+    super.didChangeDependencies();
+  }
+
   final conditionController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: MainDrawer(),
+      appBar: AppBar(
+        title: Text('conditions'),
+      ),
+      body: Container(
+        padding: EdgeInsets.only(left: 10, right: 10, top: 20),
+        child: conditions == null
+            ? Center(
+                child: Text("No Conditions Add"),
+              )
+            : GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 1 / 1,
+                crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
+                mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
+                children: List.generate(conditions.length, (index) {
+                  return buildItem(conditions[index]);
+                })),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => startAddNewRecord(context),
+        child: Icon(
+          Icons.add,
+          size: 40,
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
+    );
+  }
+
+  Widget buildItem(String condition) {
+    return Container(
+      child: LayoutBuilder(
+        builder: (ctx, constraints) {
+          return Container(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor.withOpacity(.2),
+                    Theme.of(context).primaryColor
+                  ], //here you can change the color
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: Container(
+                padding: const EdgeInsets.only(top: 10),
+                child: Container(
+                  width: constraints.maxWidth * 0.8,
+                  padding: EdgeInsets.only(top: 5, left: 5),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'Condition: ',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          '$condition',
+                          maxLines: 5,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void startAddNewRecord(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
@@ -23,7 +116,7 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
               padding: const EdgeInsets.all(10.0),
               child: Scaffold(
                 body: SingleChildScrollView(
-                                  child: Column(
+                  child: Column(
                     children: <Widget>[
                       TextField(
                         decoration: InputDecoration(
@@ -56,85 +149,6 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
             behavior: HitTestBehavior.opaque,
           );
         });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print("--------------");
-    print(condition.length);
-    return Scaffold(
-      drawer: MainDrawer(),
-      appBar: AppBar(
-        title: Text('conditions'),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: GridView.count(
-            crossAxisCount: 2,
-            childAspectRatio: 1 / 1,
-            crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
-            mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
-            children: <Widget>[
-              buildItem(),
-            ]),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => startAddNewRecord(context),
-        child: Icon(
-          Icons.add,
-          size: 40,
-          color: Theme.of(context).primaryColor,
-        ),
-      ),
-    );
-  }
-
-  Widget buildItem() {
-    return Container(
-      child: LayoutBuilder(
-        builder: (ctx, constraints) {
-          return Container(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor.withOpacity(.2),
-                    Theme.of(context).primaryColor
-                  ], //here you can change the color
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Container(
-                padding: const EdgeInsets.only(top: 10),
-                child: Container(
-                  width: constraints.maxWidth * 0.8,
-                  padding: EdgeInsets.only(top: 5, left: 5),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Condtion: ',
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          '$condition',
-                          maxLines: 5,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
   }
 }
 

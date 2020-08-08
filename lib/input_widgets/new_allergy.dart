@@ -1,6 +1,6 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:intl/intl.dart';
+
 import '../static_data/allergy_data.dart';
 import 'package:flutter/material.dart';
 
@@ -10,13 +10,12 @@ class NewAllergy extends StatefulWidget {
 }
 
 class _NewAllergyState extends State<NewAllergy> {
-  DateTime date;
   String selectedAllergy;
   String selectedCategory;
 
   Widget buildDropDownSearch(List<String> items, String title) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+      padding: EdgeInsets.symmetric(vertical: 60, horizontal: 50),
       child: Column(
         children: <Widget>[
           DropdownSearch<String>(
@@ -39,33 +38,15 @@ class _NewAllergyState extends State<NewAllergy> {
     );
   }
 
-  void displayDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      if (pickedDate == null)
-        return;
-      else
-        setState(() {
-          date = pickedDate;
-        });
-    });
-  }
-
-  void saveNewAllergy(
-      String selectedAllergy, DateTime date, String selectedCategory) {
+  void saveNewAllergy(String selectedAllergy, String selectedCategory) {
     selectedCategory = selectAllergyCategory();
     selectedAllergy = selectedAllergy.substring(8);
     Navigator.pop(context);
-    Navigator.of(context).pushReplacementNamed(AllergiesScreen.routeName,
-        arguments: {
-          'allergy': selectedAllergy,
-          'type': selectedCategory,
-          'date': date
-        });
+    Navigator.of(context)
+        .pushReplacementNamed(AllergiesScreen.routeName, arguments: {
+      'allergy': selectedAllergy,
+      'type': selectedCategory,
+    });
   }
 
   String selectAllergyCategory() {
@@ -90,7 +71,7 @@ class _NewAllergyState extends State<NewAllergy> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top:15),
+              padding: const EdgeInsets.only(top: 15),
               child: Container(
                 child: Text(
                   'Allergies',
@@ -103,34 +84,11 @@ class _NewAllergyState extends State<NewAllergy> {
             ),
             Divider(),
             buildDropDownSearch(allergies, 'Allergies'),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 40),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      date == null
-                          ? 'No date chosen'
-                          : 'Picked Date: ${DateFormat.yMd().format(date)}',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  ),
-                  FloatingActionButton(
-                    onPressed: displayDatePicker,
-                    child: Icon(
-                      Icons.date_range,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  )
-                ],
-              ),
-            ),
             Container(
               margin: EdgeInsets.all(30),
               child: FlatButton(
                 onPressed: () =>
-                    saveNewAllergy(selectedAllergy, date, selectedCategory),
+                    saveNewAllergy(selectedAllergy, selectedCategory),
                 color: Theme.of(context).accentColor,
                 child: Text(
                   'Save',

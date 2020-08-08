@@ -27,7 +27,7 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
         height: double.infinity,
         width: double.infinity,
         child: PhotoView(
-          imageProvider: AssetImage(image),
+          imageProvider: NetworkImage(image),
         ),
       ),
     );

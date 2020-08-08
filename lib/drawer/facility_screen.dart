@@ -1,3 +1,4 @@
+import 'package:amun/drawer/facility_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/MedicalFacility.dart';
 import 'package:amun/models/Responses/MedicalFacilitiesResponse.dart';
@@ -21,10 +22,9 @@ class _FacilityScreenState extends State<FacilityScreen> {
   List<MedicalFacility> facilityList;
   Future userFuture;
   @override
-  void initState() {
-    super.initState();
-    print("getting user token");
+  didChangeDependencies() {
     getUserToken();
+    super.didChangeDependencies();
   }
 
   String _patientToken;
@@ -33,19 +33,14 @@ class _FacilityScreenState extends State<FacilityScreen> {
       setState(() {
         _patientToken = value;
       });
-      print("token = $_patientToken");
-      print("x------------------------------");
       userFuture = APIClient()
           .getFacilityPatientService()
           .getMedicalFacilities(_patientToken)
-          .then(( MedicalFacilitiesResponse responseList) {
+          .then((MedicalFacilitiesResponse responseList) {
         if (responseList.success) {
-          //  DialogManager.stopLoadingDialog(context);
+          print("success--------------------------------------------------");
           facilityList = responseList.medicalFacilities;
-          print("------------------------------");
-          print(responseList.medicalFacilities.length);
-        } else {
-          print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+          print(facilityList);
         }
       });
     });
@@ -58,44 +53,40 @@ class _FacilityScreenState extends State<FacilityScreen> {
         title: Text("Facilities"),
       ),
       drawer: MainDrawer(),
-      body: SingleChildScrollView(
-              child: Container(
-          child: Column(
-            children: <Widget>[
-              buildSearch(),
-               Container(
-                child: FutureBuilder(
-                  future: userFuture,
-                  builder: (ctx, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                        return Text("none");
-                        break;
-                      case ConnectionState.active:
-                      case ConnectionState.waiting:
-                        return Center(
-                            child: Text(
-                          "Loading ",
-                          style: Theme.of(context).textTheme.title,
-                        ));
-                        break;
-                      case ConnectionState.done:
-                        return ListView.builder(
+      body: Container(
+        child: Container(
+          child: FutureBuilder(
+            future: userFuture,
+            builder: (ctx, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Text("none");
+                  break;
+                case ConnectionState.active:
+                case ConnectionState.waiting:
+                  return Center(
+                      child: Text(
+                    "Loading ",
+                    style: Theme.of(context).textTheme.title,
+                  ));
+                  break;
+                case ConnectionState.done:
+                  return facilityList == null
+                      ? Center(child: Text("no facilities"))
+                      : ListView.builder(
                           itemBuilder: (ctx, index) {
                             return item(
-                                "${facilityList[index].name}",
+                                facilityList[index].name,
                                 facilityList[index].username,
                                 facilityList[index].description,
+                                facilityList[index],
                                 context);
                           },
                           itemCount: facilityList.length,
                         );
-                        break;
-                    }
-                  },
-                ),
-              ),
-            ],
+                  break;
+              }
+            },
           ),
         ),
       ),
@@ -131,64 +122,71 @@ class _FacilityScreenState extends State<FacilityScreen> {
   }
 }
 
-Widget item(String name, String username, String specialization, BuildContext context) {
+Widget item(String name, String username, String specialization,
+    MedicalFacility myfacility, BuildContext context) {
   return LayoutBuilder(
     builder: (context, constraints) {
-      return Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          height: MediaQuery.of(context).size.height * 0.22,
-          child: Container(
-            child: Card(
-              elevation: 4,
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: constraints.maxWidth * 0.8,
-                      padding: EdgeInsets.only(top: 5, left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              'Name: $name',
-                              style: Theme.of(context).textTheme.title,
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(FacilityProfileScreen.routeName,
+              arguments: {'facility': myfacility});
+        },
+        child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            height: MediaQuery.of(context).size.height * 0.22,
+            child: Container(
+              child: Card(
+                elevation: 4,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: constraints.maxWidth * 0.8,
+                        padding: EdgeInsets.only(top: 5, left: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Name: $name',
+                                style: Theme.of(context).textTheme.title,
+                              ),
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              'Username: $username ',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Username: $username ',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          Container(
-                            // padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              'Specialization: $specialization ',
-                              maxLines: 2,
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          )
-                        ],
+                            Container(
+                              // padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Specialization: $specialization ',
+                                maxLines: 2,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Theme.of(context).errorColor,
-                          ),
-                          onPressed: () {}),
-                    ),
-                  ],
+                      Container(
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).errorColor,
+                            ),
+                            onPressed: () {}),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ));
+            )),
+      );
     },
   );
 }

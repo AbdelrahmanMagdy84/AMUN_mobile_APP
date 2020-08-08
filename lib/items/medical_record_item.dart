@@ -19,7 +19,8 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
 
   @override
   Widget build(BuildContext context) {
-    String image = 'assets/images/pres.png';
+    String image =
+        'https://shop.esys.eu/media/image/6f/8f/af/amlog_transport-berwachung.jpg';
     String facility = "Elorman";
     String title = "Dental Prescrption";
     String doctor = "Ahmed Abdelaziz";
@@ -60,7 +61,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                     }),
                     child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
-                        child: Image.asset(
+                        child: Image.network(
                           image,
                           fit: BoxFit.fitWidth,
                           height: 100,
@@ -90,7 +91,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                               ? null
                               : () async {
                                   var request = await HttpClient()
-                                      .getUrl(Uri.parse('https://shop.esys.eu/media/image/6f/8f/af/amlog_transport-berwachung.jpg')); //image url
+                                      .getUrl(Uri.parse(image)); //image url
                                   var response = await request.close();
                                   Uint8List bytes =
                                       await consolidateHttpClientResponseBytes(
@@ -98,7 +99,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                                   await Share.file(
                                       '$title', 'amlog.jpg', bytes, 'image/jpg',
                                       text:
-                                          "$title\n $doctor\n $clerk\n$note\n");
+                                          " Title: $title\n Doctor: $doctor\n Clerk: $clerk\n Note: $note\n");
                                 }
                           // widget.delete(widget.transaction.id),
                           );
