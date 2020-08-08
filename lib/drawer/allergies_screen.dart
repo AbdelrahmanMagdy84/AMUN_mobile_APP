@@ -135,7 +135,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
         context: ctx,
         enableDrag: false,
         builder: (_) {
-          return NewAllergy();
+          return NewAllergy(allergies);
         });
   }
   
