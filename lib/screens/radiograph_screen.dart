@@ -26,12 +26,12 @@ class _RadiographScreenState extends State<RadiographScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Radiograph")),
       body: Container(
-        child: ListView.builder(
-          itemBuilder: (ctx, index) {
-            return MedicalRecordItem();
-          },
-          itemCount: 1,
-        ),
+        // child: ListView.builder(
+        //   itemBuilder: (ctx, index) {
+        //     return MedicalRecordItem();
+        //   },
+        //   itemCount: 1,
+        // ),
       ),
        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
