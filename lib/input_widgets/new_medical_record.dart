@@ -49,26 +49,17 @@ String _patientToken;
 /*------------------------------- */
 /*add function */
   void addMeasure() {
+    //MedicalFile newMedicalFile=_imageFile; <--------
+    _imageFile;
+    
     MedicalRecord medicalRecord=MedicalRecord(title:titleController.text,note: noteController.text,date: date,);
 
     APIClient()
         .getMedicalRecordService()
-        .addBloodGlucoseMeasure(medicalRecord, _patientToken)
+        .addMedicalRecords(medicalRecord, _patientToken)
         .then((MedicalRecordResponse medicalRecordResponse) {
       if (medicalRecordResponse.success) {
        
-        Navigator.of(context).pop();
-        switch(widget.screenTitle){
-          case "Prescription":
-           Navigator.of(context).pushReplacementNamed(PrescriptionScreen.routeName);
-          break;
-          case "Radiograph":
-           Navigator.of(context).pushReplacementNamed(RadiographScreen.routeName);
-          break;
-          case "Lab Test":
-           Navigator.of(context).pushReplacementNamed(LabTestScreen.routeName);
-          break;
-        }
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);
@@ -81,6 +72,21 @@ String _patientToken;
       {DateTime date, String title, String doctor, String note, String image}) {
     MedicalRecord medicalRecord =
         MedicalRecord(date: date, title: title, id: "1", note: note);
+        
+        
+        // Navigator.of(context).pop();
+        // switch(widget.screenTitle){
+        //   case "Prescription":
+        //    Navigator.of(context).pushReplacementNamed(PrescriptionScreen.routeName);
+        //   break;
+        //   case "Radiograph":
+        //    Navigator.of(context).pushReplacementNamed(RadiographScreen.routeName);
+        //   break;
+        //   case "Lab Test":
+        //    Navigator.of(context).pushReplacementNamed(LabTestScreen.routeName);
+        //   break;
+        // }
+
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -88,6 +94,7 @@ String _patientToken;
 
   @override
   Widget build(BuildContext context) {
+    print(_imageFile);
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
