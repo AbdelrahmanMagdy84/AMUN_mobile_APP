@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:amun/models/MedicalRecord.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -15,18 +16,14 @@ class NewMedicalRecord extends StatefulWidget {
 
 class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
   DateTime dateTime = DateTime.now();
-  // String title;
-  // String doctor;
-  // String note;
-  // String image;
-
   final titleController = TextEditingController();
   final facilityNameController = TextEditingController();
   final doctorNameController = TextEditingController();
   final clerkNameController = TextEditingController();
   final noteController = TextEditingController();
   DateTime date;
-
+  Future userFuture;
+  @override
   Widget buildTextField(String title, TextEditingController controller,
       TextInputType textInputType) {
     return Container(
@@ -111,107 +108,175 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
         note: note);
   }
 
+  final _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+  File file;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 15),
-                child: Center(
-                  child: Text(
-                    "Add New ${widget.title}",
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
+        child: Form(
+          autovalidate: _autoValidate,
+          key: _formKey,
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 15),
+                  child: Center(
+                    child: Text(
+                      "Add New ${widget.title}",
+                      style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              ),
-              Divider(),
-              buildTextField(
-                'Title',
-                titleController,
-                TextInputType.text,
-              ),
-              Divider(),
-              buildTextField(
-                'Facility',
-                facilityNameController,
-                TextInputType.text,
-              ),
-              buildTextField(
-                'Doctor',
-                doctorNameController,
-                TextInputType.text,
-              ),
-              buildTextField(
-                'Clerk',
-                clerkNameController,
-                TextInputType.text,
-              ),
-              buildTextField(
-                'Note',
-                noteController,
-                TextInputType.text,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      date == null
-                          ? 'No date chosen'
-                          : 'Picked Date: ${DateFormat.yMd().format(date)}',
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                  ),
-                  FloatingActionButton(
-                    onPressed: displayDatePicker,
-                    child: Icon(
-                      Icons.date_range,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: IconButton(
-                      icon: Icon(Icons.image,
-                          color: Theme.of(context).primaryColor),
-                      onPressed: () => _openGallery(context),
-                    ),
-                  ),
-                  Expanded(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.add_a_photo,
-                        color: Theme.of(context).primaryColor,
+                Divider(),
+                buildTextField(
+                  'Title',
+                  titleController,
+                  TextInputType.text,
+                ),
+                buildTextField(
+                  'Note',
+                  noteController,
+                  TextInputType.text,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        child: Expanded(
+                          child: Text(
+                            date == null
+                                ? 'No date chosen'
+                                : 'Picked Date: ${DateFormat.yMd().format(date)}',
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                        ),
                       ),
-                      onPressed: () => _openCamera(context),
+                      FloatingActionButton(
+                        onPressed: displayDatePicker,
+                        child: Icon(
+                          Icons.date_range,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: IconButton(
+                        icon: Icon(Icons.image,
+                            color: Theme.of(context).primaryColor),
+                        onPressed: () => _openGallery(context),
+                      ),
+                    ),
+                    Expanded(
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.add_a_photo,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onPressed: () => _openCamera(context),
+                      ),
+                    ),
+                  ],
+                ),
+                setImageView(),
+                Container(
+                  margin: EdgeInsets.all(30),
+                  child: FlatButton(
+                    onPressed: save,
+                    color: Theme.of(context).accentColor,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                ],
-              ),
-              setImageView(),
-              FlatButton(
-                  padding: EdgeInsets.all(30),
-                  onPressed: save,
-                  color: Theme.of(context).accentColor,
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ))
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+// Divider(),
+// buildTextField(
+//   'Facility',
+//   facilityNameController,
+//   TextInputType.text,
+// ),
+// buildTextField(
+//   'Doctor',
+//   doctorNameController,
+//   TextInputType.text,
+// ),
+// buildTextField(
+//   'Clerk',
+//   clerkNameController,
+//   TextInputType.text,
+// ),
+// Row(
+//                   children: <Widget>[
+//                     Expanded(
+//                       child: IconButton(
+//                         icon: Icon(
+//                           Icons.picture_as_pdf,
+//                           color: Theme.of(context).primaryColor,
+//                         ),
+//                         onPressed: () async {
+//                           file = await FilePicker.getFile(
+//                             type: FileType.custom,
+//                             allowedExtensions: ['pdf', 'doc', 'png', 'jpg'],
+//                           );
+//                         },
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//** */
+// FutureBuilder(
+//                   future: FilePicker.getFile(
+//                     type: FileType.custom,
+//                     allowedExtensions: ['pdf', 'doc', 'png', 'jpg'],
+//                   ),
+//                   builder: (ctx, snapshot) {
+//                     switch (snapshot.connectionState) {
+//                       case ConnectionState.none:
+//                         return Text("none");
+//                         break;
+//                       case ConnectionState.active:
+//                       case ConnectionState.waiting:
+//                         return Center(
+//                             child: Text(
+//                           "Loading ",
+//                           style: Theme.of(context).textTheme.title,
+//                         ));
+//                         break;
+//                       case ConnectionState.done:
+//                         String path = snapshot.data;
+//                         if (path != null && path.endsWith('g')) {
+//                           setImageView();
+//                         } else {
+//                           return Padding(
+//                             padding: const EdgeInsets.all(8.0),
+//                             child: Card(
+//                               child: Text("file: ${snapshot.data.toString()}"),
+//                             ),
+//                           );
+//                         }
+//                         break;
+//                     }
+//                   },
+//                 ),

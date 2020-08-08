@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:amun/screens/show_image_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 
@@ -21,7 +19,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
   Widget build(BuildContext context) {
     String image =
         'https://shop.esys.eu/media/image/6f/8f/af/amlog_transport-berwachung.jpg';
-    String facility = "Elorman";
+    String facility = "ffffffffffff";
     String title = "Dental Prescrption";
     String doctor = "Ahmed Abdelaziz";
     String clerk = "soliman Eid";
@@ -45,14 +43,35 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ))),
               Divider(),
-              FittedBox(child: Text("Facility: $facility")),
-              Divider(),
-              FittedBox(child: Text("Doctor: DR.$doctor")),
-              Divider(),
-              FittedBox(child: Text("Clerk: $clerk")),
+              if (facility != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FittedBox(
+                      child: Text("Facility: $facility"),
+                    ),
+                    Divider(),
+                  ],
+                )
+              else
+                Container(),
+              if (doctor != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FittedBox(child: Text("Doctor: DR.$doctor")),
+                    Divider(),
+                  ],
+                )
+              else
+                Container(),
+              if (clerk != null)
+                FittedBox(child: Text("Clerk: $clerk"))
+              else
+                Container(),
               Divider(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   GestureDetector(
                     onTap: () => Navigator.of(context)
