@@ -1,12 +1,20 @@
 import 'dart:io';
 import 'package:amun/models/MedicalRecord.dart';
+import 'package:amun/models/Responses/MedicalRecordResponse.dart';
+import 'package:amun/screens/lab_test_screen.dart';
+import 'package:amun/screens/prescription_screen.dart';
+import 'package:amun/screens/radiograph_screen.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import 'DialogManager.dart';
+
 class NewMedicalRecord extends StatefulWidget {
-  final String title;
-  NewMedicalRecord(this.title);
+  final String screenTitle;
+  NewMedicalRecord(this.screenTitle);
 
   @override
   _NewPrescreptionOrRadiographState createState() =>
@@ -20,6 +28,54 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
   DateTime date;
   File _imageFile;
   //File file;
+/* init state for token */
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+        
+String _patientToken;
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      //print(_patientToken);
+    });
+  }
+
+/*------------------------------- */
+/*add function */
+  void addMeasure() {
+    MedicalRecord medicalRecord=MedicalRecord(title:titleController.text,note: noteController.text,date: date,);
+
+    APIClient()
+        .getMedicalRecordService()
+        .addBloodGlucoseMeasure(medicalRecord, _patientToken)
+        .then((MedicalRecordResponse medicalRecordResponse) {
+      if (medicalRecordResponse.success) {
+       
+        Navigator.of(context).pop();
+        switch(widget.screenTitle){
+          case "Prescription":
+           Navigator.of(context).pushReplacementNamed(PrescriptionScreen.routeName);
+          break;
+          case "Radiograph":
+           Navigator.of(context).pushReplacementNamed(RadiographScreen.routeName);
+          break;
+          case "Lab Test":
+           Navigator.of(context).pushReplacementNamed(LabTestScreen.routeName);
+          break;
+        }
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Couldn't add measure");
+      print(e.toString());
+    });
+  }
 
   void save(
       {DateTime date, String title, String doctor, String note, String image}) {
@@ -44,7 +100,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
                   padding: EdgeInsets.only(top: 15),
                   child: Center(
                     child: Text(
-                      "Add New ${widget.title}",
+                      "Add New ${widget.screenTitle}",
                       style: TextStyle(
                           color: Theme.of(context).accentColor,
                           fontSize: 24,
@@ -195,72 +251,3 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
     });
   }
 }
-// Divider(),
-// buildTextField(
-//   'Facility',
-//   facilityNameController,
-//   TextInputType.text,
-// ),
-// buildTextField(
-//   'Doctor',
-//   doctorNameController,
-//   TextInputType.text,
-// ),
-// buildTextField(
-//   'Clerk',
-//   clerkNameController,
-//   TextInputType.text,
-// ),
-// Row(
-//                   children: <Widget>[
-//                     Expanded(
-//                       child: IconButton(
-//                         icon: Icon(
-//                           Icons.picture_as_pdf,
-//                           color: Theme.of(context).primaryColor,
-//                         ),
-//                         onPressed: () async {
-//                           file = await FilePicker.getFile(
-//                             type: FileType.custom,
-//                             allowedExtensions: ['pdf', 'doc', 'png', 'jpg'],
-//                           );
-//                         },
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//** */
-// FutureBuilder(
-//                   future: FilePicker.getFile(
-//                     type: FileType.custom,
-//                     allowedExtensions: ['pdf', 'doc', 'png', 'jpg'],
-//                   ),
-//                   builder: (ctx, snapshot) {
-//                     switch (snapshot.connectionState) {
-//                       case ConnectionState.none:
-//                         return Text("none");
-//                         break;
-//                       case ConnectionState.active:
-//                       case ConnectionState.waiting:
-//                         return Center(
-//                             child: Text(
-//                           "Loading ",
-//                           style: Theme.of(context).textTheme.title,
-//                         ));
-//                         break;
-//                       case ConnectionState.done:
-//                         String path = snapshot.data;
-//                         if (path != null && path.endsWith('g')) {
-//                           setImageView();
-//                         } else {
-//                           return Padding(
-//                             padding: const EdgeInsets.all(8.0),
-//                             child: Card(
-//                               child: Text("file: ${snapshot.data.toString()}"),
-//                             ),
-//                           );
-//                         }
-//                         break;
-//                     }
-//                   },
-//                 ),

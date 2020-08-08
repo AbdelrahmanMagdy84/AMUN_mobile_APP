@@ -39,7 +39,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: NewMedicalRecord("New Prescription"),
+            child: NewMedicalRecord("Prescription"),
             onTap: () {},
             behavior: HitTestBehavior.opaque,
           );

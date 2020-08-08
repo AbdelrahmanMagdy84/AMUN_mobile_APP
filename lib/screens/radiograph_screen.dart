@@ -14,7 +14,7 @@ class _RadiographScreenState extends State<RadiographScreen> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: NewMedicalRecord("New Radiograph"),
+            child: NewMedicalRecord("Radiograph"),
             onTap: () {},
             behavior: HitTestBehavior.opaque,
           );

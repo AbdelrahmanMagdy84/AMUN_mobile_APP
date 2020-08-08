@@ -14,7 +14,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: NewMedicalRecord("New Lab Test"),
+            child: NewMedicalRecord("Lab Test"),
             onTap: () {},
             behavior: HitTestBehavior.opaque,
           );
