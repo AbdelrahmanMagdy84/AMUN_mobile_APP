@@ -2,7 +2,6 @@ import 'package:amun/drawer/facility_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/MedicalFacility.dart';
 import 'package:amun/models/Responses/MedicalFacilitiesResponse.dart';
-import 'package:amun/models/Responses/MedicalFacilityResponse.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 
@@ -38,9 +37,7 @@ class _FacilityScreenState extends State<FacilityScreen> {
           .getMedicalFacilities(_patientToken)
           .then((MedicalFacilitiesResponse responseList) {
         if (responseList.success) {
-          print("success--------------------------------------------------");
           facilityList = responseList.medicalFacilities;
-          print(facilityList);
         }
       });
     });
@@ -122,12 +119,13 @@ class _FacilityScreenState extends State<FacilityScreen> {
   }
 }
 
-Widget item(String name, String username, String specialization,
+Widget item(String name, String username, String type,
     MedicalFacility myfacility, BuildContext context) {
   return LayoutBuilder(
     builder: (context, constraints) {
       return GestureDetector(
         onTap: () {
+          print(FacilityScreen.routeName);
           Navigator.of(context).pushNamed(FacilityProfileScreen.routeName,
               arguments: {'facility': myfacility});
         },
@@ -165,7 +163,7 @@ Widget item(String name, String username, String specialization,
                             Container(
                               // padding: EdgeInsets.symmetric(vertical: 10),
                               child: Text(
-                                'Specialization: $specialization ',
+                                'type: $type ',
                                 maxLines: 2,
                                 style: TextStyle(fontSize: 18),
                               ),

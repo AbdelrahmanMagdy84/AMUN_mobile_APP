@@ -20,7 +20,7 @@ import './screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'drawer/facility_screen.dart';
 import 'drawer/medications_screen.dart';
-
+import 'package:amun/drawer/facility_profile_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
         MedicationsScreen.routeName: (ctx) => MedicationsScreen(),
         ClerkProfileScreen.routeName: (ctx) => ClerkProfileScreen(),
         DoctorProfileScreen.routeName: (ctx) => DoctorProfileScreen(),
+        FacilityProfileScreen.routeName: (ctx) => FacilityProfileScreen()
       },
     );
   }

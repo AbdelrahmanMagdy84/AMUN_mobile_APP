@@ -36,6 +36,6 @@ class Doctor {
         bio: json["bio"],
         birthDate: DateTime.parse(json["birthDate"]),
         gender: json["gender"],
-        specialization: json["specialzation"]);
+        specialization: json["specialization"]);
   }
 }

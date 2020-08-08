@@ -27,10 +27,11 @@ class DoctorService {
 
   Future<DoctorResponse> getDoctorByUsername(
       String username, String token) async {
-    final newURI =
-        Uri.http("${APIClient.baseUrl}", "$endPoint", {"username": username});
-    final http.Response response = await http.get(newURI,
+    print(token);
+    final http.Response response = await http.get(
+        "${APIClient.baseUrl}/$endPoint/?username=$username",
         headers: {"Content-Type": "application/json", "authorization": token});
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       return DoctorResponse.fromJson(jsonDecode(response.body));
     } else {
