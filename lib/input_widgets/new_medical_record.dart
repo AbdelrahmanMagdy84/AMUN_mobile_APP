@@ -104,7 +104,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
         title: title,
         doctor: doctor,
         image: image,
-        id: 1,
+        id: "1",
         note: note);
   }
 
