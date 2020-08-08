@@ -27,7 +27,7 @@ class MedicalRecordService {
     }
   }
 
-  Future<MedicalRecordResponse> addBloodGlucoseMeasure(
+  Future<MedicalRecordResponse> addMedicalRecords(
       MedicalRecord medicalRecord, String token) async {
     print(token);
     final http.Response response = await http.post(

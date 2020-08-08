@@ -8,6 +8,7 @@ class MedicalRecord {
   String title;
   String note;
   String enteredBy;
+  String type;
   MedicalFile report;
   MedicalFile radiograph;
   MedicalFile prescription;
@@ -20,6 +21,7 @@ class MedicalRecord {
       this.date,
       this.note,
       this.enteredBy,
+      this.type,
       this.prescription,
       this.radiograph,
       this.report,
@@ -34,6 +36,7 @@ class MedicalRecord {
       title: json["value"],
       enteredBy: json['enteredBy'],
       note: json["note"],
+      type: json["type"],
       date:
           json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
       report: json['report'].fromJson(),
