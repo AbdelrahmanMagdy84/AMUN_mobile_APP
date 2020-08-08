@@ -3,7 +3,6 @@ import 'package:amun/input_widgets/new_allergy.dart';
 import 'package:amun/static_data/allergy_data.dart';
 import 'package:flutter/material.dart';
 
-
 class AllergiesScreen extends StatefulWidget {
   static final routeName = 'allergies screen';
 
@@ -26,26 +25,21 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
     super.didChangeDependencies();
   }
 
-//  List<Allergy> doctorList;
-  // Future userFuture;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   print("getting user token");
-  //   //getUserToken();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Allergies')),
       drawer: MainDrawer(),
-      body:allergies==null? Center(child: Text("No Allergies Add"),): ListView.builder(
-        itemBuilder: (ctx, index) {
-          return buildItem(allergies[index]);
-        },
-        itemCount: allergies.length,
-      ),
+      body: allergies == null
+          ? Center(
+              child: Text("No Allergies Add"),
+            )
+          : ListView.builder(
+              itemBuilder: (ctx, index) {
+                return buildItem(allergies[index]);
+              },
+              itemCount: allergies.length,
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () => startAddNewRecord(context),
@@ -59,6 +53,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
   }
 
   Widget buildItem(String allergy) {
+    String type = selectAllergyCategory(allergy);
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
         child: Column(children: <Widget>[
@@ -96,7 +91,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
                                 child: Container(
                                   padding: EdgeInsets.only(top: 10),
                                   child: Text(
-                                    'Type: ${selectAllergyCategory(allergy)} ',
+                                    'Type: $type',
                                     style: TextStyle(
                                       fontSize: 16,
                                     ),
@@ -109,7 +104,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
                         Container(
                           width: constraints.maxWidth * 0.1,
                           alignment: Alignment.centerLeft,
-                          child: Expanded(
+                          child: FittedBox(
                             child: IconButton(
                                 icon: Icon(
                                   Icons.delete,
@@ -138,14 +133,14 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
           return NewAllergy(allergies);
         });
   }
-  
+
   String selectAllergyCategory(String allergy) {
     String category;
-    if (respiratoryAllergies.contains(allergy)) {
+    if (respiratoryAllergies.contains("       -$allergy")) {
       category = "Respiratory Allergy";
-    } else if (foodAllergies.contains(allergy)) {
+    } else if (foodAllergies.contains("       -$allergy")) {
       category = "food Allergy";
-    } else if (skinAllergies.contains(allergy)) {
+    } else if (skinAllergies.contains("       -$allergy")) {
       category = "Skin Allergy";
     } else {
       category = "other Allergy";

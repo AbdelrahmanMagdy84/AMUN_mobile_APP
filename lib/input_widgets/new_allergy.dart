@@ -1,6 +1,5 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:amun/input_widgets/DialogManager.dart';
-import 'package:amun/models/Patient.dart';
 import 'package:amun/models/Responses/PatientResponse.dart';
 import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/services/APIClient.dart';
@@ -33,18 +32,20 @@ class _NewAllergyState extends State<NewAllergy> {
       });
     });
   }
-  void updatePatient(String newAllergy) {
-    List<String> updatedAllergies = widget.oldAllergies;
-    updatedAllergies.add(newAllergy);
-  //  Patient newpatient = Patient(allergies: updatedAllergies);
+
+  void updatePatient(List<String> newAllergy) {
+   
+    //  Patient newpatient = Patient(allergies: updatedAllergies);
     DialogManager.showLoadingDialog(context);
+   
     APIClient()
         .getPatientService()
-        .updatePatientList(updatedAllergies,"allergies", _patientToken)
+        .updatePatientList(newAllergy, "allergies", _patientToken)
         .then((PatientResponse patientResponse) {
       if (patientResponse.success) {
+     
         DialogManager.stopLoadingDialog(context);
-        Navigator.of(context).pop();
+       // Navigator.of(context).pop();
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);
@@ -56,14 +57,14 @@ class _NewAllergyState extends State<NewAllergy> {
   void saveNewAllergy(String selectedAllergy) {
     selectedAllergy = selectedAllergy.substring(8);
     print(selectedAllergy);
-    print('aaaaaaaaaaaaaaaaaaaaaa');
-    updatePatient(selectedAllergy);
     List<String> newAllergies = widget.oldAllergies;
     newAllergies.add(selectedAllergy);
-    Navigator.pushNamedAndRemoveUntil(
-        context, CategoriesScreen.routeName, (r) => false);
-    Navigator.pushNamed(context, AllergiesScreen.routeName,
-        arguments: {'allergies': newAllergies});
+    updatePatient(newAllergies);
+
+     Navigator.pushNamedAndRemoveUntil(
+         context, CategoriesScreen.routeName, (r) => false);
+     Navigator.pushNamed(context, AllergiesScreen.routeName,
+         arguments: {'allergies': newAllergies});
   }
 
   @override

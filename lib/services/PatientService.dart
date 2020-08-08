@@ -66,10 +66,11 @@ class PatientService {
 
   Future<PatientResponse> updatePatientList(
       List<String> list, String type, String token) async {
+        print(jsonEncode( {type:jsonEncode(list)}));
     final http.Response response = await http
-        .patch("${APIClient.baseUrl}/$endPoint", body: {
-       "$type":jsonEncode(list)
-    }, headers: {
+        .patch("${APIClient.baseUrl}/$endPoint", body: 
+     jsonEncode({type:list})
+    , headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       "authorization": token
     });
