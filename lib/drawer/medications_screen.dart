@@ -1,4 +1,9 @@
-import 'package:amun/drawer/facility_screen.dart';
+
+import 'package:amun/input_widgets/DialogManager.dart';
+import 'package:amun/models/Responses/PatientResponse.dart';
+import 'package:amun/screens/categories_screen.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -23,8 +28,48 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
         medications = routeArgs['medications'];
       }
     });
+    
+   print("getting user token");
+    getUserToken();
     super.didChangeDependencies();
   }
+
+  String _patientToken;
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+    });
+  }
+
+  void updatePatient(List<String> newConditions) {
+    DialogManager.showLoadingDialog(context);
+    APIClient()
+        .getPatientService()
+        .updatePatientList(newConditions, "medications", _patientToken)
+        .then((PatientResponse patientResponse) {
+      if (patientResponse.success) {
+        DialogManager.stopLoadingDialog(context);
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Couldn't Edit");
+      print(e.toString());
+    });
+  }
+
+  void saveNewMedication(String inputMedication) {
+    List<String> newMedications = medications;
+    newMedications.add(inputMedication);
+    updatePatient(newMedications);
+
+    Navigator.pushNamedAndRemoveUntil(
+        context, CategoriesScreen.routeName, (r) => false);
+    Navigator.pushNamed(context, MedicationsScreen.routeName,
+        arguments: {'medications': newMedications});
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +176,7 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
                       Container(
                         margin: EdgeInsets.all(30),
                         child: FlatButton(
-                          onPressed: null,
+                          onPressed: ()=>saveNewMedication(medicaionController.text),
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Save',

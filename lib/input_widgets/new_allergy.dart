@@ -34,18 +34,13 @@ class _NewAllergyState extends State<NewAllergy> {
   }
 
   void updatePatient(List<String> newAllergy) {
-   
-    //  Patient newpatient = Patient(allergies: updatedAllergies);
     DialogManager.showLoadingDialog(context);
-   
     APIClient()
         .getPatientService()
         .updatePatientList(newAllergy, "allergies", _patientToken)
         .then((PatientResponse patientResponse) {
       if (patientResponse.success) {
-     
         DialogManager.stopLoadingDialog(context);
-       // Navigator.of(context).pop();
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);

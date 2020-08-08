@@ -1,3 +1,8 @@
+import 'package:amun/input_widgets/DialogManager.dart';
+import 'package:amun/models/Responses/PatientResponse.dart';
+import 'package:amun/screens/categories_screen.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -21,7 +26,45 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
         conditions = routeArgs['conditions'];
       }
     });
+    print("getting user token");
+    getUserToken();
     super.didChangeDependencies();
+  }
+
+  String _patientToken;
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+    });
+  }
+
+  void updatePatient(List<String> newConditions) {
+    DialogManager.showLoadingDialog(context);
+    APIClient()
+        .getPatientService()
+        .updatePatientList(newConditions, "conditions", _patientToken)
+        .then((PatientResponse patientResponse) {
+      if (patientResponse.success) {
+        DialogManager.stopLoadingDialog(context);
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Couldn't Edit");
+      print(e.toString());
+    });
+  }
+
+  void saveNewCondition(String inputCondition) {
+    List<String> newConditions = conditions;
+    newConditions.add(inputCondition);
+    updatePatient(newConditions);
+
+    Navigator.pushNamedAndRemoveUntil(
+        context, CategoriesScreen.routeName, (r) => false);
+    Navigator.pushNamed(context, ConditionsScreen.routeName,
+        arguments: {'conditions': newConditions});
   }
 
   final conditionController = TextEditingController();
@@ -129,7 +172,7 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
                       Container(
                         margin: EdgeInsets.all(30),
                         child: FlatButton(
-                          onPressed: null,
+                          onPressed:()=> saveNewCondition(conditionController.text),
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Save',
