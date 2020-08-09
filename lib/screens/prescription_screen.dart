@@ -1,7 +1,6 @@
 import 'package:amun/input_widgets/new_medical_record.dart';
 import 'package:amun/items/medical_record_item.dart';
 import 'package:amun/models/MedicalRecord.dart';
-import 'package:amun/models/Responses/MedicalRecordResponse.dart';
 import 'package:amun/models/Responses/MedicalRecordsResponse.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
@@ -31,9 +30,10 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
       });
       userFuture = APIClient()
           .getMedicalRecordService()
-          .getMedicalRecords(_patientToken)
+          .getMedicalRecords(_patientToken, "Prescription")
           .then((MedicalRecordsResponse responseList) {
         if (responseList.success) {
+          print(responseList.medicalRecord);
           medicalRecords = responseList.medicalRecord;
         }
       });
@@ -44,7 +44,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Prescription")),
-      body:  Container(
+      body: Container(
         child: FutureBuilder(
           future: userFuture,
           builder: (ctx, snapshot) {
@@ -61,6 +61,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                 ));
                 break;
               case ConnectionState.done:
+                print(medicalRecords);
                 return ListView.builder(
                   itemBuilder: (ctx, index) {
                     return MedicalRecordItem(medicalRecords[index]);

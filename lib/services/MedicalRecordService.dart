@@ -16,10 +16,12 @@ class MedicalRecordService {
   }
   MedicalRecordService._getInstance();
 
-  Future<MedicalRecordsResponse> getMedicalRecords(String token) async {
+  Future<MedicalRecordsResponse> getMedicalRecords(
+      String token, String type) async {
     final http.Response response = await http.get(
-        "${APIClient.baseUrl}/$endPoint",
+        "${APIClient.baseUrl}/$endPoint/?type=$type",
         headers: {"Content-Type": "application/json", "authorization": token});
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       return MedicalRecordsResponse.fromJson(jsonDecode(response.body));
     } else {

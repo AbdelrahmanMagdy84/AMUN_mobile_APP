@@ -12,8 +12,8 @@ class MedicalRecordsResponse {
   });
 
   factory MedicalRecordsResponse.fromJson(Map<String, dynamic> json) {
-    List<dynamic> parsedMedicalRecord = json['medicalRecord'] != null
-        ? json['medicalRecord']
+    List<dynamic> parsedMedicalRecord = json['medicalRecords'] != null
+        ? json['medicalRecords']
         : new List<dynamic>();
     List<MedicalRecord> record =
         parsedMedicalRecord.map((i) => MedicalRecord.fromJson(i)).toList();
