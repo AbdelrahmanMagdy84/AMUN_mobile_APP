@@ -51,6 +51,6 @@ List<String> respiratoryAllergies = [
     allergies.addAll(skinAllergies);
     allergies.add("Other Allergies:");
     allergies.addAll(otherAllergies);
-    allergies.add("       -Custom Allergy-");
+    allergies.add("       --Add Custom Allergy--");
     
   }

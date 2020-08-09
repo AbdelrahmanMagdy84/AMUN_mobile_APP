@@ -18,7 +18,7 @@ class NewAllergy extends StatefulWidget {
 class _NewAllergyState extends State<NewAllergy> {
   String selectedAllergy;
   String _patientToken;
-  bool showField=false;
+  bool showField = false;
   final allergyController = TextEditingController();
   @override
   void initState() {
@@ -52,7 +52,7 @@ class _NewAllergyState extends State<NewAllergy> {
   }
 
   void saveNewAllergy(String selectedAllergy) {
-    if (selectedAllergy == "       -Custom Allergy-") {
+    if (selectedAllergy =="       --Add Custom Allergy--") {
       selectedAllergy = allergyController.text;
     } else {
       selectedAllergy = selectedAllergy.substring(8);
@@ -73,7 +73,7 @@ class _NewAllergyState extends State<NewAllergy> {
   Widget build(BuildContext context) {
     createAllergiesList();
     return Scaffold(
-          body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: GestureDetector(
           child: Column(
             children: <Widget>[
@@ -130,18 +130,20 @@ class _NewAllergyState extends State<NewAllergy> {
             hint: 'Choose your Allergy',
             popupItemDisabled: (String s) => s.endsWith(':'),
             onChanged: (allergy) {
-              selectedAllergy = allergy;
-              if( selectedAllergy == "       -Custom Allergy-"){
-               setState(() {
-                  showField=true;
-               });
-              }
+            
+              if (allergy =="       --Add Custom Allergy--") {
+                  selectedAllergy = allergy;
+                setState(() {
+                  showField = true;
+                });
+              }else{setState(() {
+                  selectedAllergy = allergy;
+                });}
             },
             //selectedItem: "Brazil"
           ),
-          
-          
-            showField  ? Container(
+          showField
+              ? Container(
                   child: TextField(
                     decoration: InputDecoration(
                       labelText: "Custom Allergy",
