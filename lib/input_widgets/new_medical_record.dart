@@ -9,7 +9,7 @@ import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
+import 'package:file_picker/file_picker.dart';
 import 'DialogManager.dart';
 
 class NewMedicalRecord extends StatefulWidget {
@@ -26,8 +26,8 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
   final titleController = TextEditingController();
   final noteController = TextEditingController();
   DateTime date;
-  File _imageFile;
-  //File file;
+
+  File file;
 /* init state for token */
   @override
   void initState() {
@@ -35,8 +35,8 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
     print("getting user token");
     getUserToken();
   }
-        
-String _patientToken;
+
+  String _patientToken;
   void getUserToken() {
     TokenStorage().getUserToken().then((value) async {
       setState(() {
@@ -46,20 +46,37 @@ String _patientToken;
     });
   }
 
-/*------------------------------- */
-/*add function */
-  void addMeasure() {
-    //MedicalFile newMedicalFile=_imageFile; <--------
-    _imageFile;
-    
-    MedicalRecord medicalRecord=MedicalRecord(title:titleController.text,note: noteController.text,date: date,);
+  void addMedicalRecord(String type) {
+    DialogManager.showLoadingDialog(context);
+    String field;
+    if (type == "Prescription") {
+      field = "prescriptionImage";
+    } else if (type == "Radiograph") {
+      field = "radiograph";
+    } else {
+      field = "report";
+    }
+    print(titleController.text);
+    print(noteController.text);
+    print(date);
+    print(file.path);
+
+    MedicalRecord medicalRecord = MedicalRecord(
+        title: titleController.text,
+        note: noteController.text,
+        date: date,
+        filePath: file.path,
+        type: type,
+        enteredBy: "PATIENT");
 
     APIClient()
         .getMedicalRecordService()
-        .addMedicalRecords(medicalRecord, _patientToken)
+        .addMedicalRecords(medicalRecord, _patientToken, field)
         .then((MedicalRecordResponse medicalRecordResponse) {
       if (medicalRecordResponse.success) {
-       
+        DialogManager.stopLoadingDialog(context);
+        DialogManager.showGeneralDialog(
+            context, "Task succesful", "Medical record Added");
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);
@@ -68,25 +85,18 @@ String _patientToken;
     });
   }
 
-  void save(
-      {DateTime date, String title, String doctor, String note, String image}) {
-    MedicalRecord medicalRecord =
-        MedicalRecord(date: date, title: title, id: "1", note: note);
-        
-        
-        // Navigator.of(context).pop();
-        // switch(widget.screenTitle){
-        //   case "Prescription":
-        //    Navigator.of(context).pushReplacementNamed(PrescriptionScreen.routeName);
-        //   break;
-        //   case "Radiograph":
-        //    Navigator.of(context).pushReplacementNamed(RadiographScreen.routeName);
-        //   break;
-        //   case "Lab Test":
-        //    Navigator.of(context).pushReplacementNamed(LabTestScreen.routeName);
-        //   break;
-        // }
-
+  void save() {
+    switch (widget.screenTitle) {
+      case "Prescription":
+        addMedicalRecord("Prescription");
+        break;
+      case "Radiograph":
+        addMedicalRecord("Radiograph");
+        break;
+      case "Lab Test":
+        addMedicalRecord("labTest");
+        break;
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -94,7 +104,6 @@ String _patientToken;
 
   @override
   Widget build(BuildContext context) {
-    print(_imageFile);
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -154,6 +163,13 @@ String _patientToken;
                     ),
                     Expanded(
                       child: IconButton(
+                        icon: Icon(Icons.attach_file,
+                            color: Theme.of(context).primaryColor),
+                        onPressed: () => _openFiles(context),
+                      ),
+                    ),
+                    Expanded(
+                      child: IconButton(
                         icon: Icon(
                           Icons.add_a_photo,
                           color: Theme.of(context).primaryColor,
@@ -201,22 +217,29 @@ String _patientToken;
     );
   }
 
+  void _openFiles(BuildContext context) async {
+    var path = await FilePicker.getFile();
+    this.setState(() {
+      file = path;
+    });
+  }
+
   void _openGallery(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
     this.setState(() {
-      _imageFile = picture;
+      file = picture;
     });
   }
 
   void _openCamera(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
     this.setState(() {
-      _imageFile = picture;
+      file = picture;
     });
   }
 
   Widget setImageView() {
-    if (_imageFile != null) {
+    if (file != null) {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(width: 4, color: Theme.of(context).primaryColor),
@@ -226,7 +249,7 @@ String _patientToken;
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(15)),
           child: Image.file(
-            _imageFile,
+            file,
             width: double.infinity,
             height: 200,
             alignment: Alignment.center,

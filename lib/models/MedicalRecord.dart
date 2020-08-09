@@ -9,6 +9,7 @@ class MedicalRecord {
   String note;
   String enteredBy;
   String type;
+  String filePath;
   MedicalFile report;
   MedicalFile radiograph;
   MedicalFile prescription;
@@ -27,37 +28,43 @@ class MedicalRecord {
       this.report,
       this.clerk,
       this.doctor,
-      this.medicalFacility});
+      this.medicalFacility,
+      this.filePath});
 
   factory MedicalRecord.fromJson(Map<String, dynamic> json) {
     //for get requests
     return MedicalRecord(
       id: json["_id"],
-      title: json["value"],
+      title: json["title"],
       enteredBy: json['enteredBy'],
-      note: json["note"],
+      note: json["notes"],
       type: json["type"],
       date:
           json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
-      report: json['report'].fromJson(),
-      radiograph: json['radiograph'].fromJson(),
-      prescription: json['prescriptionImage'].fromJson(),
-      clerk: json['clerk'].fromJson(),
-      doctor: json['doctor'].fromJson(),
-      medicalFacility: json['medicalFacility'].fromJson(),
+      report:
+          json['report'] != null ? MedicalFile.fromJson(json['report']) : null,
+      radiograph: json['radiograph'] != null
+          ? MedicalFile.fromJson(json['radiograph'])
+          : null,
+      prescription: json['prescriptionImage'] != null
+          ? MedicalFile.fromJson(json['prescriptionImage'])
+          : null,
+      clerk: json['clerk'] != null ? Clerk.fromJson(json['clerk']) : null,
+      doctor: json['doctor'] != null ? Doctor.fromJson(json['doctor']) : null,
+      medicalFacility: json['medicalFacility'] != null
+          ? MedicalFacility.fromJson(json['medicalFacility'])
+          : null,
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(String field) {
     //for post requests
     return {
       "title": this.title,
       "note": this.note,
       "enteredBy": this.enteredBy,
       "date": this.date.toIso8601String(),
-      "report": this.report.toJson(),
-      "radiograph": this.radiograph.toJson(),
-      "prescriptionImage": this.prescription.toJson()
+      field: this.filePath
     };
   }
 }
