@@ -26,8 +26,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
   final titleController = TextEditingController();
   final noteController = TextEditingController();
   DateTime date;
-  //String filePath;
-  String field;
+
   File file;
 /* init state for token */
   @override
@@ -47,33 +46,57 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
     });
   }
 
-/*------------------------------- */
-/*add function */
-  void addMedicalRecord() {
+  void addMedicalRecord(String type) {
+    DialogManager.showLoadingDialog(context);
+    String field;
+    if (type == "Prescription") {
+      field = "prescriptionImage";
+    } else if (type == "Radiograph") {
+      field = "radiograph";
+    } else {
+      field = "report";
+    }
     print(titleController.text);
     print(noteController.text);
     print(date);
     print(file.path);
+
     MedicalRecord medicalRecord = MedicalRecord(
         title: titleController.text,
         note: noteController.text,
         date: date,
         filePath: file.path,
-        type: "Prescription",
+        type: type,
         enteredBy: "PATIENT");
 
     APIClient()
         .getMedicalRecordService()
-        .addMedicalRecords(medicalRecord, _patientToken, "prescriptionImage")
+        .addMedicalRecords(medicalRecord, _patientToken, field)
         .then((MedicalRecordResponse medicalRecordResponse) {
       if (medicalRecordResponse.success) {
-        print("medical record added");
+        DialogManager.stopLoadingDialog(context);
+        DialogManager.showGeneralDialog(
+            context, "Task succesful", "Medical record Added");
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);
       DialogManager.showErrorDialog(context, "Couldn't add measure");
       print(e.toString());
     });
+  }
+
+  void save() {
+    switch (widget.screenTitle) {
+      case "Prescription":
+        addMedicalRecord("Prescription");
+        break;
+      case "Radiograph":
+        addMedicalRecord("Radiograph");
+        break;
+      case "Lab Test":
+        addMedicalRecord("labTest");
+        break;
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -160,7 +183,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
                 Container(
                   margin: EdgeInsets.all(30),
                   child: FlatButton(
-                    onPressed: addMedicalRecord,
+                    onPressed: save,
                     color: Theme.of(context).accentColor,
                     child: Text(
                       'Save',
