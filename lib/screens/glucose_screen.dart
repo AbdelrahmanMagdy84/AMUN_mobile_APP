@@ -14,7 +14,6 @@ class BloodGlucoseScreen extends StatefulWidget {
 
 class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
   List<BloodGlucose> glucoseList;
-
   Future userFuture;
   @override
   void initState() {
@@ -29,6 +28,7 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
       setState(() {
         _patientToken = value;
       });
+      
       userFuture = APIClient()
           .getBloodGlucoseService()
           .getBloodGlucoseMeasure(_patientToken)
@@ -59,6 +59,9 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
                 break;
               case ConnectionState.active:
               case ConnectionState.waiting:
+              print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+              print(snapshot.data);
+              print(glucoseList);
                 return Center(
                     child: Text(
                   "Loading ",
@@ -66,12 +69,18 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
                 ));
                 break;
               case ConnectionState.done:
-                return ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    return GlucoseItem(glucoseList[index]);
-                  },
-                  itemCount: glucoseList.length,
-                );
+                if (glucoseList == null) {
+                  return Center(
+                    child: Text("Empty Press + to add"),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemBuilder: (ctx, index) {
+                      return GlucoseItem(glucoseList[index]);
+                    },
+                    itemCount: glucoseList.length,
+                  );
+                }
                 break;
             }
           },

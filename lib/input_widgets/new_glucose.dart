@@ -1,5 +1,5 @@
 import 'package:amun/screens/glucose_screen.dart';
-import 'package:intl/intl.dart';
+import 'package:amun/screens/success_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amun/input_widgets/DialogManager.dart';
@@ -42,16 +42,16 @@ class _NewGlucoseState extends State<NewGlucose> {
     glucose.note = noteController.text;
     glucose.value = currentValue;
     glucose.date = DateTime.now();
-    DialogManager.showLoadingDialog(context);
+
     APIClient()
         .getBloodGlucoseService()
         .addBloodGlucoseMeasure(glucose, _patientToken)
         .then((BloodGlucoseResponse bloodGlucoseResponse) {
       if (bloodGlucoseResponse.success) {
-        DialogManager.stopLoadingDialog(context);
         Navigator.of(context).pop();
-        Navigator.of(context).pushReplacementNamed(BloodGlucoseScreen.routeName);
-        
+        Navigator.of(context)
+            .pushReplacementNamed(BloodGlucoseScreen.routeName);
+        Navigator.of(context).pushNamed(SuccessScreen.routeName);
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);

@@ -6,6 +6,7 @@ import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/clerk_profile_screen.dart';
 import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
 import 'package:amun/reminders/ui/new_entry/new_entry.dart';
+
 import 'package:amun/screens/blood_pressure_screen.dart';
 import 'package:amun/screens/glucose_screen.dart';
 import 'package:amun/screens/lab_test_screen.dart';
@@ -13,6 +14,7 @@ import 'package:amun/screens/prescription_screen.dart';
 import 'package:amun/screens/radiograph_screen.dart';
 import 'package:amun/screens/reminder_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
+import 'package:amun/screens/success_screen.dart';
 import './screens/login_screen.dart';
 import './screens/register_screen.dart';
 import './screens/scanner_screen.dart';
@@ -63,7 +65,8 @@ class MyApp extends StatelessWidget {
         MedicationsScreen.routeName: (ctx) => MedicationsScreen(),
         ClerkProfileScreen.routeName: (ctx) => ClerkProfileScreen(),
         DoctorProfileScreen.routeName: (ctx) => DoctorProfileScreen(),
-        FacilityProfileScreen.routeName: (ctx) => FacilityProfileScreen()
+        FacilityProfileScreen.routeName: (ctx) => FacilityProfileScreen(),
+        SuccessScreen.routeName:(ctx)=>SuccessScreen(),
       },
     );
   }

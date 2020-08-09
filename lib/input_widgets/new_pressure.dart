@@ -1,7 +1,8 @@
 import 'package:amun/models/BloodPressure.dart';
 import 'package:amun/models/Responses/BloodPressureResponse.dart';
 import 'package:amun/screens/blood_pressure_screen.dart';
-import 'package:intl/intl.dart';
+import 'package:amun/screens/success_screen.dart';
+
 import 'package:numberpicker/numberpicker.dart';
 import 'package:flutter/material.dart';
 import '../services/APIClient.dart';
@@ -38,15 +39,16 @@ class _NewPressureState extends State<NewPressure> {
   void addMeasure() {
     pressure.note = noteController.text;
     pressure.date = DateTime.now();
-    DialogManager.showLoadingDialog(context);
+   
     APIClient()
         .getBloodPressureService()
         .addBloodPressureMeasure(bloodPressure: pressure, token: _patientToken)
         .then((BloodPressureResponse bloodPressureResponse) {
       if (bloodPressureResponse.success) {
-        DialogManager.stopLoadingDialog(context);
         Navigator.of(context).pop();
         Navigator.of(context).pushReplacementNamed(BloodPressureScreen.routeName);
+        Navigator.of(context).pushNamed(SuccessScreen.routeName);
+      
         
       }
     }).catchError((Object e) {
