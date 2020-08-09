@@ -20,13 +20,31 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
 
   @override
   Widget build(BuildContext context) {
-    final MedicalRecord newMedicalRecord= widget.medicalRecord;
-    String image =
-        'https://shop.esys.eu/media/image/6f/8f/af/amlog_transport-berwachung.jpg';
-    String facility =newMedicalRecord.medicalFacility.name;
+    final MedicalRecord newMedicalRecord = widget.medicalRecord;
+    String facility;
+    String doctor;
+    String clerk;
+    String image;
+    if (newMedicalRecord.enteredBy == "PATIENT") {
+      facility = "facility";
+      doctor = "doctor";
+      clerk = "clerk";
+    } else {
+      facility = newMedicalRecord.medicalFacility.name;
+      doctor =
+          "${newMedicalRecord.doctor.firstName} ${newMedicalRecord.doctor.lastName}";
+      clerk =
+          "${newMedicalRecord.clerk.firstName} ${newMedicalRecord.clerk.lastName}";
+    }
+    if (newMedicalRecord.type == "Radiograph") {
+      image = newMedicalRecord.radiograph.url;
+    } else if (newMedicalRecord.type == "Prescription") {
+      image = newMedicalRecord.prescription.url;
+    } else {
+      image = newMedicalRecord.report.url;
+    }
+
     String title = newMedicalRecord.title;
-    String doctor ="${newMedicalRecord.doctor.firstName} ${newMedicalRecord.doctor.lastName}";
-    String clerk = "${newMedicalRecord.clerk.firstName} ${newMedicalRecord.clerk.lastName}";
     String note = newMedicalRecord.note;
     DateTime date = newMedicalRecord.date;
 
