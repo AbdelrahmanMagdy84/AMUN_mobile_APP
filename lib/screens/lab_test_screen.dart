@@ -26,12 +26,12 @@ class _LabTestScreenState extends State<LabTestScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Lab Test")),
       body: Container(
-        child: ListView.builder(
-          itemBuilder: (ctx, index) {
-            return MedicalRecordItem();
-          },
-          itemCount: 1,
-        ),
+        // child: ListView.builder(
+        //   itemBuilder: (ctx, index) {
+        //     return MedicalRecordItem();
+        //   },
+        //   itemCount: 1,
+        // ),
       ),
        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(

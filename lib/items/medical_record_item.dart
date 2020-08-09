@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:amun/models/MedicalRecord.dart';
 import 'package:amun/screens/show_image_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 class MedicalRecordItem extends StatefulWidget {
+  final MedicalRecord medicalRecord;
+  MedicalRecordItem(this.medicalRecord);
   @override
   _MedicalRecordItemState createState() => _MedicalRecordItemState();
 }
@@ -17,15 +20,15 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
 
   @override
   Widget build(BuildContext context) {
+    final MedicalRecord newMedicalRecord= widget.medicalRecord;
     String image =
         'https://shop.esys.eu/media/image/6f/8f/af/amlog_transport-berwachung.jpg';
-    String facility = "ffffffffffff";
-    String title = "Dental Prescrption";
-    String doctor = "Ahmed Abdelaziz";
-    String clerk = "soliman Eid";
-    String note =
-        "Resources are limited to 1000 pounds of special plastic 40 hours of production time per week Resources are limited to 1000 pounds of special plastic 40 hours of production time per week ";
-    DateTime date = DateTime.now();
+    String facility =newMedicalRecord.medicalFacility.name;
+    String title = newMedicalRecord.title;
+    String doctor ="${newMedicalRecord.doctor.firstName} ${newMedicalRecord.doctor.lastName}";
+    String clerk = "${newMedicalRecord.clerk.firstName} ${newMedicalRecord.clerk.lastName}";
+    String note = newMedicalRecord.note;
+    DateTime date = newMedicalRecord.date;
 
     return Container(
       child: Card(
