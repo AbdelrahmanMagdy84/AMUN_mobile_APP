@@ -16,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  bool _obscureText = true;
   Widget buildTextField(String title, TextEditingController controller,
       TextInputType textInputType) {
     return Container(
@@ -27,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         controller: controller,
         keyboardType: textInputType,
+        
       ),
     );
   }
@@ -56,6 +57,12 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.of(ctx).pushReplacementNamed(RegisterScreen.routeName);
   }
 
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,10 +78,29 @@ class _LoginScreenState extends State<LoginScreen> {
               _usernameController,
               TextInputType.text,
             ),
-            buildTextField(
-              'Password',
-              _passwordController,
-              TextInputType.text,
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                      ),
+                      controller: _passwordController,
+                      keyboardType: TextInputType.text,
+                      obscureText: _obscureText,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 30),
+                  child: FlatButton(
+                      color: Theme.of(context).primaryColor,
+                      onPressed: _toggle,
+                      child: new Text(_obscureText ? "Show" : "Hide")),
+                ),
+              ],
             ),
             Container(
                 padding: EdgeInsets.only(top: 15, bottom: 10),

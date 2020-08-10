@@ -1,6 +1,7 @@
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/input_widgets/DialogManager.dart';
 import 'package:amun/models/Responses/PatientResponse.dart';
+import 'package:amun/models/Patient.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -17,7 +18,15 @@ class EditPatientInfo extends StatefulWidget {
 }
 
 class _EditPatientInfoState extends State<EditPatientInfo> {
+  bool _autoValidate = false;
+  final _formKey = GlobalKey<FormState>();
+
+  DateTime newBirthDate = DateTime.now();
+  String gender;
+  String bloodType;
+
   Patient patient;
+
   @override
   didChangeDependencies() {
     final routeArgs =
@@ -31,10 +40,6 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
   }
 
   final _newPasswordConroller = TextEditingController();
-
-  DateTime newBirthDate = DateTime.now();
-  String gender;
-  String bloodType;
 
   String _patientToken;
   @override
@@ -52,38 +57,14 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
     });
   }
 
-  void updatePatient() {
-    Patient newpatient;
-    newpatient.password = _newPasswordConroller.text;
-    newpatient.birthDate = newBirthDate;
-    newpatient.bloodType = bloodType;
-    DialogManager.showLoadingDialog(context);
-    APIClient()
-        .getPatientService()
-        .updatePatient(newpatient, _patientToken)
-        .then((PatientResponse patientResponse) {
-      if (patientResponse.success) {
-        DialogManager.stopLoadingDialog(context);
-        Navigator.of(context).pop();
-      }
-    }).catchError((Object e) {
-      DialogManager.stopLoadingDialog(context);
-      DialogManager.showErrorDialog(context, "Couldn't Edit");
-      print(e.toString());
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    bloodType = patient.bloodType;
-    return Scaffold(
-      appBar: AppBar(title: Text("Edit information")),
-      drawer: MainDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
+  void editPassword(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        enableDrag: false,
+        builder: (_) {
+          return Scaffold(
+              body: SingleChildScrollView(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 child: Padding(
@@ -103,19 +84,111 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                           )),
                       Padding(
                         padding: const EdgeInsets.all(20),
-                        child: buildTextField(
-                          title: 'new password',
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'new password',
+                          ),
                           controller: _newPasswordConroller,
-                          textInputType: TextInputType.visiblePassword,
                           validator: passwordValidator,
                         ),
                       ),
+                      Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(15),
+                        child: FlatButton(
+                          onPressed: () {
+                            Patient newpatient =
+                                Patient(password: _newPasswordConroller.text);
+
+                            DialogManager.showLoadingDialog(context);
+                            APIClient()
+                                .getPatientService()
+                                .updatePatient(newpatient, _patientToken)
+                                .then((PatientResponse patientResponse) {
+                              if (patientResponse.success) {
+                                DialogManager.stopLoadingDialog(context);
+                                Navigator.of(context).pop();
+                              }
+                            }).catchError((Object e) {
+                              DialogManager.stopLoadingDialog(context);
+                              DialogManager.showErrorDialog(
+                                  context, "Couldn't Edit");
+                              print(e.toString());
+                            });
+                          },
+                          child: Text(
+                            'Save Changes',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
+          ));
+        });
+  }
+
+  void editBloodType(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        enableDrag: false,
+        builder: (_) {
+          return Scaffold(
+              body: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(40),
+                child: buildDropDownSearch(),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(15),
+                child: FlatButton(
+                  onPressed: () {
+                    Patient newpatient = Patient(bloodType: bloodType);
+
+                    DialogManager.showLoadingDialog(context);
+                    APIClient()
+                        .getPatientService()
+                        .updatePatient(newpatient, _patientToken)
+                        .then((PatientResponse patientResponse) {
+                      if (patientResponse.success) {
+                        DialogManager.stopLoadingDialog(context);
+                        Navigator.of(context).pop();
+                      }
+                    }).catchError((Object e) {
+                      DialogManager.stopLoadingDialog(context);
+                      DialogManager.showErrorDialog(context, "Couldn't Edit");
+                      print(e.toString());
+                    });
+                  },
+                  child: Text(
+                    'Save Changes',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              )
+            ],
+          ));
+        });
+  }
+
+  void editBirthDate(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        enableDrag: false,
+        builder: (_) {
+          return Scaffold(
+            body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 child: Padding(
@@ -151,34 +224,81 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                           },
                         ),
                       ),
+                      Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(15),
+                        child: FlatButton(
+                          onPressed: () {
+                            Patient newpatient =
+                                Patient(birthDate: newBirthDate);
+
+                            DialogManager.showLoadingDialog(context);
+                            APIClient()
+                                .getPatientService()
+                                .updatePatient(newpatient, _patientToken)
+                                .then((PatientResponse patientResponse) {
+                              if (patientResponse.success) {
+                                DialogManager.stopLoadingDialog(context);
+                                Navigator.of(context).pop();
+                              }
+                            }).catchError((Object e) {
+                              DialogManager.stopLoadingDialog(context);
+                              DialogManager.showErrorDialog(
+                                  context, "Couldn't Edit");
+                              print(e.toString());
+                            });
+                          },
+                          child: Text(
+                            'Save Changes',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(40),
-              child: buildDropDownSearch(),
-            ),
-            Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(15),
-                child: FlatButton(
-                  onPressed: () {
-                    updatePatient();
-                  },
-                  child: Text(
-                    'Save Changes',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor),
-                  ),
-                ))
-          ],
+          );
+        });
+  }
+
+  Widget buildListTile(String title, Function tabHandler) {
+    return ListTile(
+      title: Card(
+        elevation: 1,
+        child: Center(
+          heightFactor: 2,
+          child: Text(
+            title,
+            style: TextStyle(
+                fontFamily: 'RobotoCondenced',
+                fontSize: 18,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold),
+          ),
         ),
       ),
+      onTap: () => tabHandler(context),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    bloodType = patient.bloodType;
+    return Scaffold(
+        appBar: AppBar(title: Text("Edit information")),
+        drawer: MainDrawer(),
+        body: Column(
+          children: <Widget>[
+            buildListTile("Edit Password", editPassword),
+            buildListTile("Edit Birth Date", editBirthDate),
+            buildListTile("Edit Blood Type", editBloodType)
+          ],
+        ));
   }
 
   Widget buildTextField(
@@ -199,12 +319,6 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
     );
   }
 
-  final passwordValidator = MultiValidator([
-    RequiredValidator(errorText: 'password is required'),
-    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
-    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-        errorText: 'passwords must have at least one special character')
-  ]);
   Widget buildDropDownSearch() {
     List<String> bloodTyps = [
       "      O-",
@@ -240,46 +354,40 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
     );
   }
 
-  Widget buildGenderRadiolistTile() {
-    return Card(
-        child: Container(
-      color: Theme.of(context).primaryColor.withOpacity(0.7),
-      child: Column(children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text('Gender', style: TextStyle(fontSize: 18)),
-        ),
-        Row(
-          children: <Widget>[
-            Flexible(
-              fit: FlexFit.loose,
-              child: RadioListTile(
-                  title: Text('Male'),
-                  value: 'male',
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value;
-                    });
-                  }),
-            ),
-            Flexible(
-              fit: FlexFit.loose,
-              child: RadioListTile(
-                  title: Text(
-                    'Female',
-                  ),
-                  value: "female",
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value;
-                    });
-                  }),
-            )
-          ],
-        )
-      ]),
-    ));
+  final passwordValidator = MultiValidator([
+    RequiredValidator(errorText: 'password is required'),
+    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
+    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+        errorText: 'passwords must have at least one special character')
+  ]);
+
+  void updatePatient() {
+    if (_formKey.currentState.validate()) {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        Patient newpatient;
+        newpatient.password = _newPasswordConroller.text;
+        newpatient.birthDate = newBirthDate;
+        newpatient.bloodType = bloodType;
+        DialogManager.showLoadingDialog(context);
+        APIClient()
+            .getPatientService()
+            .updatePatient(newpatient, _patientToken)
+            .then((PatientResponse patientResponse) {
+          if (patientResponse.success) {
+            DialogManager.stopLoadingDialog(context);
+            Navigator.of(context).pop();
+          }
+        }).catchError((Object e) {
+          DialogManager.stopLoadingDialog(context);
+          DialogManager.showErrorDialog(context, "Couldn't Edit");
+          print(e.toString());
+        });
+      } else {
+        setState(() {
+          _autoValidate = true;
+        });
+      }
+    }
   }
 }
