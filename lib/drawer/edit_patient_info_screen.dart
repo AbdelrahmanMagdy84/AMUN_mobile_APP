@@ -36,6 +36,11 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
         patient = routeArgs['information'];
       }
     });
+     if( patient.bloodType!=null){
+      bloodType = patient.bloodType;}
+      else{
+        bloodType="      O-";
+      }
     super.didChangeDependencies();
   }
 
@@ -47,6 +52,8 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
     super.initState();
     print("getting user token");
     getUserToken();
+   
+
   }
 
   void getUserToken() {
@@ -97,13 +104,11 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                         padding: EdgeInsets.all(15),
                         child: FlatButton(
                           onPressed: () {
-                            Patient newpatient =
-                                Patient(password: _newPasswordConroller.text);
-
                             DialogManager.showLoadingDialog(context);
                             APIClient()
                                 .getPatientService()
-                                .updatePatient(newpatient, _patientToken)
+                                .updatePatientValue(_newPasswordConroller.text,
+                                    "password", _patientToken)
                                 .then((PatientResponse patientResponse) {
                               if (patientResponse.success) {
                                 DialogManager.stopLoadingDialog(context);
@@ -151,12 +156,11 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                 padding: EdgeInsets.all(15),
                 child: FlatButton(
                   onPressed: () {
-                    Patient newpatient = Patient(bloodType: bloodType);
-
+                    print(bloodType);
                     DialogManager.showLoadingDialog(context);
                     APIClient()
                         .getPatientService()
-                        .updatePatient(newpatient, _patientToken)
+                        .updatePatientValue(bloodType,"bloodType", _patientToken)
                         .then((PatientResponse patientResponse) {
                       if (patientResponse.success) {
                         DialogManager.stopLoadingDialog(context);
@@ -229,13 +233,11 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                         padding: EdgeInsets.all(15),
                         child: FlatButton(
                           onPressed: () {
-                            Patient newpatient =
-                                Patient(birthDate: newBirthDate);
-
+                            String date=newBirthDate.toIso8601String();
                             DialogManager.showLoadingDialog(context);
                             APIClient()
                                 .getPatientService()
-                                .updatePatient(newpatient, _patientToken)
+                                .updatePatientValue(date,'birthDate' ,_patientToken)
                                 .then((PatientResponse patientResponse) {
                               if (patientResponse.success) {
                                 DialogManager.stopLoadingDialog(context);
@@ -288,7 +290,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
 
   @override
   Widget build(BuildContext context) {
-    bloodType = patient.bloodType;
+  
     return Scaffold(
         appBar: AppBar(title: Text("Edit information")),
         drawer: MainDrawer(),
@@ -345,8 +347,12 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
               ? 'no blood type choosen yet'
               : 'current value: $bloodType',
           //popupItemDisabled: (String s) => s.endsWith(':'),
-          onChanged: (bloodType) {
-            bloodType = bloodType;
+          onChanged: (bt) {
+            setState(() {
+            bloodType = bt.substring(6);     
+            });
+           
+            
           },
           //selectedItem: "Brazil"
         ),
@@ -361,33 +367,33 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
         errorText: 'passwords must have at least one special character')
   ]);
 
-  void updatePatient() {
-    if (_formKey.currentState.validate()) {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
-        Patient newpatient;
-        newpatient.password = _newPasswordConroller.text;
-        newpatient.birthDate = newBirthDate;
-        newpatient.bloodType = bloodType;
-        DialogManager.showLoadingDialog(context);
-        APIClient()
-            .getPatientService()
-            .updatePatient(newpatient, _patientToken)
-            .then((PatientResponse patientResponse) {
-          if (patientResponse.success) {
-            DialogManager.stopLoadingDialog(context);
-            Navigator.of(context).pop();
-          }
-        }).catchError((Object e) {
-          DialogManager.stopLoadingDialog(context);
-          DialogManager.showErrorDialog(context, "Couldn't Edit");
-          print(e.toString());
-        });
-      } else {
-        setState(() {
-          _autoValidate = true;
-        });
-      }
-    }
-  }
+  // void updatePatient() {
+  //   if (_formKey.currentState.validate()) {
+  //     if (_formKey.currentState.validate()) {
+  //       _formKey.currentState.save();
+  //       Patient newpatient;
+  //       newpatient.password = _newPasswordConroller.text;
+  //       newpatient.birthDate = newBirthDate;
+  //       newpatient.bloodType = bloodType;
+  //       DialogManager.showLoadingDialog(context);
+  //       APIClient()
+  //           .getPatientService()
+  //           .updatePatient(newpatient, _patientToken)
+  //           .then((PatientResponse patientResponse) {
+  //         if (patientResponse.success) {
+  //           DialogManager.stopLoadingDialog(context);
+  //           Navigator.of(context).pop();
+  //         }
+  //       }).catchError((Object e) {
+  //         DialogManager.stopLoadingDialog(context);
+  //         DialogManager.showErrorDialog(context, "Couldn't Edit");
+  //         print(e.toString());
+  //       });
+  //     } else {
+  //       setState(() {
+  //         _autoValidate = true;
+  //       });
+  //     }
+  //   }
+  // }
 }

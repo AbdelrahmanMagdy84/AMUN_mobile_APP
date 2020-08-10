@@ -49,10 +49,14 @@ class PatientService {
     }
   }
 
-  Future<PatientResponse> updatePatient(Patient patient, String token) async {
+ 
+
+  Future<PatientResponse> updatePatientList(
+      List<String> list, String type, String token) async {
+    print(jsonEncode({type: jsonEncode(list)}));
     final http.Response response = await http.patch(
         "${APIClient.baseUrl}/$endPoint",
-        body: jsonEncode(patient.toJson()),
+        body: jsonEncode({type: list}),
         headers: {
           HttpHeaders.contentTypeHeader: "application/json",
           "authorization": token
@@ -64,16 +68,16 @@ class PatientService {
     }
   }
 
-  Future<PatientResponse> updatePatientList(
-      List<String> list, String type, String token) async {
-        print(jsonEncode( {type:jsonEncode(list)}));
-    final http.Response response = await http
-        .patch("${APIClient.baseUrl}/$endPoint", body: 
-     jsonEncode({type:list})
-    , headers: {
-      HttpHeaders.contentTypeHeader: "application/json",
-      "authorization": token
-    });
+  Future<PatientResponse> updatePatientValue(
+      dynamic value, String type, String token) async {
+    print(jsonEncode({type: jsonEncode(value)}));
+    final http.Response response = await http.patch(
+        "${APIClient.baseUrl}/$endPoint",
+        body: jsonEncode({type: value}),
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+          "authorization": token
+        });
     if (response.statusCode == 200) {
       return PatientResponse.fromJson(jsonDecode(response.body));
     } else {
