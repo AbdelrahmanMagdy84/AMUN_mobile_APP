@@ -71,6 +71,7 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+     List<String> reversedList = conditions.reversed.toList();
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
@@ -87,8 +88,8 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
                 childAspectRatio: 1 / 1,
                 crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
                 mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
-                children: List.generate(conditions.length, (index) {
-                  return buildItem(conditions[index]);
+                children: List.generate(reversedList.length, (index) {
+                  return buildItem(reversedList[index]);
                 })),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

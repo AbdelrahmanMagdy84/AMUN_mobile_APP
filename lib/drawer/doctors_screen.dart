@@ -39,10 +39,9 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
           .getDoctors(_patientToken)
           .then((DoctorsResponse responseList) {
         if (responseList.success) {
-          print("success");
+          
           doctorList = responseList.doctors;
-          print(doctorList);
-          print(responseList.doctors.length);
+          doctorList=doctorList.reversed.toList();
         }
       });
     });

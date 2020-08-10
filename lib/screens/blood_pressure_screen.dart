@@ -68,12 +68,20 @@ class _BloodPressureScreenState extends State<BloodPressureScreen> {
                 ));
                 break;
               case ConnectionState.done:
-                return ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    return PressureItem(pressureList[index]);
-                  },
-                  itemCount: pressureList.length,
-                );
+                if (pressureList == null) {
+                  return Center(
+                    child: Text("Empty Press + to add"),
+                  );
+                } else {
+                  pressureList=pressureList.reversed.toList();
+                  return ListView.builder(
+                    itemBuilder: (ctx, index) {
+                      return PressureItem(pressureList[index]);
+                    },
+                    itemCount: pressureList.length,
+                  );
+                }
+
                 break;
             }
           },

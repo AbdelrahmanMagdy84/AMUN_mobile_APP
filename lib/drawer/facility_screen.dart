@@ -38,6 +38,7 @@ class _FacilityScreenState extends State<FacilityScreen> {
           .then((MedicalFacilitiesResponse responseList) {
         if (responseList.success) {
           facilityList = responseList.medicalFacilities;
+          facilityList=facilityList.reversed.toList();
         }
       });
     });
@@ -45,6 +46,7 @@ class _FacilityScreenState extends State<FacilityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Facilities"),

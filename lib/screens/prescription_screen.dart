@@ -61,13 +61,19 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                 ));
                 break;
               case ConnectionState.done:
-                print(medicalRecords);
-                return ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    return MedicalRecordItem(medicalRecords[index]);
-                  },
-                  itemCount: medicalRecords.length,
-                );
+                if (medicalRecords == null) {
+                  return Center(
+                    child: Text("Empty Press + to add"),
+                  );
+                } else {
+                  medicalRecords = medicalRecords.reversed.toList();
+                  return ListView.builder(
+                    itemBuilder: (ctx, index) {
+                      return MedicalRecordItem(medicalRecords[index]);
+                    },
+                    itemCount: medicalRecords.length,
+                  );
+                }
                 break;
             }
           },

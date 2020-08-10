@@ -27,6 +27,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> reversedList = allergies.reversed.toList();
     return Scaffold(
       appBar: AppBar(title: Text('Allergies')),
       drawer: MainDrawer(),
@@ -36,9 +37,10 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
             )
           : ListView.builder(
               itemBuilder: (ctx, index) {
-                return buildItem(allergies[index]);
+                
+                return buildItem(reversedList[index]);
               },
-              itemCount: allergies.length,
+              itemCount: reversedList.length,
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(

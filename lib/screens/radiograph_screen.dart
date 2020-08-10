@@ -73,13 +73,18 @@ class _RadiographScreenState extends State<RadiographScreen> {
                 ));
                 break;
               case ConnectionState.done:
-                print(medicalRecords);
+                  if (medicalRecords == null) {
+                  return Center(
+                    child: Text("Empty Press + to add"),
+                  );
+                } else {
                 return ListView.builder(
                   itemBuilder: (ctx, index) {
+                    medicalRecords=medicalRecords.reversed.toList();
                     return MedicalRecordItem(medicalRecords[index]);
                   },
                   itemCount: medicalRecords.length,
-                );
+                );}
                 break;
             }
           },

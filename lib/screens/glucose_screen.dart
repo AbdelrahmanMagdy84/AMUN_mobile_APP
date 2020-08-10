@@ -74,6 +74,7 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
                     child: Text("Empty Press + to add"),
                   );
                 } else {
+                   glucoseList=glucoseList.reversed.toList();
                   return ListView.builder(
                     itemBuilder: (ctx, index) {
                       return GlucoseItem(glucoseList[index]);

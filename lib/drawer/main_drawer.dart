@@ -20,10 +20,7 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerState extends State<MainDrawer> {
-  final String name = "Abdelrahman Magdy";
-  final username = "Ab!223344";
-  final String age = "55";
-  final String bloodType = "A Positive";
+
 
   Patient patient;
   Future userFuture;
@@ -63,10 +60,6 @@ class _MainDrawerState extends State<MainDrawer> {
           padding: EdgeInsets.only(top: mediaQuery.height * 0.07),
           child: Column(
             children: <Widget>[
-              // Container(
-              //   height: 1,
-              //   color: Theme.of(context).accentColor,
-              // ),
               Container(
                 child: FutureBuilder(
                   future: userFuture,
@@ -77,11 +70,48 @@ class _MainDrawerState extends State<MainDrawer> {
                         break;
                       case ConnectionState.active:
                       case ConnectionState.waiting:
-                        return Center(
-                            child: Text(
-                          "Loading ",
-                          style: Theme.of(context).textTheme.title,
-                        ));
+                        return  ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          child: Container(
+                            height: mediaQuery.height * 0.25,
+                            width: double.infinity,
+                            alignment: Alignment.centerLeft,
+                            color: Theme.of(context).primaryColor,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  //margin: EdgeInsets.only(top:20),
+                                  child: Container(
+                                      margin:
+                                          EdgeInsets.only(top: 15, left: 15),
+                                      child: buildMyText(context, "Name",
+                                          '')),
+                                ),
+                                Divider(),
+                                Container(
+                                    margin: EdgeInsets.only(left: 15),
+                                    alignment: Alignment.centerLeft,
+                                    child: buildMyText(
+                                        context, "Username", '')),
+                                Divider(),
+                                Container(
+                                    margin: EdgeInsets.only(left: 15),
+                                    alignment: Alignment.centerLeft,
+                                    child: buildMyText(context, "Birth Date",
+                                        "")),
+                                Divider(),
+                                Container(
+                                    margin:
+                                        EdgeInsets.only(left: 15, bottom: 15),
+                                    alignment: Alignment.centerLeft,
+                                    child: buildMyText(context, "Blood Type",
+                                       '')),
+                              ],
+                            ),
+                          ),
+                        );
                         break;
                       case ConnectionState.done:
                         return ClipRRect(

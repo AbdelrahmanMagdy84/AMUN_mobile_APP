@@ -1,4 +1,3 @@
-
 import 'package:amun/input_widgets/DialogManager.dart';
 import 'package:amun/models/Responses/PatientResponse.dart';
 import 'package:amun/screens/categories_screen.dart';
@@ -17,7 +16,6 @@ class MedicationsScreen extends StatefulWidget {
 }
 
 class _MedicationsScreenState extends State<MedicationsScreen> {
-  
   List<String> medications;
   @override
   didChangeDependencies() {
@@ -28,8 +26,8 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
         medications = routeArgs['medications'];
       }
     });
-    
-   print("getting user token");
+
+    print("getting user token");
     getUserToken();
     super.didChangeDependencies();
   }
@@ -70,10 +68,10 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
         arguments: {'medications': newMedications});
   }
 
-
   @override
   Widget build(BuildContext context) {
-   print(medications);
+    List<String> reversedList = medications.reversed.toList();
+    print(medications);
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
@@ -90,8 +88,8 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
                 childAspectRatio: 1 / 1,
                 crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
                 mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
-                children: List.generate(medications.length, (index) {
-                  return buildItem(medications[index]);
+                children: List.generate(reversedList.length, (index) {
+                  return buildItem(reversedList[index]);
                 })),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -176,7 +174,8 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
                       Container(
                         margin: EdgeInsets.all(30),
                         child: FlatButton(
-                          onPressed: ()=>saveNewMedication(medicaionController.text),
+                          onPressed: () =>
+                              saveNewMedication(medicaionController.text),
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Save',

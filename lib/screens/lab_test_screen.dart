@@ -73,13 +73,18 @@ class _LabTestScreenState extends State<LabTestScreen> {
                 ));
                 break;
               case ConnectionState.done:
-                print(medicalRecords);
+                 if (medicalRecords == null) {
+                  return Center(
+                    child: Text("Empty Press + to add"),
+                  );
+                } else {
+                  medicalRecords=medicalRecords.reversed.toList();
                 return ListView.builder(
                   itemBuilder: (ctx, index) {
                     return MedicalRecordItem(medicalRecords[index]);
                   },
                   itemCount: medicalRecords.length,
-                );
+                );}
                 break;
             }
           },
