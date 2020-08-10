@@ -39,6 +39,7 @@ class _NewGlucoseState extends State<NewGlucose> {
 /*------------------------------- */
 /*add function */
   void addMeasure() {
+    DialogManager.showLoadingDialog(context);
     glucose.note = noteController.text;
     glucose.value = currentValue;
     glucose.date = DateTime.now();
@@ -48,10 +49,11 @@ class _NewGlucoseState extends State<NewGlucose> {
         .addBloodGlucoseMeasure(glucose, _patientToken)
         .then((BloodGlucoseResponse bloodGlucoseResponse) {
       if (bloodGlucoseResponse.success) {
+        DialogManager.stopLoadingDialog(context);
         Navigator.of(context).pop();
         Navigator.of(context)
             .pushReplacementNamed(BloodGlucoseScreen.routeName);
-        Navigator.of(context).pushNamed(SuccessScreen.routeName);
+        
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);

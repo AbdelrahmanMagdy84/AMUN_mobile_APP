@@ -17,6 +17,8 @@ class MedicationsScreen extends StatefulWidget {
 
 class _MedicationsScreenState extends State<MedicationsScreen> {
   List<String> medications;
+  bool _autoValidate = false;
+  final _formKey = GlobalKey<FormState>();
   @override
   didChangeDependencies() {
     final routeArgs =
@@ -58,14 +60,22 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
   }
 
   void saveNewMedication(String inputMedication) {
-    List<String> newMedications = medications;
-    newMedications.add(inputMedication);
-    updatePatient(newMedications);
-
-    Navigator.pushNamedAndRemoveUntil(
-        context, CategoriesScreen.routeName, (r) => false);
-    Navigator.pushNamed(context, MedicationsScreen.routeName,
-        arguments: {'medications': newMedications});
+    if (_formKey.currentState.validate()) {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        List<String> newMedications = medications;
+        newMedications.add(inputMedication);
+        updatePatient(newMedications);
+        Navigator.pushNamedAndRemoveUntil(
+            context, CategoriesScreen.routeName, (r) => false);
+        Navigator.pushNamed(context, MedicationsScreen.routeName,
+            arguments: {'medications': newMedications});
+      } else {
+        setState(() {
+          _autoValidate = true;
+        });
+      }
+    }
   }
 
   @override
@@ -161,32 +171,43 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
               padding: const EdgeInsets.all(10.0),
               child: Scaffold(
                 body: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Medication",
-                        ),
-                        controller: medicaionController,
-                        keyboardType: TextInputType.text,
-                        maxLength: 60,
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(30),
-                        child: FlatButton(
-                          onPressed: () =>
-                              saveNewMedication(medicaionController.text),
-                          color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Save',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold),
+                  child: Form(
+                    key: _formKey,
+                    autovalidate: _autoValidate,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Medication",
                           ),
+                          controller: medicaionController,
+                          keyboardType: TextInputType.text,
+                          maxLength: 60,
+                          textAlign: TextAlign.center,
+                          validator: (String arg) {
+                            if (arg.length < 4)
+                              return 'condition must be more than 4 charater';
+                            else
+                              return null;
+                          },
                         ),
-                      )
-                    ],
+                        Container(
+                          margin: EdgeInsets.all(30),
+                          child: FlatButton(
+                            onPressed: () =>
+                                saveNewMedication(medicaionController.text),
+                            color: Theme.of(context).accentColor,
+                            child: Text(
+                              'Save',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

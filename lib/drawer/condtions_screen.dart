@@ -17,6 +17,8 @@ class ConditionsScreen extends StatefulWidget {
 
 class _ConditionsScreenState extends State<ConditionsScreen> {
   List<String> conditions;
+  bool _autoValidate = false;
+  final _formKey = GlobalKey<FormState>();
   @override
   didChangeDependencies() {
     final routeArgs =
@@ -57,21 +59,29 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
   }
 
   void saveNewCondition(String inputCondition) {
-    List<String> newConditions = conditions;
-    newConditions.add(inputCondition);
-    updatePatient(newConditions);
-
-    Navigator.pushNamedAndRemoveUntil(
-        context, CategoriesScreen.routeName, (r) => false);
-    Navigator.pushNamed(context, ConditionsScreen.routeName,
-        arguments: {'conditions': newConditions});
+    if (_formKey.currentState.validate()) {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        List<String> newConditions = conditions;
+        newConditions.add(inputCondition);
+        updatePatient(newConditions);
+        Navigator.pushNamedAndRemoveUntil(
+            context, CategoriesScreen.routeName, (r) => false);
+        Navigator.pushNamed(context, ConditionsScreen.routeName,
+            arguments: {'conditions': newConditions});
+      } else {
+        setState(() {
+          _autoValidate = true;
+        });
+      }
+    }
   }
 
   final conditionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-     List<String> reversedList = conditions.reversed.toList();
+    List<String> reversedList = conditions.reversed.toList();
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
@@ -81,7 +91,7 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
         padding: EdgeInsets.only(left: 10, right: 10, top: 20),
         child: conditions == null
             ? Center(
-                child: Text("No Conditions Add"),
+                child: Text("Empty press + to add"),
               )
             : GridView.count(
                 crossAxisCount: 2,
@@ -160,31 +170,43 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
               padding: const EdgeInsets.all(10.0),
               child: Scaffold(
                 body: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Condition",
-                        ),
-                        controller: conditionController,
-                        keyboardType: TextInputType.text,
-                        maxLength: 60,
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(30),
-                        child: FlatButton(
-                          onPressed:()=> saveNewCondition(conditionController.text),
-                          color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Save',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold),
+                  child: Form(
+                    key: _formKey,
+                    autovalidate: _autoValidate,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Condition",
                           ),
+                          controller: conditionController,
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.text,
+                          maxLength: 60,
+                          validator: (String arg) {
+                            if (arg.length < 4)
+                              return 'condition must be more than 4 charater';
+                            else
+                              return null;
+                          },
                         ),
-                      )
-                    ],
+                        Container(
+                          margin: EdgeInsets.all(30),
+                          child: FlatButton(
+                            onPressed: () =>
+                                saveNewCondition(conditionController.text),
+                            color: Theme.of(context).accentColor,
+                            child: Text(
+                              'Save',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

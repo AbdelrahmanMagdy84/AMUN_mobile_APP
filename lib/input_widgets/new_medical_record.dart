@@ -4,6 +4,7 @@ import 'package:amun/models/Responses/MedicalRecordResponse.dart';
 import 'package:amun/screens/lab_test_screen.dart';
 import 'package:amun/screens/prescription_screen.dart';
 import 'package:amun/screens/radiograph_screen.dart';
+import 'package:amun/screens/success_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -47,13 +48,17 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
   }
 
   void addMedicalRecord(String type) {
-    DialogManager.showLoadingDialog(context);
     String field;
+    String route;
+    DialogManager.showLoadingDialog(context);
     if (type == "Prescription") {
+      route=PrescriptionScreen.routeName;
       field = "prescriptionImage";
     } else if (type == "Radiograph") {
+      route=RadiographScreen.routeName;
       field = "radiograph";
     } else {
+       route=LabTestScreen.routeName;
       field = "report";
     }
     print(titleController.text);
@@ -75,11 +80,12 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
         .then((MedicalRecordResponse medicalRecordResponse) {
       if (medicalRecordResponse.success) {
         DialogManager.stopLoadingDialog(context);
-        DialogManager.showGeneralDialog(
-            context, "Task succesful", "Medical record Added");
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .pushReplacementNamed(route);
+       // Navigator.of(context).pushNamed(SuccessScreen.routeName);
       }
     }).catchError((Object e) {
-      DialogManager.stopLoadingDialog(context);
       DialogManager.showErrorDialog(context, "Couldn't add measure");
       print(e.toString());
     });

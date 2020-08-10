@@ -19,6 +19,8 @@ class _NewAllergyState extends State<NewAllergy> {
   String selectedAllergy;
   String _patientToken;
   bool showField = false;
+  final _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
   final allergyController = TextEditingController();
   @override
   void initState() {
@@ -52,21 +54,30 @@ class _NewAllergyState extends State<NewAllergy> {
   }
 
   void saveNewAllergy(String selectedAllergy) {
-    if (selectedAllergy =="       --Add Custom Allergy--") {
-      selectedAllergy = allergyController.text;
-    } else {
-      selectedAllergy = selectedAllergy.substring(8);
+    if (_formKey.currentState.validate()) {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        if (selectedAllergy == "       --Add Custom Allergy--") {
+          selectedAllergy = allergyController.text;
+        } else {
+          selectedAllergy = selectedAllergy.substring(8);
+        }
+
+        print(selectedAllergy);
+        List<String> newAllergies = widget.oldAllergies;
+        newAllergies.add(selectedAllergy);
+        updatePatient(newAllergies);
+
+        Navigator.pushNamedAndRemoveUntil(
+            context, CategoriesScreen.routeName, (r) => false);
+        Navigator.pushNamed(context, AllergiesScreen.routeName,
+            arguments: {'allergies': newAllergies});
+      } else {
+        setState(() {
+          _autoValidate = true;
+        });
+      }
     }
-
-    print(selectedAllergy);
-    List<String> newAllergies = widget.oldAllergies;
-    newAllergies.add(selectedAllergy);
-    updatePatient(newAllergies);
-
-    Navigator.pushNamedAndRemoveUntil(
-        context, CategoriesScreen.routeName, (r) => false);
-    Navigator.pushNamed(context, AllergiesScreen.routeName,
-        arguments: {'allergies': newAllergies});
   }
 
   @override
@@ -75,37 +86,63 @@ class _NewAllergyState extends State<NewAllergy> {
     return Scaffold(
       body: SingleChildScrollView(
         child: GestureDetector(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Container(
-                  child: Text(
-                    'Allergies',
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
+          child: Form(
+            key: _formKey,
+            autovalidate: _autoValidate,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Container(
+                    child: Text(
+                      'Allergies',
+                      style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              ),
-              Divider(),
-              buildDropDownSearch(allergies),
-              Container(
-                margin: EdgeInsets.all(30),
-                child: FlatButton(
-                  onPressed: () => saveNewAllergy(selectedAllergy),
-                  color: Theme.of(context).accentColor,
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold),
+                Divider(),
+                buildDropDownSearch(allergies),
+                showField
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Custom Allergy",
+                            ),
+                            controller: allergyController,
+                            keyboardType: TextInputType.text,
+                            maxLength: 40,
+                            textAlign: TextAlign.center,
+                            validator: (String arg) {
+                              if (arg.length < 4)
+                                return 'Allergy must be more than 4 charater';
+                              else
+                                return null;
+                            },
+                          ),
+                        ),
+                      )
+                    : Text(''),
+                Container(
+                  margin: EdgeInsets.all(30),
+                  child: FlatButton(
+                    onPressed: () => saveNewAllergy(selectedAllergy),
+                    color: Theme.of(context).accentColor,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
           onTap: () {},
           behavior: HitTestBehavior.opaque,
@@ -130,30 +167,19 @@ class _NewAllergyState extends State<NewAllergy> {
             hint: 'Choose your Allergy',
             popupItemDisabled: (String s) => s.endsWith(':'),
             onChanged: (allergy) {
-            
-              if (allergy =="       --Add Custom Allergy--") {
-                  selectedAllergy = allergy;
+              if (allergy == "       --Add Custom Allergy--") {
+                selectedAllergy = allergy;
                 setState(() {
                   showField = true;
                 });
-              }else{setState(() {
+              } else {
+                setState(() {
                   selectedAllergy = allergy;
-                });}
+                });
+              }
             },
             //selectedItem: "Brazil"
           ),
-          showField
-              ? Container(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: "Custom Allergy",
-                    ),
-                    controller: allergyController,
-                    keyboardType: TextInputType.text,
-                    maxLength: 40,
-                  ),
-                )
-              : Text('')
         ],
       ),
     );

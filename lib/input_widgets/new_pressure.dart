@@ -37,6 +37,7 @@ class _NewPressureState extends State<NewPressure> {
 /*------------------------------- */
 /*add function */
   void addMeasure() {
+    DialogManager.showLoadingDialog(context);
     pressure.note = noteController.text;
     pressure.date = DateTime.now();
    
@@ -45,11 +46,9 @@ class _NewPressureState extends State<NewPressure> {
         .addBloodPressureMeasure(bloodPressure: pressure, token: _patientToken)
         .then((BloodPressureResponse bloodPressureResponse) {
       if (bloodPressureResponse.success) {
+        DialogManager.stopLoadingDialog(context);
         Navigator.of(context).pop();
-        Navigator.of(context).pushReplacementNamed(BloodPressureScreen.routeName);
-        Navigator.of(context).pushNamed(SuccessScreen.routeName);
-      
-        
+        Navigator.of(context).pushReplacementNamed(BloodPressureScreen.routeName);        
       }
     }).catchError((Object e) {
       DialogManager.stopLoadingDialog(context);

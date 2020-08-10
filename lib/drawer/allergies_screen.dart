@@ -20,6 +20,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
     setState(() {
       if (routeArgs != null) {
         allergies = routeArgs['allergies'];
+        allergies=allergies.reversed.toList();
       }
     });
     super.didChangeDependencies();
@@ -27,7 +28,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> reversedList = allergies.reversed.toList();
+    
     return Scaffold(
       appBar: AppBar(title: Text('Allergies')),
       drawer: MainDrawer(),
@@ -37,10 +38,9 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
             )
           : ListView.builder(
               itemBuilder: (ctx, index) {
-                
-                return buildItem(reversedList[index]);
+                return buildItem(allergies[index]);
               },
-              itemCount: reversedList.length,
+              itemCount: allergies.length,
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
@@ -132,7 +132,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
         context: ctx,
         enableDrag: false,
         builder: (_) {
-          return NewAllergy(allergies);
+          return NewAllergy(allergies.reversed.toList());
         });
   }
 
