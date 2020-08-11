@@ -49,8 +49,6 @@ class PatientService {
     }
   }
 
- 
-
   Future<PatientResponse> updatePatientList(
       List<String> list, String type, String token) async {
     print(jsonEncode({type: jsonEncode(list)}));
@@ -70,7 +68,7 @@ class PatientService {
 
   Future<PatientResponse> updatePatientValue(
       dynamic value, String type, String token) async {
-    print(jsonEncode({type: jsonEncode(value)}));
+    print(value);
     final http.Response response = await http.patch(
         "${APIClient.baseUrl}/$endPoint",
         body: jsonEncode({type: value}),
