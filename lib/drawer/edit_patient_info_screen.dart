@@ -36,7 +36,6 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
         patient = routeArgs['information'];
       }
     });
-   
     if (patient.bloodType != null) {
       bloodType = patient.bloodType;
     } else {
@@ -218,13 +217,14 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                           onlyDate: true,
                           initialValue: patient.birthDate,
                           label: "Birth Date",
-                          onSaved: (DateTime dateTime) =>
-                              newBirthDate = dateTime,
                           validator: (DateTime dateTime) {
                             if (dateTime == null) {
                               return "Birth Date is required";
                             }
                             return null;
+                          },
+                          onSaved: (DateTime dateTime) {
+                            newBirthDate = dateTime;
                           },
                         ),
                       ),
@@ -233,8 +233,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                         padding: EdgeInsets.all(15),
                         child: FlatButton(
                           onPressed: () {
-                            String date =  newBirthDate.toIso8601String();
-                            
+                            String date = newBirthDate.toIso8601String();
                             DialogManager.showLoadingDialog(context);
                             APIClient()
                                 .getPatientService()
