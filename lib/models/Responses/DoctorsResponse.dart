@@ -10,9 +10,17 @@ class DoctorsResponse {
   });
 
   factory DoctorsResponse.fromJson(Map<String, dynamic> json) {
-    List<dynamic> parsed = json["facilitiesPatients"] != null
-        ? json["facilitiesPatients"]
-        : new List<dynamic>();
+    List<dynamic> parsed = [];
+    if (json["facilitiesPatients"] != null) {
+      parsed = json["facilitiesPatients"] != null
+          ? json["facilitiesPatients"]
+          : new List<dynamic>();
+    } else if (json["facilitiesDoctors"] != null) {
+      parsed = json["facilitiesDoctors"] != null
+          ? json["facilitiesDoctors"]
+          : new List<dynamic>();
+    }
+
     List<dynamic> parsedDoctors = [];
 
     for (final object in parsed) {

@@ -4,7 +4,6 @@ import 'package:amun/models/Responses/MedicalRecordResponse.dart';
 import 'package:amun/screens/lab_test_screen.dart';
 import 'package:amun/screens/prescription_screen.dart';
 import 'package:amun/screens/radiograph_screen.dart';
-import 'package:amun/screens/success_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +51,13 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
     String route;
     DialogManager.showLoadingDialog(context);
     if (type == "Prescription") {
-      route=PrescriptionScreen.routeName;
+      route = PrescriptionScreen.routeName;
       field = "prescriptionImage";
     } else if (type == "Radiograph") {
-      route=RadiographScreen.routeName;
+      route = RadiographScreen.routeName;
       field = "radiograph";
     } else {
-       route=LabTestScreen.routeName;
+      route = LabTestScreen.routeName;
       field = "report";
     }
     print(titleController.text);
@@ -81,9 +80,8 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
       if (medicalRecordResponse.success) {
         DialogManager.stopLoadingDialog(context);
         Navigator.of(context).pop();
-        Navigator.of(context)
-            .pushReplacementNamed(route);
-       // Navigator.of(context).pushNamed(SuccessScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(route);
+        // Navigator.of(context).pushNamed(SuccessScreen.routeName);
       }
     }).catchError((Object e) {
       DialogManager.showErrorDialog(context, "Couldn't add measure");
