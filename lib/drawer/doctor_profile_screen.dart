@@ -125,9 +125,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                     Divider(
                       height: h,
                     ),
-                    Divider(
-                      height: h,
-                    ),
                     Container(
                         margin: EdgeInsets.only(
                           left: 15,

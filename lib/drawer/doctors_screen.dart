@@ -39,9 +39,8 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
           .getDoctors(_patientToken)
           .then((DoctorsResponse responseList) {
         if (responseList.success) {
-          
           doctorList = responseList.doctors;
-          doctorList=doctorList.reversed.toList();
+          doctorList = doctorList.reversed.toList();
         }
       });
     });
@@ -124,70 +123,81 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
 
   Widget item(String name, String username, String specializationOrRole,
       Doctor myDoctor, BuildContext ctx) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(ctx).pushNamed(DoctorProfileScreen.routeName,
-            arguments: {'doctor': myDoctor});
-      },
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              height: MediaQuery.of(context).size.height * 0.22,
-              child: Container(
-                child: Card(
-                  elevation: 4,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(ctx).pushNamed(DoctorProfileScreen.routeName,
+                arguments: {'doctor': myDoctor});
+          },
+          child: Column(
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.only(top: 10),
+                  height: MediaQuery.of(context).size.height * 0.22,
                   child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: constraints.maxWidth * 0.8,
-                          padding: EdgeInsets.only(top: 5, left: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text(
-                                  'Name: $name',
-                                  style: Theme.of(context).textTheme.title,
-                                ),
+                    child: Card(
+                      elevation: 4,
+                      child: Container(
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              width: constraints.maxWidth * 0.8,
+                              padding: EdgeInsets.only(top: 5, left: 10),
+                              child: Flex(
+                                direction: Axis.vertical,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: Text(
+                                      'Name: DR.$name',
+                                      style: Theme.of(context).textTheme.title,
+                                    ),
+                                  ),
+                                  Divider(),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Text(
+                                      'Username: $username ',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Divider(),
+                                  Expanded(
+                                    child: Container(
+                                      // padding: EdgeInsets.symmetric(vertical: 10),
+                                      child: Text(
+                                        'Specialization: $specializationOrRole ',
+                                        maxLines: 2,
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text(
-                                  'Username: $username ',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Container(
-                                // padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text(
-                                  'Specialization: $specializationOrRole ',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              )
-                            ],
-                          ),
+                            ),
+                            Container(
+                              child: IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Theme.of(context).errorColor,
+                                  ),
+                                  onPressed: () {}),
+                            ),
+                          ],
                         ),
-                        Container(
-                          child: IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                color: Theme.of(context).errorColor,
-                              ),
-                              onPressed: () {}),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ));
-        },
-      ),
+                  )),
+            ],
+          ),
+        );
+      },
     );
   }
 }

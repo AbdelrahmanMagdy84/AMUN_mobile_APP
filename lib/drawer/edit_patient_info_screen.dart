@@ -20,7 +20,7 @@ class EditPatientInfo extends StatefulWidget {
 class _EditPatientInfoState extends State<EditPatientInfo> {
   bool _autoValidate = false;
   final _formKey = GlobalKey<FormState>();
-
+  
   DateTime newBirthDate = DateTime.now();
   String gender;
   String bloodType;
@@ -213,7 +213,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 70),
                         child: DateTimeFormField(
-                          formatter: DateFormat.yMd(),
+                        formatter: DateFormat.yMd(),
                           onlyDate: true,
                           initialValue: patient.birthDate,
                           label: "Birth Date",

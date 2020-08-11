@@ -145,17 +145,6 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                           );
                     }),
                   ),
-                  Divider(),
-                  Expanded(
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Theme.of(context).accentColor,
-                        ),
-                        onPressed: () {}
-                        // widget.delete(widget.transaction.id),
-                        ),
-                  ),
                   Expanded(
                     child: IconButton(
                         icon: Icon(

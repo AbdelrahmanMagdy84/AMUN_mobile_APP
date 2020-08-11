@@ -70,13 +70,13 @@ class _MainDrawerState extends State<MainDrawer> {
                         break;
                       case ConnectionState.active:
                       case ConnectionState.waiting:
-                        return  ClipRRect(
+                        return   ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                           child: Container(
                             height: mediaQuery.height * 0.25,
                             width: double.infinity,
                             alignment: Alignment.centerLeft,
-                            color: Theme.of(context).primaryColor,
+                            
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
@@ -86,28 +86,24 @@ class _MainDrawerState extends State<MainDrawer> {
                                   child: Container(
                                       margin:
                                           EdgeInsets.only(top: 15, left: 15),
-                                      child: buildMyText(context, "Name",
-                                          '')),
+                                      child: Text('')),
                                 ),
                                 Divider(),
                                 Container(
                                     margin: EdgeInsets.only(left: 15),
                                     alignment: Alignment.centerLeft,
-                                    child: buildMyText(
-                                        context, "Username", '')),
+                                    child: Text('')),
                                 Divider(),
                                 Container(
                                     margin: EdgeInsets.only(left: 15),
                                     alignment: Alignment.centerLeft,
-                                    child: buildMyText(context, "Birth Date",
-                                        "")),
+                                    child:  Text('')),
                                 Divider(),
                                 Container(
                                     margin:
                                         EdgeInsets.only(left: 15, bottom: 15),
                                     alignment: Alignment.centerLeft,
-                                    child: buildMyText(context, "Blood Type",
-                                       '')),
+                                    child: Text('')),
                               ],
                             ),
                           ),
@@ -240,21 +236,27 @@ class _MainDrawerState extends State<MainDrawer> {
 
   Widget buildMyText(BuildContext ctx, String title, String value) {
     return Container(
+          child: Row(
+        children: <Widget>[
+      Text("$title: ",
+          style: TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 16,
+              color: Theme.of(ctx).accentColor)),
+      FittedBox(
+        fit: BoxFit.scaleDown,
         child: Row(
-      children: <Widget>[
-        Text("$title: ",
-            style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 16,
-                color: Theme.of(ctx).accentColor)),
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text("$value",
-              style: TextStyle(
-                fontSize: 16,
-              )),
+          children: <Widget>[
+            Text("$value",
+                style: TextStyle(
+                  fontSize: 16,
+                )),
+          ],
         ),
-      ],
-    ));
+      ),
+        ],
+      ),
+    );
   }
 }
+

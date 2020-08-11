@@ -142,12 +142,18 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
                         'Condition: ',
                         style: Theme.of(context).textTheme.title,
                       ),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          '$condition',
-                          maxLines: 5,
-                          style: TextStyle(fontSize: 18),
+                       Divider(
+                        color: Theme.of(context).accentColor,
+                        thickness: 0.6,
+                      ),
+                      Center(
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            '$condition',
+                            maxLines: 5,
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
                       ),
                     ],
