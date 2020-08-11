@@ -1,6 +1,7 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:amun/drawer/condtions_screen.dart';
 import 'package:amun/drawer/doctor_profile_screen.dart';
+import 'package:amun/drawer/doctors_connections_screen.dart';
 import 'package:amun/drawer/doctors_screen.dart';
 import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/clerk_profile_screen.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
         DoctorProfileScreen.routeName: (ctx) => DoctorProfileScreen(),
         FacilityProfileScreen.routeName: (ctx) => FacilityProfileScreen(),
         SuccessScreen.routeName:(ctx)=>SuccessScreen(),
+        DoctorConnectionScreen.routeName:(ctx)=>DoctorConnectionScreen(),
       },
     );
   }
