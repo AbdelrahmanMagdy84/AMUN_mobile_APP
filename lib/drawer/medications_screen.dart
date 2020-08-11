@@ -142,12 +142,18 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
                         'Medication: ',
                         style: Theme.of(context).textTheme.title,
                       ),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          '$medication',
-                          maxLines: 5,
-                          style: TextStyle(fontSize: 18),
+                       Divider(
+                        color: Theme.of(context).accentColor,
+                        thickness: 0.6,
+                      ),
+                      Center(
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            '$medication',
+                            maxLines: 5,
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
                       ),
                     ],

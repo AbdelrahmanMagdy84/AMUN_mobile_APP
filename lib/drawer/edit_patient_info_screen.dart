@@ -20,7 +20,7 @@ class EditPatientInfo extends StatefulWidget {
 class _EditPatientInfoState extends State<EditPatientInfo> {
   bool _autoValidate = false;
   final _formKey = GlobalKey<FormState>();
-
+  
   DateTime newBirthDate = DateTime.now();
   String gender;
   String bloodType;
@@ -36,11 +36,12 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
         patient = routeArgs['information'];
       }
     });
-     if( patient.bloodType!=null){
-      bloodType = patient.bloodType;}
-      else{
-        bloodType="      O-";
-      }
+   
+    if (patient.bloodType != null) {
+      bloodType = patient.bloodType;
+    } else {
+      bloodType = "      O-";
+    }
     super.didChangeDependencies();
   }
 
@@ -52,8 +53,6 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
     super.initState();
     print("getting user token");
     getUserToken();
-   
-
   }
 
   void getUserToken() {
@@ -160,7 +159,8 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                     DialogManager.showLoadingDialog(context);
                     APIClient()
                         .getPatientService()
-                        .updatePatientValue(bloodType,"bloodType", _patientToken)
+                        .updatePatientValue(
+                            bloodType, "bloodType", _patientToken)
                         .then((PatientResponse patientResponse) {
                       if (patientResponse.success) {
                         DialogManager.stopLoadingDialog(context);
@@ -214,7 +214,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 70),
                         child: DateTimeFormField(
-                          formatter: DateFormat.yMd(),
+                        formatter: DateFormat.yMd(),
                           onlyDate: true,
                           initialValue: patient.birthDate,
                           label: "Birth Date",
@@ -233,11 +233,13 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                         padding: EdgeInsets.all(15),
                         child: FlatButton(
                           onPressed: () {
-                            String date=newBirthDate.toIso8601String();
+                            String date =  newBirthDate.toIso8601String();
+                            
                             DialogManager.showLoadingDialog(context);
                             APIClient()
                                 .getPatientService()
-                                .updatePatientValue(date,'birthDate' ,_patientToken)
+                                .updatePatientValue(
+                                    date, 'birthDate', _patientToken)
                                 .then((PatientResponse patientResponse) {
                               if (patientResponse.success) {
                                 DialogManager.stopLoadingDialog(context);
@@ -290,7 +292,6 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
 
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
         appBar: AppBar(title: Text("Edit information")),
         drawer: MainDrawer(),
@@ -349,10 +350,8 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
           //popupItemDisabled: (String s) => s.endsWith(':'),
           onChanged: (bt) {
             setState(() {
-            bloodType = bt.substring(6);     
+              bloodType = bt.substring(6);
             });
-           
-            
           },
           //selectedItem: "Brazil"
         ),
