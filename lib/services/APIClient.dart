@@ -6,6 +6,7 @@ import 'ClerkService.dart';
 import 'MedicalFacilityService.dart';
 import 'FacilityPatientService.dart';
 import 'MedicalRecordService.dart';
+import 'FacilityDoctorService.dart';
 
 class APIClient {
   static final String baseUrl = "https://amonmr.herokuapp.com";
@@ -22,6 +23,8 @@ class APIClient {
       FacilityPatientService();
   static final MedicalRecordService _medicalRecordService =
       MedicalRecordService();
+  static final FacilityDoctorService _facilityDoctorService =
+      FacilityDoctorService();
   factory APIClient() {
     return _instance;
   }
@@ -58,5 +61,9 @@ class APIClient {
 
   MedicalRecordService getMedicalRecordService() {
     return _medicalRecordService;
+  }
+
+  FacilityDoctorService getFacilityDoctorService() {
+    return _facilityDoctorService;
   }
 }
