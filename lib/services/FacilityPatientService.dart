@@ -17,7 +17,7 @@ class FacilityPatientService {
   }
   FacilityPatientService._getInstance();
 
-  Future<void> createConnection(
+  Future<String> createConnection(
       FacilityPatient facilityPatient, String token) async {
     final http.Response response = await http.post(
         "${APIClient.baseUrl}/$endPoint",
@@ -25,7 +25,7 @@ class FacilityPatientService {
         headers: {"Content-Type": "application/json", "authorization": token});
     print(jsonDecode(response.body));
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)['success'];
     } else {
       throw Exception("Failed to post data");
     }

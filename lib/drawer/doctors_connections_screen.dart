@@ -1,6 +1,7 @@
 import 'package:amun/drawer/doctor_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/Doctor.dart';
+import 'package:amun/models/FacilityPatient.dart';
 import 'package:amun/models/Responses/DoctorsResponse.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
@@ -14,7 +15,9 @@ class DoctorConnectionScreen extends StatefulWidget {
 }
 
 class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
-  String medicalFacility_ID;// = "5f280391d805c00017ffa218";
+  String medicalFacility_ID;
+  FacilityPatient connection = new FacilityPatient();
+
   @override
   didChangeDependencies() {
     final routeArgs =
@@ -163,19 +166,21 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
                                         child: FlatButton(
                                           color: Theme.of(context).accentColor,
                                           onPressed: () {
-                                            // userFuture = APIClient()
-                                            //     .getFacilityDoctorService()
-                                            //     .(medicalFacility_ID,
-                                            //         _patientToken)
-                                            //     .then((DoctorsResponse
-                                            //         responseList) {
-                                            //   if (responseList.success) {
-                                            //     doctorList =
-                                            //         responseList.doctors;
-                                            //     doctorList = doctorList.reversed
-                                            //         .toList();
-                                            //   }
-                                            // });
+                                            connection.doctor = myDoctor.id;
+                                            connection.medicalFacility =
+                                                medicalFacility_ID;
+                                            userFuture = APIClient()
+                                                .getFacilityPatientService()
+                                                .createConnection(
+                                                    connection, _patientToken)
+                                                .then((String response) {
+                                              /* if (response) {
+                                                doctorList =
+                                                    responseList.doctors;
+                                                doctorList = doctorList.reversed
+                                                    .toList();
+                                              } */
+                                            });
                                           },
                                           child: Center(
                                             heightFactor: 2,
