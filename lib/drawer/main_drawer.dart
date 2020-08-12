@@ -1,7 +1,7 @@
 import 'package:amun/drawer/allergies_screen.dart';
 import 'package:amun/drawer/condtions_screen.dart';
 import 'package:amun/drawer/edit_patient_info_screen.dart';
-import 'package:amun/drawer/facility_screen.dart';
+import 'package:amun/drawer/facilities_screen.dart';
 import 'package:amun/drawer/medications_screen.dart';
 import 'package:amun/drawer/doctors_screen.dart';
 import 'package:amun/models/Responses/PatientResponse.dart';
@@ -175,7 +175,7 @@ class _MainDrawerState extends State<MainDrawer> {
               buildListTile(context, 'Facilities', () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
-                Navigator.pushNamed(context, FacilityScreen.routeName);
+                Navigator.pushNamed(context, FacilitiesScreen.routeName);
               }),
               buildListTile(context, 'Allergies', () {
                 Navigator.pushNamedAndRemoveUntil(

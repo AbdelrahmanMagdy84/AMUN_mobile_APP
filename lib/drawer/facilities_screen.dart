@@ -7,14 +7,14 @@ import 'package:amun/utils/TokenStorage.dart';
 
 import 'package:flutter/material.dart';
 
-class FacilityScreen extends StatefulWidget {
+class FacilitiesScreen extends StatefulWidget {
   static final routeName = 'facility route name';
 
   @override
-  _FacilityScreenState createState() => _FacilityScreenState();
+  _FacilitiesScreenState createState() => _FacilitiesScreenState();
 }
 
-class _FacilityScreenState extends State<FacilityScreen> {
+class _FacilitiesScreenState extends State<FacilitiesScreen> {
   String screenTitle;
   final usernameController = TextEditingController();
 
@@ -111,7 +111,7 @@ class _FacilityScreenState extends State<FacilityScreen> {
             color: Theme.of(context).primaryColor,
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed(FacilityScreen.routeName,
+            Navigator.of(context).pushNamed(FacilitiesScreen.routeName,
                 arguments: {'userName': usernameController.text});
           },
         ),
@@ -126,7 +126,7 @@ Widget item(String name, String username, String type,
     builder: (context, constraints) {
       return GestureDetector(
         onTap: () {
-          print(FacilityScreen.routeName);
+          print(FacilitiesScreen.routeName);
           Navigator.of(context).pushNamed(FacilityProfileScreen.routeName,
               arguments: {'facility': myfacility});
         },
