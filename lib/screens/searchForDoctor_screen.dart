@@ -1,31 +1,26 @@
 import 'package:amun/drawer/doctor_profile_screen.dart';
-import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/Doctor.dart';
-import 'package:amun/models/Responses/DoctorsResponse.dart';
+import 'package:amun/models/Responses/DoctorResponse.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 
-class DoctorConnectionScreen extends StatefulWidget {
-  static final routeName = 'connection screen';
-
+class SearchForDoctorScreen extends StatefulWidget {
+  static final String routeName = "search route name";
   @override
-  _DoctorConnectionScreenState createState() => _DoctorConnectionScreenState();
+  _SearchForDoctorScreenState createState() => _SearchForDoctorScreenState();
 }
 
-class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
-  String medicalFacility_ID = "5f280391d805c00017ffa218";
+class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
+  final usernameController = TextEditingController();
+  bool show = false;
   @override
   didChangeDependencies() {
-    final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    //medicalFacility_ID = routeArgs['id'];
-    print(medicalFacility_ID);
     getUserToken();
     super.didChangeDependencies();
   }
 
-  List<Doctor> doctorList = List();
+  Doctor searchedDoctor;
   Future userFuture;
 
   String _patientToken;
@@ -37,59 +32,82 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
       print(_patientToken);
 
       userFuture = APIClient()
-          .getFacilityDoctorService()
-          .getDoctors(medicalFacility_ID, _patientToken)
-          .then((DoctorsResponse responseList) {
-        if (responseList.success) {
-          doctorList = responseList.doctors;
-          doctorList = doctorList.reversed.toList();
+          .getDoctorService()
+          .getDoctorByUsername(usernameController.text, _patientToken)
+          .then((DoctorResponse response) {
+        if (response.success) {
+          searchedDoctor = response.doctor;
         }
       });
     });
   }
 
-  final usernameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Connections"),
-      ),
-      drawer: MainDrawer(),
-      body: Container(
-        child: Container(
-          child: FutureBuilder(
-            future: userFuture,
-            builder: (ctx, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return Text("zxxxxxxxxxxxxxxxxxxxx");
-                  break;
-                case ConnectionState.active:
-                case ConnectionState.waiting:
-                  return Center(
-                      child: Text(
-                    "Loading ",
-                    style: Theme.of(context).textTheme.title,
-                  ));
-                  break;
-                case ConnectionState.done:
-                  return ListView.builder(
-                    itemBuilder: (ctx, index) {
-                      return item(
-                          "${doctorList[index].firstName} ${doctorList[index].lastName}",
-                          doctorList[index].username,
-                          doctorList[index].specialization,
-                          doctorList[index],
-                          doctorList[index].email,
-                          context);
+      appBar: AppBar(title: Text("search for Doctor")),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  //    width: MediaQuery.of(context).size.width * 0.8,
+                  child: Expanded(
+                    flex: 6,
+                    child: TextField(
+                      controller: usernameController,
+                      decoration: InputDecoration(
+                        labelText: "search by Username/email",
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.search,
+                      size: 34,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onPressed: () {
+                      if (usernameController.text != null) {
+                         APIClient()
+                            .getDoctorService()
+                            .getDoctorByUsername(
+                                usernameController.text, _patientToken)
+                            .then((dynamic response) {
+                          if (response.success) {
+                             
+                            setState(() {
+                               searchedDoctor = response.doctor;
+                              show = true;
+                              
+                            });
+                          }
+                        });
+                     
+                      } else {
+                        setState(() {
+                          show = false;
+                        }); 
+                      }
                     },
-                    itemCount: doctorList.length,
-                  );
-                  break;
-              }
-            },
-          ),
+                  ),
+                )
+              ],
+            ),
+            show
+                ? Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: item("", "", "", new Doctor(), "", context),
+                    ))
+                : Text('')
+          ],
         ),
       ),
     );
@@ -160,23 +178,9 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
                                       child: Container(
                                         padding: const EdgeInsets.only(
                                             bottom: 10.0, left: 10),
-                                        child: FlatButton(
+                                        child: Card(
                                           color: Theme.of(context).accentColor,
-                                          onPressed: () {
-                                            // userFuture = APIClient()
-                                            //     .getFacilityDoctorService()
-                                            //     .(medicalFacility_ID,
-                                            //         _patientToken)
-                                            //     .then((DoctorsResponse
-                                            //         responseList) {
-                                            //   if (responseList.success) {
-                                            //     doctorList =
-                                            //         responseList.doctors;
-                                            //     doctorList = doctorList.reversed
-                                            //         .toList();
-                                            //   }
-                                            // });
-                                          },
+                                          elevation: 1,
                                           child: Center(
                                             heightFactor: 2,
                                             child: Padding(
@@ -211,6 +215,34 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
           ],
         );
       },
+    );
+  }
+
+  Widget buildSearch() {
+    return Container(
+      // height: MediaQuery.of(context).size.height * 0.2,
+      child: ListTile(
+        leading: Container(
+          //    width: MediaQuery.of(context).size.width * 0.8,
+          child: TextField(
+            controller: usernameController,
+            decoration: InputDecoration(
+              labelText: "search by Username/email",
+            ),
+          ),
+        ),
+        title: IconButton(
+          icon: Icon(
+            Icons.search,
+            size: 34,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(DoctorProfileScreen.routeName,
+                arguments: {'userName': usernameController.text});
+          },
+        ),
+      ),
     );
   }
 }

@@ -14,6 +14,7 @@ import 'package:amun/screens/lab_test_screen.dart';
 import 'package:amun/screens/prescription_screen.dart';
 import 'package:amun/screens/radiograph_screen.dart';
 import 'package:amun/screens/reminder_screen.dart';
+import 'package:amun/screens/searchForDoctor_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
 import 'package:amun/screens/success_screen.dart';
 import './screens/login_screen.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
         FacilityProfileScreen.routeName: (ctx) => FacilityProfileScreen(),
         SuccessScreen.routeName:(ctx)=>SuccessScreen(),
         DoctorConnectionScreen.routeName:(ctx)=>DoctorConnectionScreen(),
+        SearchForDoctorScreen.routeName:(ctx)=>SearchForDoctorScreen(),
       },
     );
   }

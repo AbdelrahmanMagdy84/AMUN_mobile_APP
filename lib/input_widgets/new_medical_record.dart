@@ -22,10 +22,10 @@ class NewMedicalRecord extends StatefulWidget {
 }
 
 class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
-  DateTime dateTime = DateTime.now();
+ 
   final titleController = TextEditingController();
   final noteController = TextEditingController();
-  DateTime date;
+  DateTime date=DateTime.now();
 
   File file;
 /* init state for token */
@@ -60,10 +60,6 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
       route = LabTestScreen.routeName;
       field = "report";
     }
-    print(titleController.text);
-    print(noteController.text);
-    print(date);
-    print(file.path);
 
     MedicalRecord medicalRecord = MedicalRecord(
         title: titleController.text,
@@ -277,8 +273,6 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
             lastDate: DateTime.now())
         .then((pickedDate) {
       if (pickedDate == null)
-        return;
-      else
         setState(() {
           date = pickedDate;
         });

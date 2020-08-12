@@ -1,7 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:amun/input_widgets/DialogManager.dart';
 import 'package:amun/models/MedicalRecord.dart';
+
+import 'package:amun/screens/lab_test_screen.dart';
+import 'package:amun/screens/prescription_screen.dart';
+import 'package:amun/screens/radiograph_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +24,49 @@ class MedicalRecordItem extends StatefulWidget {
 class _MedicalRecordItemState extends State<MedicalRecordItem> {
   String text = '';
   String subject = '';
+  String _patientToken;
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+    });
+  }
+
+  void deleteMedicalRecord(MedicalRecord deleteThisRecord) {
+    getUserToken();
+    DialogManager.showLoadingDialog(context);
+    String route;
+    DialogManager.showLoadingDialog(context);
+    if (deleteThisRecord.type == "Prescription") {
+      route = PrescriptionScreen.routeName;
+    } else if (deleteThisRecord.type == "Radiograph") {
+      route = RadiographScreen.routeName;
+    } else {
+      route = LabTestScreen.routeName;
+    }
+
+    APIClient()
+        .getMedicalRecordService()
+        .deleteMedicalRecord(deleteThisRecord.id, _patientToken)
+        .then((dynamic medicalRecordResponse) {
+      if (medicalRecordResponse.success) {
+        DialogManager.stopLoadingDialog(context);
+          Navigator.of(context).pop();
+        Navigator.of(context).pushReplacementNamed(route);
+      }
+    }).catchError((Object e) {
+      DialogManager.showErrorDialog(context, "Couldn't delete Medical record");
+      print(e.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +201,8 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                           Icons.delete,
                           color: Theme.of(context).errorColor,
                         ),
-                        onPressed: () {}
-                        // widget.delete(widget.transaction.id),
-                        ),
+                        onPressed: () =>
+                            deleteMedicalRecord(widget.medicalRecord)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 10),

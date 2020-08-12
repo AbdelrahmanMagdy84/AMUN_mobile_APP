@@ -1,6 +1,6 @@
 import 'package:amun/drawer/doctors_connections_screen.dart';
 import 'package:amun/reminders/global_bloc.dart';
-import 'package:amun/screens/scanner_screen.dart';
+import 'package:amun/screens/searchForDoctor_screen.dart';
 import 'package:amun/static_data/medical_categories_data.dart';
 import '../items/category_item.dart';
 import '../drawer/main_drawer.dart';
@@ -34,6 +34,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed(DoctorConnectionScreen.routeName);
+              })
+              ,
+               IconButton(
+              color: Theme.of(context).accentColor,
+              icon: Icon(
+                Icons.search,
+              ),
+              onPressed: () {
+                  Navigator.of(context).pushNamed(SearchForDoctorScreen.routeName);
+              
               })
         ],
       ),
