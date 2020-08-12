@@ -33,7 +33,7 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
     TokenStorage().getUserToken().then((value) async {
       setState(() {
         _patientToken = value;
-      }); 
+      });
       print(_patientToken);
 
       userFuture = APIClient()
@@ -81,6 +81,7 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
                           doctorList[index].username,
                           doctorList[index].specialization,
                           doctorList[index],
+                          doctorList[index].email,
                           context);
                     },
                     itemCount: doctorList.length,
@@ -94,99 +95,120 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
     );
   }
 
-
   Widget item(String name, String username, String specializationOrRole,
-      Doctor myDoctor, BuildContext ctx) {
+      Doctor myDoctor, String email, BuildContext ctx) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.of(ctx).pushNamed(DoctorProfileScreen.routeName,
-                arguments: {'doctor': myDoctor});
-          },
-          child: Column(
-            children: <Widget>[
-              Container(
-                  padding: EdgeInsets.only(top: 10),
-                  height: MediaQuery.of(context).size.height * 0.22,
-                  child: Container(
-                    child: Card(
-                      elevation: 4,
-                      child: Container(
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              width: constraints.maxWidth * 0.8,
-                              padding: EdgeInsets.only(top: 5, left: 10),
-                              child: Flex(
-                                direction: Axis.vertical,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.only(top: 10),
+        return Column(
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.only(top: 10),
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: Container(
+                  child: Card(
+                    elevation: 4,
+                    child: Container(
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: constraints.maxWidth * 0.8,
+                            padding: EdgeInsets.only(top: 5, left: 10),
+                            child: Flex(
+                              direction: Axis.vertical,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    'Name: DR.$name',
+                                    style: Theme.of(context).textTheme.title,
+                                  ),
+                                ),
+                                Divider(),
+                                Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    'Username: $username ',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Divider(),
+                                Container(
+                                  // padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    'Email: $email',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ),
+                                Divider(),
+                                Expanded(
+                                  child: Container(
                                     child: Text(
-                                      'Name: DR.$name',
-                                      style: Theme.of(context).textTheme.title,
+                                      'Specialization: $specializationOrRole ',
+                                      maxLines: 2,
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                   ),
-                                  Divider(),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Text(
-                                      'Username: $username ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Divider(),
-                                  ListTile(
-                                    title: Card(
-                                      elevation: 1,
-                                      child: Center(
-                                        heightFactor: 2,
-                                        child: Text(
-                                          "Create connection",
-                                          style: TextStyle(
-                                              fontFamily: 'RobotoCondenced',
-                                              fontSize: 18,
-                                              color: Theme.of(ctx).accentColor,
-                                              fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 10.0, left: 10),
+                                        child: FlatButton(
+                                          color: Theme.of(context).accentColor,
+                                          onPressed: () {
+                                            // userFuture = APIClient()
+                                            //     .getFacilityDoctorService()
+                                            //     .(medicalFacility_ID,
+                                            //         _patientToken)
+                                            //     .then((DoctorsResponse
+                                            //         responseList) {
+                                            //   if (responseList.success) {
+                                            //     doctorList =
+                                            //         responseList.doctors;
+                                            //     doctorList = doctorList.reversed
+                                            //         .toList();
+                                            //   }
+                                            // });
+                                          },
+                                          child: Center(
+                                            heightFactor: 2,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8),
+                                              child: Text(
+                                                "Create connection",
+                                                style: TextStyle(
+                                                    fontFamily:
+                                                        'RobotoCondenced',
+                                                    fontSize: 18,
+                                                    color: Theme.of(ctx)
+                                                        .primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                    onTap: null,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      // padding: EdgeInsets.symmetric(vertical: 10),
-                                      child: Text(
-                                        'Specialization: $specializationOrRole ',
-                                        maxLines: 2,
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            Container(
-                              child: IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Theme.of(context).errorColor,
-                                  ),
-                                  onPressed: () {}),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  )),
-            ],
-          ),
+                  ),
+                )),
+          ],
         );
       },
     );

@@ -1,5 +1,8 @@
 import 'package:amun/drawer/doctor_profile_screen.dart';
 import 'package:amun/models/Doctor.dart';
+import 'package:amun/models/Responses/DoctorResponse.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
 
 class SearchForDoctorScreen extends StatefulWidget {
@@ -10,6 +13,35 @@ class SearchForDoctorScreen extends StatefulWidget {
 
 class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
   final usernameController = TextEditingController();
+  bool show = false;
+  @override
+  didChangeDependencies() {
+    getUserToken();
+    super.didChangeDependencies();
+  }
+
+  Doctor searchedDoctor;
+  Future userFuture;
+
+  String _patientToken;
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      print(_patientToken);
+
+      userFuture = APIClient()
+          .getDoctorService()
+          .getDoctorByUsername(usernameController.text, _patientToken)
+          .then((DoctorResponse response) {
+        if (response.success) {
+          searchedDoctor = response.doctor;
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,65 +73,48 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
                       color: Theme.of(context).primaryColor,
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                          DoctorProfileScreen.routeName,
-                          arguments: {'userName': usernameController.text});
+                      if (usernameController.text != null) {
+                         APIClient()
+                            .getDoctorService()
+                            .getDoctorByUsername(
+                                usernameController.text, _patientToken)
+                            .then((dynamic response) {
+                          if (response.success) {
+                             
+                            setState(() {
+                               searchedDoctor = response.doctor;
+                              show = true;
+                              
+                            });
+                          }
+                        });
+                     
+                      } else {
+                        setState(() {
+                          show = false;
+                        }); 
+                      }
                     },
                   ),
                 )
               ],
             ),
-            Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: item("", "", "", new Doctor(), "",context),
-                )),
+            show
+                ? Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: item("", "", "", new Doctor(), "", context),
+                    ))
+                : Text('')
           ],
         ),
       ),
     );
   }
 
-// Container(
-//               child: Column(
-//           children: [
-//             Expanded(
-//               flex: 1,
-//               child: Container(
-//                   // height: MediaQuery.of(context).size.height * 0.2,
-//                   child: Row(
-//                 children: [
-//                   Container(
-//                     //    width: MediaQuery.of(context).size.width * 0.8,
-//                     child: TextField(
-//                       controller: usernameController,
-//                       decoration: InputDecoration(
-//                         labelText: "search by Username/email",
-//                       ),
-//                     ),
-//                   ),
-//                   IconButton(
-//                     icon: Icon(
-//                       Icons.search,
-//                       size: 34,
-//                       color: Theme.of(context).primaryColor,
-//                     ),
-//                     onPressed: () {
-//                       Navigator.of(context).pushNamed(
-//                           DoctorProfileScreen.routeName,
-//                           arguments: {'userName': usernameController.text});
-//                     },
-//                   ),
-//                 ],
-//               )),
-//             ),
-//             //  Expanded(flex:4,child: item("", "", "", new Doctor(), context)),
-//           ],
-//         ),
-//       ),
   Widget item(String name, String username, String specializationOrRole,
-      Doctor myDoctor, String email,BuildContext ctx) {
+      Doctor myDoctor, String email, BuildContext ctx) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
@@ -139,7 +154,7 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                 Divider(),
+                                Divider(),
                                 Container(
                                   // padding: EdgeInsets.symmetric(vertical: 10),
                                   child: Text(
@@ -150,7 +165,6 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
                                 Divider(),
                                 Expanded(
                                   child: Container(
-                                    
                                     child: Text(
                                       'Specialization: $specializationOrRole ',
                                       maxLines: 2,
@@ -161,24 +175,27 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
                                 Row(
                                   children: [
                                     Container(
-                                      
                                       child: Container(
-                                        
-                                        padding: const EdgeInsets.only(bottom: 10.0,left: 10),
+                                        padding: const EdgeInsets.only(
+                                            bottom: 10.0, left: 10),
                                         child: Card(
                                           color: Theme.of(context).accentColor,
                                           elevation: 1,
                                           child: Center(
                                             heightFactor: 2,
                                             child: Padding(
-                                              padding: const EdgeInsets.only(left:8.0,right: 8),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8),
                                               child: Text(
                                                 "Create connection",
                                                 style: TextStyle(
-                                                    fontFamily: 'RobotoCondenced',
+                                                    fontFamily:
+                                                        'RobotoCondenced',
                                                     fontSize: 18,
-                                                    color: Theme.of(ctx).primaryColor,
-                                                    fontWeight: FontWeight.bold),
+                                                    color: Theme.of(ctx)
+                                                        .primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ),
                                           ),
