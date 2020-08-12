@@ -14,15 +14,16 @@ class DoctorConnectionScreen extends StatefulWidget {
 }
 
 class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
-  String medicalFacility_ID;//7ot id el facility hna <---------------------
-  // @override
-  // didChangeDependencies() {
-  //   final routeArgs =
-  //       ModalRoute.of(context).settings.arguments as Map<String, String>;
-  //   medicalFacility_ID = routeArgs['id'];
-  //   getUserToken();
-  //   super.didChangeDependencies();
-  // }
+  String medicalFacility_ID = "5f280391d805c00017ffa218";
+  @override
+  didChangeDependencies() {
+    final routeArgs =
+        ModalRoute.of(context).settings.arguments as Map<String, String>;
+    //medicalFacility_ID = routeArgs['id'];
+    print(medicalFacility_ID);
+    getUserToken();
+    super.didChangeDependencies();
+  }
 
   List<Doctor> doctorList = List();
   Future userFuture;
@@ -72,7 +73,6 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
                   ));
                   break;
                 case ConnectionState.done:
-                 
                   return ListView.builder(
                     itemBuilder: (ctx, index) {
                       return item(
