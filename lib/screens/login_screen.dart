@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void createNewAcount(BuildContext ctx) {
-    Navigator.of(ctx).pushReplacementNamed(RegisterScreen.routeName);
+    Navigator.of(ctx).pushNamed(RegisterScreen.routeName);
   }
 
   void _toggle() {

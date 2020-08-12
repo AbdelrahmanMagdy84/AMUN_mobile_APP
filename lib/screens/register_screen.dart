@@ -204,11 +204,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-                buildTextField(
-                  title: 'Email',
-                  controller: emailController,
-                  textInputType: TextInputType.emailAddress,
-                  validator: _validateEmail,
+                Container(
+                  child: TextFormField(
+                      maxLength: 30,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                      ),
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: _validateEmail),
                 ),
                 buildTextField(
                   title: 'Password',

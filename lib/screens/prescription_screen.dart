@@ -15,6 +15,7 @@ class PrescriptionScreen extends StatefulWidget {
 class _PrescriptionScreenState extends State<PrescriptionScreen> {
   Future userFuture;
   List<MedicalRecord> medicalRecords;
+  List<MedicalRecord> orginList;
   @override
   void initState() {
     super.initState();
@@ -33,17 +34,65 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
           .getMedicalRecords(_patientToken, "Prescription")
           .then((MedicalRecordsResponse responseList) {
         if (responseList.success) {
-          print(responseList.medicalRecord);
-          medicalRecords = responseList.medicalRecord;
+          orginList = responseList.medicalRecord;
+          medicalRecords = orginList.reversed.toList();
         }
       });
     });
   }
 
+  void clickHandle(value) {
+    if (value == "Recent") {
+      setState(() {
+        medicalRecords = orginList.reversed.toList();
+      });
+    } else if (value == "History") {
+      setState(() {
+        medicalRecords.sort((a, b) => a.date.compareTo(b.date));
+      });
+    } else if (value == "entered by patient") {
+      print("---------------------------------");
+      setState(() {
+        medicalRecords = orginList
+            .where((element) => element.enteredBy == "PATIENT")
+            .toList();
+        print(medicalRecords.length);
+      });
+    } else if (value == "entered by clerk") {
+      setState(() {
+        medicalRecords = orginList
+            .where((element) => element.enteredBy != "PATIENT")
+            .toList();
+        print(medicalRecords.length);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<String> list = [
+      "Recent",
+      "History",
+      "entered by me",
+      "entered by clerk"
+    ];
     return Scaffold(
-      appBar: AppBar(title: Text("Prescription")),
+      appBar: AppBar(
+        title: Text("Prescription"),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: clickHandle,
+            itemBuilder: (BuildContext context) {
+              return list.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
+      ),
       body: Container(
         child: FutureBuilder(
           future: userFuture,
