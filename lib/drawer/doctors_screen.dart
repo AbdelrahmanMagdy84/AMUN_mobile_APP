@@ -91,36 +91,6 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
       ),
     );
   }
-
-  Widget buildSearch() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.1,
-      child: ListTile(
-        leading: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: TextField(
-            controller: usernameController,
-            decoration: InputDecoration(
-              labelText: "search by Username",
-            ),
-          ),
-        ),
-        title: IconButton(
-          icon: Icon(
-            Icons.search,
-            size: 34,
-            color: Theme.of(context).primaryColor,
-          ),
-          onPressed: () {
-            if (screenTitle == "My Doctors")
-              Navigator.of(context).pushNamed(DoctorProfileScreen.routeName,
-                  arguments: {'userName': usernameController.text});
-          },
-        ),
-      ),
-    );
-  }
-
   Widget item(String name, String username, String specializationOrRole,
       Doctor myDoctor, BuildContext ctx) {
     return LayoutBuilder(
