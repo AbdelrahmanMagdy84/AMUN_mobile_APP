@@ -1,5 +1,4 @@
 import 'package:amun/drawer/doctors_connections_screen.dart';
-import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/screens/searchForDoctor_screen.dart';
 import 'package:amun/static_data/medical_categories_data.dart';
 import '../items/category_item.dart';
@@ -14,10 +13,8 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  GlobalBloc globalBloc;
 
   void initState() {
-    globalBloc = GlobalBloc();
     super.initState();
   }
 

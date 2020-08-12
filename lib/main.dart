@@ -5,15 +5,12 @@ import 'package:amun/drawer/doctors_connections_screen.dart';
 import 'package:amun/drawer/doctors_screen.dart';
 import 'package:amun/drawer/edit_patient_info_screen.dart';
 import 'package:amun/drawer/clerk_profile_screen.dart';
-import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
-import 'package:amun/reminders/ui/new_entry/new_entry.dart';
 
 import 'package:amun/screens/blood_pressure_screen.dart';
 import 'package:amun/screens/glucose_screen.dart';
 import 'package:amun/screens/lab_test_screen.dart';
 import 'package:amun/screens/prescription_screen.dart';
 import 'package:amun/screens/radiograph_screen.dart';
-import 'package:amun/screens/reminder_screen.dart';
 import 'package:amun/screens/searchForDoctor_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
 import 'package:amun/screens/success_screen.dart';
@@ -53,13 +50,10 @@ class MyApp extends StatelessWidget {
         DoctorsScreen.routeName: (ctx) => DoctorsScreen(),
         AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
         ConditionsScreen.routeName: (ctx) => ConditionsScreen(),
-        RemindersScreen.routeName: (ctx) => RemindersScreen(),
-        NewEntry.routeName: (ctx) => NewEntry(),
         ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
         PrescriptionScreen.routeName: (ctx) => PrescriptionScreen(),
         BloodPressureScreen.routeName: (ctx) => BloodPressureScreen(),
         BloodGlucoseScreen.routeName: (ctx) => BloodGlucoseScreen(),
-        ReminderScreen.routeName: (ctx) => ReminderScreen(),
         RadiographScreen.routeName: (ctx) => RadiographScreen(),
         LabTestScreen.routeName: (ctx) => LabTestScreen(),
         FacilityScreen.routeName: (ctx) => FacilityScreen(),
@@ -68,9 +62,9 @@ class MyApp extends StatelessWidget {
         ClerkProfileScreen.routeName: (ctx) => ClerkProfileScreen(),
         DoctorProfileScreen.routeName: (ctx) => DoctorProfileScreen(),
         FacilityProfileScreen.routeName: (ctx) => FacilityProfileScreen(),
-        SuccessScreen.routeName:(ctx)=>SuccessScreen(),
-        DoctorConnectionScreen.routeName:(ctx)=>DoctorConnectionScreen(),
-        SearchForDoctorScreen.routeName:(ctx)=>SearchForDoctorScreen(),
+        SuccessScreen.routeName: (ctx) => SuccessScreen(),
+        DoctorConnectionScreen.routeName: (ctx) => DoctorConnectionScreen(),
+        SearchForDoctorScreen.routeName: (ctx) => SearchForDoctorScreen(),
       },
     );
   }

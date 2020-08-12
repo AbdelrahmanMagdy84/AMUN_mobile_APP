@@ -1,10 +1,8 @@
 import 'package:amun/screens/blood_pressure_screen.dart';
-import 'package:amun/screens/category_records_screen.dart';
 import 'package:amun/screens/glucose_screen.dart';
 import 'package:amun/screens/lab_test_screen.dart';
 import 'package:amun/screens/prescription_screen.dart';
 import 'package:amun/screens/radiograph_screen.dart';
-import 'package:amun/screens/reminder_screen.dart';
 import 'package:flutter/material.dart';
 
 class CategoryItem extends StatelessWidget {
@@ -25,12 +23,9 @@ class CategoryItem extends StatelessWidget {
         Navigator.of(ctx).pushNamed(PrescriptionScreen.routeName);
         break;
       case '4':
-        Navigator.of(ctx).pushNamed(ReminderScreen.routeName);
-        break;
-      case '5':
         Navigator.of(ctx).pushNamed(RadiographScreen.routeName);
         break;
-      case '6':
+      case '5':
         Navigator.of(ctx).pushNamed(LabTestScreen.routeName);
         break;
     }
