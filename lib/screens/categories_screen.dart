@@ -1,3 +1,4 @@
+import 'package:amun/drawer/doctors_connections_screen.dart';
 import 'package:amun/reminders/global_bloc.dart';
 import 'package:amun/screens/scanner_screen.dart';
 import 'package:amun/static_data/medical_categories_data.dart';
@@ -32,7 +33,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 Icons.camera_alt,
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed(ScannerScreen.routeName);
+                Navigator.of(context).pushNamed(DoctorConnectionScreen.routeName);
               })
         ],
       ),

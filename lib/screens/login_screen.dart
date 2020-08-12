@@ -27,7 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         controller: controller,
         keyboardType: textInputType,
-        
       ),
     );
   }
@@ -94,11 +93,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
-                  child: FlatButton(
-                      color: Theme.of(context).primaryColor,
-                      onPressed: _toggle,
-                      child: new Text(_obscureText ? "Show" : "Hide")),
+                  padding: EdgeInsets.only(top: 30, right: 10),
+                  child: IconButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: _toggle,
+                    icon: (Icon(_obscureText
+                        ? Icons.visibility_off
+                        : Icons.visibility)),
+                  ),
                 ),
               ],
             ),

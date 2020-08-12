@@ -14,15 +14,15 @@ class DoctorConnectionScreen extends StatefulWidget {
 }
 
 class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
-  String medicalFacility_ID;
-  @override
-  didChangeDependencies() {
-    final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    medicalFacility_ID = routeArgs['id'];
-    getUserToken();
-    super.didChangeDependencies();
-  }
+  String medicalFacility_ID;//7ot id el facility hna <---------------------
+  // @override
+  // didChangeDependencies() {
+  //   final routeArgs =
+  //       ModalRoute.of(context).settings.arguments as Map<String, String>;
+  //   medicalFacility_ID = routeArgs['id'];
+  //   getUserToken();
+  //   super.didChangeDependencies();
+  // }
 
   List<Doctor> doctorList = List();
   Future userFuture;
