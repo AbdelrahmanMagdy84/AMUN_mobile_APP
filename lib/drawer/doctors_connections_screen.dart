@@ -14,12 +14,12 @@ class DoctorConnectionScreen extends StatefulWidget {
 }
 
 class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
-  String medicalFacility_ID = "5f280391d805c00017ffa218";
+  String medicalFacility_ID;// = "5f280391d805c00017ffa218";
   @override
   didChangeDependencies() {
     final routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, String>;
-    //medicalFacility_ID = routeArgs['id'];
+    medicalFacility_ID = routeArgs['id'];
     print(medicalFacility_ID);
     getUserToken();
     super.didChangeDependencies();
