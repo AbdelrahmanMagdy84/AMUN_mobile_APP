@@ -8,6 +8,14 @@ class DoctorResponse {
   DoctorResponse({this.doctor, this.message, this.success});
 
   factory DoctorResponse.fromJson(Map<String, dynamic> json) {
+    if (json["doctor"] is List<dynamic>) {
+      return DoctorResponse(
+          success: json["success"],
+          message: json["message"],
+          doctor: json["doctor"][0] != null
+              ? Doctor.fromJson(json["doctor"][0])
+              : null);
+    }
     return DoctorResponse(
         success: json["success"],
         message: json["message"],

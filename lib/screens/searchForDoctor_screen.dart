@@ -33,7 +33,7 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
 
       userFuture = APIClient()
           .getDoctorService()
-          .getDoctorByUsername(usernameController.text, _patientToken)
+          .getDoctor(usernameController.text, _patientToken, "username")
           .then((DoctorResponse response) {
         if (response.success) {
           searchedDoctor = response.doctor;
@@ -74,25 +74,22 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
                     ),
                     onPressed: () {
                       if (usernameController.text != null) {
-                         APIClient()
+                        APIClient()
                             .getDoctorService()
-                            .getDoctorByUsername(
-                                usernameController.text, _patientToken)
+                            .getDoctor(usernameController.text, _patientToken,
+                                "username")
                             .then((dynamic response) {
                           if (response.success) {
-                             
                             setState(() {
-                               searchedDoctor = response.doctor;
+                              searchedDoctor = response.doctor;
                               show = true;
-                              
                             });
                           }
                         });
-                     
                       } else {
                         setState(() {
                           show = false;
-                        }); 
+                        });
                       }
                     },
                   ),
