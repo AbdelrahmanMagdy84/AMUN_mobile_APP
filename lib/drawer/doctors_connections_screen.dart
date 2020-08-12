@@ -15,14 +15,12 @@ class DoctorConnectionScreen extends StatefulWidget {
 
 class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
   String medicalFacility_ID;//7ot id el facility hna <---------------------
-  // @override
-  // didChangeDependencies() {
-  //   final routeArgs =
-  //       ModalRoute.of(context).settings.arguments as Map<String, String>;
-  //   medicalFacility_ID = routeArgs['id'];
-  //   getUserToken();
-  //   super.didChangeDependencies();
-  // }
+  @override
+  didChangeDependencies() {
+    
+    getUserToken();
+    super.didChangeDependencies();
+  }
 
   List<Doctor> doctorList = List();
   Future userFuture;
@@ -32,7 +30,8 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
     TokenStorage().getUserToken().then((value) async {
       setState(() {
         _patientToken = value;
-      });
+      }); 
+      print(_patientToken);
 
       userFuture = APIClient()
           .getFacilityDoctorService()
@@ -61,7 +60,7 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
             builder: (ctx, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
-                  return Text("none");
+                  return Text("zxxxxxxxxxxxxxxxxxxxx");
                   break;
                 case ConnectionState.active:
                 case ConnectionState.waiting:
@@ -72,7 +71,7 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
                   ));
                   break;
                 case ConnectionState.done:
-                 
+                 Text("zxxxxxxxxxxxxxxxxxxxx");
                   return ListView.builder(
                     itemBuilder: (ctx, index) {
                       return item(
@@ -93,34 +92,6 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
     );
   }
 
-  // Widget buildSearch() {
-  //   return Container(
-  //     height: MediaQuery.of(context).size.height * 0.1,
-  //     child: ListTile(
-  //       leading: Container(
-  //         width: MediaQuery.of(context).size.width * 0.8,
-  //         child: TextField(
-  //           controller: usernameController,
-  //           decoration: InputDecoration(
-  //             labelText: "search by Username",
-  //           ),
-  //         ),
-  //       ),
-  //       title: IconButton(
-  //         icon: Icon(
-  //           Icons.search,
-  //           size: 34,
-  //           color: Theme.of(context).primaryColor,
-  //         ),
-  //         onPressed: () {
-  //           if (screenTitle == "My Doctors")
-  //             Navigator.of(context).pushNamed(DoctorProfileScreen.routeName,
-  //                 arguments: {'userName': usernameController.text});
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget item(String name, String username, String specializationOrRole,
       Doctor myDoctor, BuildContext ctx) {
