@@ -101,7 +101,13 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
                     flex: 4,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 30.0),
-                      child: item("", "", "", new Doctor(), "", context),
+                      child: item(
+                          name:
+                              "${searchedDoctor.firstName} ${searchedDoctor.lastName}",
+                          username: searchedDoctor.username,
+                          email: searchedDoctor.email,
+                          specializationOrRole: searchedDoctor.specialization,
+                          ctx: context),
                     ))
                 : Text('')
           ],
@@ -110,15 +116,20 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
     );
   }
 
-  Widget item(String name, String username, String specializationOrRole,
-      Doctor myDoctor, String email, BuildContext ctx) {
+  Widget item(
+      {String name,
+      String username,
+      String specializationOrRole,
+      Doctor myDoctor,
+      String email,
+      BuildContext ctx}) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
           children: <Widget>[
             Container(
                 padding: EdgeInsets.only(top: 10),
-                height: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 0.3,
                 child: Container(
                   child: Card(
                     elevation: 4,
@@ -168,38 +179,6 @@ class _SearchForDoctorScreenState extends State<SearchForDoctorScreen> {
                                       style: TextStyle(fontSize: 18),
                                     ),
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 10.0, left: 10),
-                                        child: Card(
-                                          color: Theme.of(context).accentColor,
-                                          elevation: 1,
-                                          child: Center(
-                                            heightFactor: 2,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8),
-                                              child: Text(
-                                                "Create connection",
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                        'RobotoCondenced',
-                                                    fontSize: 18,
-                                                    color: Theme.of(ctx)
-                                                        .primaryColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ],
                             ),
