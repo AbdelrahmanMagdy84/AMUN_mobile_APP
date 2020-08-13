@@ -169,7 +169,7 @@ class _MainDrawerState extends State<MainDrawer> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, CategoriesScreen.routeName, (r) => false);
                 Navigator.pushNamed(context, DoctorsScreen.routeName,
-                    arguments: {'screen title': 'My Doctors'});
+                   );
               }),
 
               buildListTile(context, 'Facilities', () {

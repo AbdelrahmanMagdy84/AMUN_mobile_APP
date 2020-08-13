@@ -1,8 +1,10 @@
 import 'package:amun/drawer/doctor_profile_screen.dart';
+import 'package:amun/drawer/doctors_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/Doctor.dart';
 import 'package:amun/models/FacilityPatient.dart';
 import 'package:amun/models/Responses/DoctorsResponse.dart';
+import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +108,7 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
           children: <Widget>[
             Container(
                 padding: EdgeInsets.only(top: 10),
-                height: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 0.35,
                 child: Container(
                   child: Card(
                     elevation: 4,
@@ -173,13 +175,19 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
                                                 .getFacilityPatientService()
                                                 .createConnection(
                                                     connection, _patientToken)
-                                                .then((String response) {
-                                              /* if (response) {
-                                                doctorList =
-                                                    responseList.doctors;
-                                                doctorList = doctorList.reversed
-                                                    .toList();
-                                              } */
+                                                .then((dynamic response) {
+                                              print(response);
+
+                                              if (response['success']) {
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        CategoriesScreen
+                                                            .routeName,
+                                                        (r) => false);
+                                                Navigator.pushNamed(context,
+                                                    DoctorsScreen.routeName);
+                                              }
                                             });
                                           },
                                           child: Center(

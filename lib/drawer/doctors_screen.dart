@@ -1,7 +1,9 @@
 import 'package:amun/drawer/doctor_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
 import 'package:amun/models/Doctor.dart';
+import 'package:amun/models/FacilityPatient.dart';
 import 'package:amun/models/Responses/DoctorsResponse.dart';
+import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +16,10 @@ class DoctorsScreen extends StatefulWidget {
 }
 
 class _DoctorsScreenState extends State<DoctorsScreen> {
-  String screenTitle;
+  FacilityPatient connection = new FacilityPatient();
+  String medicalFacility_ID;
   @override
   didChangeDependencies() {
-    final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    screenTitle = routeArgs['screen title'];
     getUserToken();
     super.didChangeDependencies();
   }
@@ -51,7 +51,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(screenTitle),
+        title: Text("My Doctors"),
       ),
       drawer: MainDrawer(),
       body: Container(
@@ -91,6 +91,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
       ),
     );
   }
+
   Widget item(String name, String username, String specializationOrRole,
       Doctor myDoctor, BuildContext ctx) {
     return LayoutBuilder(
@@ -153,11 +154,32 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                             ),
                             Container(
                               child: IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Theme.of(context).errorColor,
-                                  ),
-                                  onPressed: () {}),
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Theme.of(context).errorColor,
+                                ),
+                                onPressed: () {
+                                  // connection.doctor = myDoctor.id;
+                                  // connection.medicalFacility =
+                                  //     medicalFacility_ID;
+                                  // userFuture = APIClient()
+                                  //     .getFacilityPatientService()
+                                  //     .deleteConnection(
+                                  //         connection., _patientToken)
+                                  //     .then((dynamic response) {
+                                  //   print(response);
+
+                                  //   if (response['success']) {
+                                  //     Navigator.pushNamedAndRemoveUntil(
+                                  //         context,
+                                  //         CategoriesScreen.routeName,
+                                  //         (r) => false);
+                                  //     Navigator.pushNamed(
+                                  //         context, DoctorsScreen.routeName);
+                                  //   }
+                                  //});
+                                },
+                              ),
                             ),
                           ],
                         ),
