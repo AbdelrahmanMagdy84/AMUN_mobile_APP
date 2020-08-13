@@ -13,6 +13,7 @@ import 'package:amun/screens/radiograph_screen.dart';
 import 'package:amun/screens/searchForDoctor_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
 import 'package:amun/screens/success_screen.dart';
+import 'package:flutter/services.dart';
 import './screens/login_screen.dart';
 import './screens/register_screen.dart';
 import './screens/scanner_screen.dart';
@@ -29,7 +30,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: Colors.amber,

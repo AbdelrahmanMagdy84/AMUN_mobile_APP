@@ -181,14 +181,6 @@ Widget item(String name, String username, String type,
                               ],
                             ),
                           ),
-                          Container(
-                            child: IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Theme.of(context).errorColor,
-                                ),
-                                onPressed: () {}),
-                          ),
                         ],
                       ),
                     ),

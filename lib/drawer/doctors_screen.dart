@@ -152,35 +152,6 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                                 ],
                               ),
                             ),
-                            Container(
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Theme.of(context).errorColor,
-                                ),
-                                onPressed: () {
-                                  // connection.doctor = myDoctor.id;
-                                  // connection.medicalFacility =
-                                  //     medicalFacility_ID;
-                                  // userFuture = APIClient()
-                                  //     .getFacilityPatientService()
-                                  //     .deleteConnection(
-                                  //         connection., _patientToken)
-                                  //     .then((dynamic response) {
-                                  //   print(response);
-
-                                  //   if (response['success']) {
-                                  //     Navigator.pushNamedAndRemoveUntil(
-                                  //         context,
-                                  //         CategoriesScreen.routeName,
-                                  //         (r) => false);
-                                  //     Navigator.pushNamed(
-                                  //         context, DoctorsScreen.routeName);
-                                  //   }
-                                  //});
-                                },
-                              ),
-                            ),
                           ],
                         ),
                       ),
