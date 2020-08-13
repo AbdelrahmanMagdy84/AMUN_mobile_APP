@@ -83,7 +83,7 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
                             top: 40,
                           ),
                           child: Text(
-                            "Password: ${patient.password}",
+                            "Password",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           )),
@@ -294,118 +294,6 @@ class _EditPatientInfoState extends State<EditPatientInfo> {
         errorText: 'passwords must have at least one special character')
   ]);
 
-  // void updatePatient() {
-  //   if (_formKey.currentState.validate()) {
-  //     if (_formKey.currentState.validate()) {
-  //       _formKey.currentState.save();
-  //       Patient newpatient;
-  //       newpatient.password = _newPasswordConroller.text;
-  //       newpatient.birthDate = newBirthDate;
-  //       newpatient.bloodType = bloodType;
-  //       DialogManager.showLoadingDialog(context);
-  //       APIClient()
-  //           .getPatientService()
-  //           .updatePatient(newpatient, _patientToken)
-  //           .then((PatientResponse patientResponse) {
-  //         if (patientResponse.success) {
-  //           DialogManager.stopLoadingDialog(context);
-  //           Navigator.of(context).pop();
-  //         }
-  //       }).catchError((Object e) {
-  //         DialogManager.stopLoadingDialog(context);
-  //         DialogManager.showErrorDialog(context, "Couldn't Edit");
-  //         print(e.toString());
-  //       });
-  //     } else {
-  //       setState(() {
-  //         _autoValidate = true;
-  //       });
-  //     }
-  //   }
-  // }
+
 }
 
-
-  // void editBirthDate(BuildContext ctx) {
-  //   showModalBottomSheet(
-  //       context: ctx,
-  //       enableDrag: false,
-  //       builder: (_) {
-  //         return Scaffold(
-  //           body: Padding(
-  //             padding: const EdgeInsets.all(8.0),
-  //             child: Card(
-  //               child: Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: <Widget>[
-  //                     Container(
-  //                       alignment: Alignment.center,
-  //                       padding: const EdgeInsets.only(
-  //                         top: 40,
-  //                       ),
-  //                       child: Text(
-  //                           "Birth Date:  ${DateFormat.yMd().format(patient.birthDate)}",
-  //                           style: TextStyle(
-  //                               fontSize: 16, fontWeight: FontWeight.w500)),
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.symmetric(
-  //                           vertical: 20, horizontal: 70),
-  //                       child: DateTimeFormField(
-  //                         formatter: DateFormat.yMd(),
-  //                         onlyDate: true,
-  //                         initialValue: patient.birthDate,
-  //                         label: "Birth Date",
-  //                         validator: (DateTime dateTime) {
-  //                           if (dateTime == null) {
-  //                             return "Birth Date is required";
-  //                           }
-  //                           return null;
-  //                         },
-  //                         onSaved: (DateTime dateTime) {
-  //                           newBirthDate = dateTime;
-  //                         },
-  //                       ),
-  //                     ),
-  //                     Container(
-  //                       alignment: Alignment.center,
-  //                       padding: EdgeInsets.all(15),
-  //                       child: FlatButton(
-  //                         onPressed: () {
-  //                           String date = newBirthDate.toIso8601String();
-  //                           DialogManager.showLoadingDialog(context);
-  //                           APIClient()
-  //                               .getPatientService()
-  //                               .updatePatientValue(
-  //                                   date, 'birthDate', _patientToken)
-  //                               .then((PatientResponse patientResponse) {
-  //                             if (patientResponse.success) {
-  //                               DialogManager.stopLoadingDialog(context);
-  //                               Navigator.of(context).pop();
-  //                             }
-  //                           }).catchError((Object e) {
-  //                             DialogManager.stopLoadingDialog(context);
-  //                             DialogManager.showErrorDialog(
-  //                                 context, "Couldn't Edit");
-  //                             print(e.toString());
-  //                           });
-  //                         },
-  //                         child: Text(
-  //                           'Save Changes',
-  //                           style: TextStyle(
-  //                               fontSize: 24,
-  //                               fontWeight: FontWeight.bold,
-  //                               color: Theme.of(context).primaryColor),
-  //                         ),
-  //                       ),
-  //                     )
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }

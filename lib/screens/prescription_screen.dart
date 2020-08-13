@@ -115,7 +115,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                     child: Text("Empty Press + to add"),
                   );
                 } else {
-                  medicalRecords = medicalRecords.reversed.toList();
+                  
                   return ListView.builder(
                     itemBuilder: (ctx, index) {
                       return MedicalRecordItem(medicalRecords[index]);

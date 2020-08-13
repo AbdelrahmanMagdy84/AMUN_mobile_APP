@@ -72,17 +72,19 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                   ));
                   break;
                 case ConnectionState.done:
-                  return ListView.builder(
-                    itemBuilder: (ctx, index) {
-                      return item(
-                          "${doctorList[index].firstName} ${doctorList[index].lastName}",
-                          doctorList[index].username,
-                          doctorList[index].specialization,
-                          doctorList[index],
-                          context);
-                    },
-                    itemCount: doctorList.length,
-                  );
+                  return doctorList == []
+                      ? Center(child: Text("no doctors"))
+                      : ListView.builder(
+                          itemBuilder: (ctx, index) {
+                            return item(
+                                "${doctorList[index].firstName} ${doctorList[index].lastName}",
+                                doctorList[index].username,
+                                doctorList[index].specialization,
+                                doctorList[index],
+                                context);
+                          },
+                          itemCount: doctorList.length,
+                        );
                   break;
               }
             },

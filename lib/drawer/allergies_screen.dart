@@ -32,7 +32,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Allergies')),
       drawer: MainDrawer(),
-      body: allergies == null
+      body: allergies == []
           ? Center(
               child: Text("No Allergies Add"),
             )
@@ -103,18 +103,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          width: constraints.maxWidth * 0.1,
-                          alignment: Alignment.centerLeft,
-                          child: FittedBox(
-                            child: IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Theme.of(context).errorColor,
-                                ),
-                                onPressed: () {}),
-                          ),
-                        ),
+                        
                       ],
                     ),
                   ),

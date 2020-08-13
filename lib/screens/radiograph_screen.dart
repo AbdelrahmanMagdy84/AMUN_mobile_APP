@@ -15,8 +15,8 @@ class RadiographScreen extends StatefulWidget {
 class _RadiographScreenState extends State<RadiographScreen> {
   Future userFuture;
   List<MedicalRecord> medicalRecords;
-   List<MedicalRecord> orginList;
-  
+  List<MedicalRecord> orginList;
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,7 @@ class _RadiographScreenState extends State<RadiographScreen> {
           .getMedicalRecords(_patientToken, "Radiograph")
           .then((MedicalRecordsResponse responseList) {
         if (responseList.success) {
-         orginList = responseList.medicalRecord;
+          orginList = responseList.medicalRecord;
           medicalRecords = orginList.reversed.toList();
         }
       });
@@ -53,6 +53,7 @@ class _RadiographScreenState extends State<RadiographScreen> {
           );
         });
   }
+
   void clickHandle(value) {
     if (value == "Recent") {
       setState(() {
@@ -65,21 +66,22 @@ class _RadiographScreenState extends State<RadiographScreen> {
     } else if (value == "entered by patient") {
       print("---------------------------------");
       setState(() {
-        medicalRecords = orginList
+        medicalRecords = orginList;
+        medicalRecords = medicalRecords
             .where((element) => element.enteredBy == "PATIENT")
             .toList();
         print(medicalRecords.length);
       });
     } else if (value == "entered by clerk") {
       setState(() {
-        medicalRecords = orginList
+        medicalRecords = orginList;
+        medicalRecords = medicalRecords
             .where((element) => element.enteredBy != "PATIENT")
             .toList();
         print(medicalRecords.length);
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,20 +92,19 @@ class _RadiographScreenState extends State<RadiographScreen> {
       "entered by clerk"
     ];
     return Scaffold(
-      appBar: AppBar(title: Text("Radiograph"),
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: clickHandle,
-            itemBuilder: (BuildContext context) {
-              return list.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ],),
+      appBar: AppBar(title: Text("Radiograph"), actions: <Widget>[
+        PopupMenuButton<String>(
+          onSelected: clickHandle,
+          itemBuilder: (BuildContext context) {
+            return list.map((String choice) {
+              return PopupMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+              );
+            }).toList();
+          },
+        ),
+      ]),
       body: Container(
         child: FutureBuilder(
           future: userFuture,
@@ -121,18 +122,19 @@ class _RadiographScreenState extends State<RadiographScreen> {
                 ));
                 break;
               case ConnectionState.done:
-                  if (medicalRecords == null) {
+                if (medicalRecords == null) {
                   return Center(
                     child: Text("Empty Press + to add"),
                   );
                 } else {
-                return ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    medicalRecords=medicalRecords.reversed.toList();
-                    return MedicalRecordItem(medicalRecords[index]);
-                  },
-                  itemCount: medicalRecords.length,
-                );}
+                  return ListView.builder(
+                    itemBuilder: (ctx, index) {
+                      // medicalRecords=medicalRecords.reversed.toList();
+                      return MedicalRecordItem(medicalRecords[index]);
+                    },
+                    itemCount: medicalRecords.length,
+                  );
+                }
                 break;
             }
           },

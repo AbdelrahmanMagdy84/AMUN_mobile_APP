@@ -61,19 +61,22 @@ class _LabTestScreenState extends State<LabTestScreen> {
       });
     } else if (value == "History") {
       setState(() {
+        medicalRecords=orginList;
         medicalRecords.sort((a, b) => a.date.compareTo(b.date));
       });
     } else if (value == "entered by patient") {
       print("---------------------------------");
       setState(() {
-        medicalRecords = orginList
+        medicalRecords=orginList;
+        medicalRecords = medicalRecords
             .where((element) => element.enteredBy == "PATIENT")
             .toList();
         print(medicalRecords.length);
       });
     } else if (value == "entered by clerk") {
       setState(() {
-        medicalRecords = orginList
+        medicalRecords=orginList;
+        medicalRecords = medicalRecords
             .where((element) => element.enteredBy != "PATIENT")
             .toList();
         print(medicalRecords.length);
@@ -128,7 +131,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
                     child: Text("Empty Press + to add"),
                   );
                 } else {
-                  medicalRecords = medicalRecords.reversed.toList();
+                
                   return ListView.builder(
                     itemBuilder: (ctx, index) {
                       return MedicalRecordItem(medicalRecords[index]);

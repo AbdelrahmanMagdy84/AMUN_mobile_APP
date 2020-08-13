@@ -97,15 +97,7 @@ class _GlucoseItemState extends State<GlucoseItem> {
                 ],
               ),
             ),
-            IconButton(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                icon: Icon(
-                  Icons.delete,
-                  color: Theme.of(ctx).errorColor,
-                ),
-                onPressed: () {}
-                // widget.delete(widget.transaction.id),
-                ),
+            
           ]),
           Container(
             padding: EdgeInsets.all(20),
