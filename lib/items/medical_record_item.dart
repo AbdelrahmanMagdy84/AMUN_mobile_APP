@@ -59,7 +59,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
         .then((dynamic medicalRecordResponse) {
       if (medicalRecordResponse.success) {
         DialogManager.stopLoadingDialog(context);
-          Navigator.of(context).pop();
+        Navigator.of(context).pop();
         Navigator.of(context).pushReplacementNamed(route);
       }
     }).catchError((Object e) {
@@ -75,11 +75,11 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
     String doctor;
     String clerk;
     String image;
+    String enteredBy;
     if (newMedicalRecord.enteredBy == "PATIENT") {
-      facility = "facility";
-      doctor = "doctor";
-      clerk = "clerk";
+      enteredBy = "me";
     } else {
+      enteredBy = "Clerk";
       facility = newMedicalRecord.medicalFacility.name;
       doctor =
           "${newMedicalRecord.doctor.firstName} ${newMedicalRecord.doctor.lastName}";
@@ -114,33 +114,43 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ))),
               Divider(),
-              if (facility != null)
+              Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(1),
+                child: Text("Entered By: $enteredBy"),
+              ), Divider(color: Theme.of(context).primaryColor,),
+              if (newMedicalRecord.enteredBy == "PATIENT")
+                Container()
+              else
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     FittedBox(
                       child: Text("Facility: $facility"),
                     ),
-                    Divider(),
+                   Divider(color: Theme.of(context).primaryColor,),
                   ],
-                )
-              else
-                Container(),
-              if (doctor != null)
-                Column(
+                ),
+              newMedicalRecord.enteredBy == "PATIENT"?
+                Container()
+              : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     FittedBox(child: Text("Doctor: DR.$doctor")),
-                    Divider(),
+                   Divider(color: Theme.of(context).primaryColor,),
                   ],
-                )
+                ),
+              if (newMedicalRecord.enteredBy == "PATIENT")
+               Container()
               else
-                Container(),
-              if (clerk != null)
-                FittedBox(child: Text("Clerk: $clerk"))
-              else
-                Container(),
-              Divider(),
+               Column(
+                 children: [
+                   FittedBox(child: Text("Clerk: $clerk")),
+                   Divider(color: Theme.of(context).primaryColor,),
+                 ],
+               )
+                ,
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -167,7 +177,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                     ),
                   ),
                 ],
-              ),
+              ),Divider(color: Theme.of(context).primaryColor,),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -195,6 +205,15 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                           );
                     }),
                   ),
+                  
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Text(DateFormat.Hm().format(date)),
+                        Text(DateFormat.yMMMd().format(date)),
+                      ],
+                    ),
+                  ),
                   Expanded(
                     child: IconButton(
                         icon: Icon(
@@ -203,15 +222,6 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                         ),
                         onPressed: () =>
                             deleteMedicalRecord(widget.medicalRecord)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Column(
-                      children: <Widget>[
-                        Text(DateFormat.Hm().format(date)),
-                        Text(DateFormat.yMMMd().format(date)),
-                      ],
-                    ),
                   ),
                 ],
               )

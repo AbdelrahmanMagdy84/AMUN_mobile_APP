@@ -59,10 +59,22 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
     });
   }
 
-  void saveNewMedication(String inputMedication) {
+  void saveNewMedication(String inputMedication, String dosage) {
     if (_formKey.currentState.validate()) {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
+        if (dosage.length < 4) {
+          if (dosage.length == 0) {
+            dosage="0000";
+          } else if (dosage.length == 1) {
+            dosage="000$dosage";
+          } else if (dosage.length == 2) {
+            dosage="00$dosage";
+          } else if (dosage.length == 3) {
+            dosage="0$dosage";
+          } 
+        }
+        inputMedication="$inputMedication$dosage";
         List<String> newMedications = medications;
         newMedications.add(inputMedication);
         updatePatient(newMedications);
@@ -89,15 +101,15 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
       ),
       body: Container(
         padding: EdgeInsets.only(left: 10, right: 10, top: 20),
-        child: medications == null
+        child: medications == []
             ? Center(
-                child: Text("No Medications Add"),
+                child: Text("Empty press + to add"),
               )
             : GridView.count(
                 crossAxisCount: 2,
                 childAspectRatio: 1 / 1,
-                crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
-                mainAxisSpacing: MediaQuery.of(context).size.height * 0.05,
+                crossAxisSpacing: MediaQuery.of(context).size.width * 0.001,
+                mainAxisSpacing: MediaQuery.of(context).size.height * 0.01,
                 children: List.generate(reversedList.length, (index) {
                   return buildItem(reversedList[index]);
                 })),
@@ -115,46 +127,58 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
   }
 
   Widget buildItem(String medication) {
-    return Container(
+    return Card(
       child: LayoutBuilder(
         builder: (ctx, constraints) {
           return Container(
             child: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor.withOpacity(.2),
-                    Theme.of(context).primaryColor
-                  ], //here you can change the color
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ),
-                borderRadius: BorderRadius.circular(40),
+                color: Theme.of(context).accentColor,
+                //  borderRadius: BorderRadius.circular(40),
               ),
               child: Container(
-                padding: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 0),
                 child: Container(
                   width: constraints.maxWidth * 0.8,
-                  padding: EdgeInsets.only(top: 5, left: 5),
+                  //    padding: EdgeInsets.only(top: 5, left: 5),
                   child: Column(
                     children: <Widget>[
-                      Text(
-                        'Medication: ',
-                        style: Theme.of(context).textTheme.title,
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 10, top: 10),
+                        width: double.infinity,
+                        color: Colors.amber,
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Medication: ',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                       Divider(
-                        color: Theme.of(context).accentColor,
-                        thickness: 0.6,
-                      ),
-                      Center(
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            '$medication',
-                            maxLines: 5,
-                            style: TextStyle(fontSize: 18),
+                      Container(height: 100,
+                        child: Center(
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            child: Text(
+                              '${medication.substring(0,medication.length-4)}',
+                              maxLines: 5,
+                              style: TextStyle(fontSize: 18, color: Colors.white),
+                            ),
                           ),
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left:8.0),
+                        child: Container(
+                          alignment: Alignment.bottomLeft,
+                          //  padding: EdgeInsets.all(5),
+                            child: Text(
+                              'Dosage: ${medication.substring(medication.length-4,medication.length)} mg',
+                              
+                              style: TextStyle(fontSize: 14, color: Colors.white),
+                            ),
+                          ),
                       ),
                     ],
                   ),
@@ -168,6 +192,7 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
   }
 
   final medicaionController = TextEditingController();
+  final dosageController = TextEditingController();
   void startAddNewRecord(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
@@ -197,11 +222,25 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
                               return null;
                           },
                         ),
+                        Center(
+                          child: Container(
+                            width: 100,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "Dosage",
+                              ),
+                              controller: dosageController,
+                              keyboardType: TextInputType.number,
+                              maxLength: 4,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
                         Container(
                           margin: EdgeInsets.all(30),
                           child: FlatButton(
                             onPressed: () =>
-                                saveNewMedication(medicaionController.text),
+                                saveNewMedication(medicaionController.text,dosageController.text),
                             color: Theme.of(context).accentColor,
                             child: Text(
                               'Save',

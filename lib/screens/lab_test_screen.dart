@@ -32,11 +32,11 @@ class _LabTestScreenState extends State<LabTestScreen> {
       });
       userFuture = APIClient()
           .getMedicalRecordService()
-          .getMedicalRecords(_patientToken, "labTest")
+          .getMedicalRecords(_patientToken, "Prescription")
           .then((MedicalRecordsResponse responseList) {
         if (responseList.success) {
           orginList = responseList.medicalRecord;
-          medicalRecords = orginList.reversed.toList();
+          medicalRecords = List.from(orginList.reversed.toList());
         }
       });
     });
@@ -55,28 +55,28 @@ class _LabTestScreenState extends State<LabTestScreen> {
   }
 
   void clickHandle(value) {
+    List<MedicalRecord> copyList = List.from(orginList);
     if (value == "Recent") {
       setState(() {
-        medicalRecords = orginList.reversed.toList();
+        medicalRecords = copyList.reversed.toList();
       });
     } else if (value == "History") {
       setState(() {
-        medicalRecords=orginList;
+        medicalRecords = copyList.toList();
         medicalRecords.sort((a, b) => a.date.compareTo(b.date));
       });
     } else if (value == "entered by patient") {
       print("---------------------------------");
       setState(() {
-        medicalRecords=orginList;
-        medicalRecords = medicalRecords
+        medicalRecords = copyList
             .where((element) => element.enteredBy == "PATIENT")
             .toList();
         print(medicalRecords.length);
       });
     } else if (value == "entered by clerk") {
       setState(() {
-        medicalRecords=orginList;
-        medicalRecords = medicalRecords
+        medicalRecords = copyList.reversed.toList();
+        medicalRecords = copyList
             .where((element) => element.enteredBy != "PATIENT")
             .toList();
         print(medicalRecords.length);
@@ -89,7 +89,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
     List<String> list = [
       "Recent",
       "History",
-      "entered by me",
+      "entered by patient",
       "entered by clerk"
     ];
     return Scaffold(
@@ -131,7 +131,6 @@ class _LabTestScreenState extends State<LabTestScreen> {
                     child: Text("Empty Press + to add"),
                   );
                 } else {
-                
                   return ListView.builder(
                     itemBuilder: (ctx, index) {
                       return MedicalRecordItem(medicalRecords[index]);
