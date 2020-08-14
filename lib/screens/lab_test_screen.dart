@@ -32,7 +32,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
       });
       userFuture = APIClient()
           .getMedicalRecordService()
-          .getMedicalRecords(_patientToken, "Prescription")
+          .getMedicalRecords(_patientToken, "report")
           .then((MedicalRecordsResponse responseList) {
         if (responseList.success) {
           orginList = responseList.medicalRecord;

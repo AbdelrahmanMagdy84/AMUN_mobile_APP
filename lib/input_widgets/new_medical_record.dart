@@ -22,10 +22,9 @@ class NewMedicalRecord extends StatefulWidget {
 }
 
 class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
- 
   final titleController = TextEditingController();
   final noteController = TextEditingController();
-  DateTime date=DateTime.now();
+  DateTime date = DateTime.now();
 
   File file;
 /* init state for token */
@@ -94,7 +93,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
         addMedicalRecord("Radiograph");
         break;
       case "Lab Test":
-        addMedicalRecord("labTest");
+        addMedicalRecord("report");
         break;
     }
   }

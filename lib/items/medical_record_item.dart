@@ -89,9 +89,9 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
     if (newMedicalRecord.type == "Radiograph") {
       image = newMedicalRecord.radiograph.url;
     } else if (newMedicalRecord.type == "Prescription") {
-      print(newMedicalRecord.prescription.url);
       image = newMedicalRecord.prescription.url;
     } else {
+      print(newMedicalRecord.type);
       image = newMedicalRecord.report.url;
     }
 

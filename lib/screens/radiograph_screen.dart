@@ -32,7 +32,7 @@ class _RadiographScreenState extends State<RadiographScreen> {
       });
       userFuture = APIClient()
           .getMedicalRecordService()
-          .getMedicalRecords(_patientToken, "Prescription")
+          .getMedicalRecords(_patientToken, "Radiograph")
           .then((MedicalRecordsResponse responseList) {
         if (responseList.success) {
           orginList = responseList.medicalRecord;
