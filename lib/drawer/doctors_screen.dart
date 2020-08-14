@@ -4,9 +4,7 @@ import 'package:amun/models/Connection.dart';
 import 'package:amun/models/Doctor.dart';
 import 'package:amun/models/MedicalFacility.dart';
 
-import 'package:amun/models/Responses/DoctorsResponse.dart';
 import 'package:amun/models/Responses/FacilityPatientResponseList.dart';
-import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +45,17 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
           //connections = connections.reversed.toList();
         }
       });
+    });
+  }
+
+  void deleteConnection(String id) {
+    APIClient()
+        .getFacilityPatientService()
+        .deleteConnection(id, _patientToken)
+        .then((dynamic response) {
+      if (response) {
+        print("Connection deleted");
+      }
     });
   }
 
@@ -100,6 +109,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                       : ListView.builder(
                           itemBuilder: (ctx, index) {
                             return item(
+                                connections[index].id,
                                 "${connections[index].doctor.firstName} ${connections[index].doctor.lastName}",
                                 connections[index].doctor.username,
                                 connections[index].doctor.specialization,
@@ -118,8 +128,14 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
     );
   }
 
-  Widget item(String name, String username, String specializationOrRole,
-      Doctor myDoctor, MedicalFacility facility, BuildContext ctx) {
+  Widget item(
+      String id,
+      String name,
+      String username,
+      String specializationOrRole,
+      Doctor myDoctor,
+      MedicalFacility facility,
+      BuildContext ctx) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
@@ -127,73 +143,87 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
             Navigator.of(ctx).pushNamed(DoctorProfileScreen.routeName,
                 arguments: {'doctor': myDoctor});
           },
-          child: Column(
-            children: <Widget>[
-              Container(
-                  padding: EdgeInsets.only(top: 10),
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  child: Container(
-                    child: Card(
-                      elevation: 4,
-                      child: Container(
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              width: constraints.maxWidth * 0.8,
-                              padding: EdgeInsets.only(top: 5, left: 10),
-                              child: Flex(
-                                direction: Axis.vertical,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.only(top: 10),
-                                    child: Text(
-                                      'Name: DR.$name',
-                                      style: Theme.of(context).textTheme.title,
-                                    ),
-                                  ),
-                                  Divider(),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Text(
-                                      'Username: $username ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Divider(),
-                                  Expanded(
-                                    child: Container(
-                                      // padding: EdgeInsets.symmetric(vertical: 10),
-                                      child: Text(
-                                        'Specialization: $specializationOrRole ',
-                                        maxLines: 2,
-                                        style: TextStyle(fontSize: 18),
+          child: Card(
+            elevation: 4,
+            child: Row(
+              children: [
+                Column(
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(top: 10),
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: Container(
+                          child: Container(
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: constraints.maxWidth * 0.8,
+                                  padding: EdgeInsets.only(top: 5, left: 10),
+                                  child: Flex(
+                                    direction: Axis.vertical,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        padding: EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          'Name: DR.$name',
+                                          style:
+                                              Theme.of(context).textTheme.title,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Divider(),
-                                  Expanded(
-                                    child: Container(
-                                      // padding: EdgeInsets.symmetric(vertical: 10),
-                                      child: Text(
-                                        'Medical Facilitty: ${facility.name} ',
-                                        style: TextStyle(fontSize: 18),
+                                      Divider(),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        child: Text(
+                                          'Username: $username ',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                      Divider(),
+                                      Expanded(
+                                        child: Container(
+                                          // padding: EdgeInsets.symmetric(vertical: 10),
+                                          child: Text(
+                                            'Specialization: $specializationOrRole ',
+                                            maxLines: 2,
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Expanded(
+                                        child: Container(
+                                          // padding: EdgeInsets.symmetric(vertical: 10),
+                                          child: Text(
+                                            'Medical Facilitty: ${facility.name} ',
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )),
-            ],
+                          ),
+                        )),
+                  ],
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).errorColor,
+                  ),
+                  onPressed: () => deleteConnection(id),
+                ),
+              ],
+            ),
           ),
         );
       },
