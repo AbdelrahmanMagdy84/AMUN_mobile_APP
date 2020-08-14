@@ -5,6 +5,7 @@ import 'package:amun/models/Doctor.dart';
 import 'package:amun/models/MedicalFacility.dart';
 
 import 'package:amun/models/Responses/FacilityPatientResponseList.dart';
+import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
 import 'package:flutter/material.dart';
@@ -58,25 +59,6 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
       }
     });
   }
-
-  // String _patientToken;
-  // void getUserToken() {
-  //   TokenStorage().getUserToken().then((value) async {
-  //     setState(() {
-  //       _patientToken = value;
-  //     });
-
-  //     userFuture = APIClient()
-  //         .getFacilityPatientService()
-  //         .getDoctors(_patientToken)
-  //         .then((DoctorsResponse responseList) {
-  //       if (responseList.success) {
-  //         doctorList = responseList.doctors;
-  //         doctorList = doctorList.reversed.toList();
-  //       }
-  //     });
-  //   });
-  // }
 
   final usernameController = TextEditingController();
   @override
@@ -220,7 +202,18 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                     Icons.delete,
                     color: Theme.of(context).errorColor,
                   ),
-                  onPressed: () => deleteConnection(id),
+                  onPressed: () {
+                    setState(() {
+                      deleteConnection(id);
+                      Navigator.of(context).pop();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, CategoriesScreen.routeName, (r) => false);
+                      Navigator.pushNamed(
+                        context,
+                        DoctorsScreen.routeName,
+                      );
+                    });
+                  },
                 ),
               ],
             ),
