@@ -75,6 +75,7 @@ flutter:
     - assets/images/radiograph.png
     - assets/images/appointment.png
     - assets/images/lab.png
+    - assets/images/file.png
     - assets/animations/
     - assets/sound/
 
