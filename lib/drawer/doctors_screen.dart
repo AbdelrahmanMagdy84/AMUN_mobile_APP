@@ -1,8 +1,11 @@
 import 'package:amun/drawer/doctor_profile_screen.dart';
 import 'package:amun/drawer/main_drawer.dart';
+import 'package:amun/models/Connection.dart';
 import 'package:amun/models/Doctor.dart';
-import 'package:amun/models/FacilityPatient.dart';
+import 'package:amun/models/MedicalFacility.dart';
+
 import 'package:amun/models/Responses/DoctorsResponse.dart';
+import 'package:amun/models/Responses/FacilityPatientResponseList.dart';
 import 'package:amun/screens/categories_screen.dart';
 import 'package:amun/services/APIClient.dart';
 import 'package:amun/utils/TokenStorage.dart';
@@ -16,7 +19,6 @@ class DoctorsScreen extends StatefulWidget {
 }
 
 class _DoctorsScreenState extends State<DoctorsScreen> {
-  FacilityPatient connection = new FacilityPatient();
   String medicalFacility_ID;
   @override
   didChangeDependencies() {
@@ -24,7 +26,8 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
     super.didChangeDependencies();
   }
 
-  List<Doctor> doctorList = List();
+  //List<Doctor> doctorList = List();
+  List<FacilityPatient> connections = List();
   Future userFuture;
 
   String _patientToken;
@@ -36,15 +39,35 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
 
       userFuture = APIClient()
           .getFacilityPatientService()
-          .getDoctors(_patientToken)
-          .then((DoctorsResponse responseList) {
+          .getConnections(_patientToken)
+          .then((FacilityPatientResponseList responseList) {
         if (responseList.success) {
-          doctorList = responseList.doctors;
-          doctorList = doctorList.reversed.toList();
+          connections = responseList.connection;
+          print(connections);
+          //connections = connections.reversed.toList();
         }
       });
     });
   }
+
+  // String _patientToken;
+  // void getUserToken() {
+  //   TokenStorage().getUserToken().then((value) async {
+  //     setState(() {
+  //       _patientToken = value;
+  //     });
+
+  //     userFuture = APIClient()
+  //         .getFacilityPatientService()
+  //         .getDoctors(_patientToken)
+  //         .then((DoctorsResponse responseList) {
+  //       if (responseList.success) {
+  //         doctorList = responseList.doctors;
+  //         doctorList = doctorList.reversed.toList();
+  //       }
+  //     });
+  //   });
+  // }
 
   final usernameController = TextEditingController();
   @override
@@ -72,18 +95,19 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                   ));
                   break;
                 case ConnectionState.done:
-                  return doctorList == []
+                  return connections == []
                       ? Center(child: Text("no doctors"))
                       : ListView.builder(
                           itemBuilder: (ctx, index) {
                             return item(
-                                "${doctorList[index].firstName} ${doctorList[index].lastName}",
-                                doctorList[index].username,
-                                doctorList[index].specialization,
-                                doctorList[index],
+                                "${connections[index].doctor.firstName} ${connections[index].doctor.lastName}",
+                                connections[index].doctor.username,
+                                connections[index].doctor.specialization,
+                                connections[index].doctor,
+                                connections[index].medicalFacility,
                                 context);
                           },
-                          itemCount: doctorList.length,
+                          itemCount: connections.length,
                         );
                   break;
               }
@@ -95,7 +119,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
   }
 
   Widget item(String name, String username, String specializationOrRole,
-      Doctor myDoctor, BuildContext ctx) {
+      Doctor myDoctor, MedicalFacility facility, BuildContext ctx) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
@@ -107,7 +131,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
             children: <Widget>[
               Container(
                   padding: EdgeInsets.only(top: 10),
-                  height: MediaQuery.of(context).size.height * 0.22,
+                  height: MediaQuery.of(context).size.height * 0.25,
                   child: Container(
                     child: Card(
                       elevation: 4,
@@ -147,6 +171,16 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                                       child: Text(
                                         'Specialization: $specializationOrRole ',
                                         maxLines: 2,
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(),
+                                  Expanded(
+                                    child: Container(
+                                      // padding: EdgeInsets.symmetric(vertical: 10),
+                                      child: Text(
+                                        'Medical Facilitty: ${facility.name} ',
                                         style: TextStyle(fontSize: 18),
                                       ),
                                     ),
