@@ -6,6 +6,7 @@ import 'dart:core';
 import 'APIClient.dart';
 import '../models/Responses/MedicalFacilitiesResponse.dart';
 import '../models/Responses/DoctorsResponse.dart';
+import '../models/Responses/FacilityPatientResponseList.dart';
 
 class FacilityPatientService {
   static final String endPoint = "api/v1/facilities-patients";
@@ -28,6 +29,17 @@ class FacilityPatientService {
       return jsonDecode(response.body);
     } else {
       throw Exception("Failed to post data");
+    }
+  }
+
+  Future<FacilityPatientResponseList> getConnections(String token) async {
+    final http.Response response = await http.get(
+        "${APIClient.baseUrl}/$endPoint/",
+        headers: {"Content-Type": "application/json", "authorization": token});
+    if (response.statusCode == 200) {
+      return FacilityPatientResponseList.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to fetch data");
     }
   }
 

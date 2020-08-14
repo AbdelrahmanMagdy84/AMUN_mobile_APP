@@ -36,6 +36,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
         if (responseList.success) {
           orginList = responseList.medicalRecord;
           medicalRecords = List.from(orginList.reversed.toList());
+          print(medicalRecords);
         }
       });
     });

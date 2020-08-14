@@ -78,7 +78,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
     String enteredBy;
     if (newMedicalRecord.enteredBy == "PATIENT") {
       enteredBy = "me";
-    } else {
+    } else if (newMedicalRecord.enteredBy == "CLERK") {
       enteredBy = "Clerk";
       facility = newMedicalRecord.medicalFacility.name;
       doctor =
@@ -89,6 +89,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
     if (newMedicalRecord.type == "Radiograph") {
       image = newMedicalRecord.radiograph.url;
     } else if (newMedicalRecord.type == "Prescription") {
+      print(newMedicalRecord.prescription.url);
       image = newMedicalRecord.prescription.url;
     } else {
       image = newMedicalRecord.report.url;
@@ -118,7 +119,10 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.all(1),
                 child: Text("Entered By: $enteredBy"),
-              ), Divider(color: Theme.of(context).primaryColor,),
+              ),
+              Divider(
+                color: Theme.of(context).primaryColor,
+              ),
               if (newMedicalRecord.enteredBy == "PATIENT")
                 Container()
               else
@@ -128,29 +132,33 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                     FittedBox(
                       child: Text("Facility: $facility"),
                     ),
-                   Divider(color: Theme.of(context).primaryColor,),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ],
                 ),
-              newMedicalRecord.enteredBy == "PATIENT"?
-                Container()
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    FittedBox(child: Text("Doctor: DR.$doctor")),
-                   Divider(color: Theme.of(context).primaryColor,),
-                  ],
-                ),
+              newMedicalRecord.enteredBy == "PATIENT"
+                  ? Container()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        FittedBox(child: Text("Doctor: DR.$doctor")),
+                        Divider(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ],
+                    ),
               if (newMedicalRecord.enteredBy == "PATIENT")
-               Container()
+                Container()
               else
-               Column(
-                 children: [
-                   FittedBox(child: Text("Clerk: $clerk")),
-                   Divider(color: Theme.of(context).primaryColor,),
-                 ],
-               )
-                ,
-              
+                Column(
+                  children: [
+                    FittedBox(child: Text("Clerk: $clerk")),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ],
+                ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -177,7 +185,10 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                     ),
                   ),
                 ],
-              ),Divider(color: Theme.of(context).primaryColor,),
+              ),
+              Divider(
+                color: Theme.of(context).primaryColor,
+              ),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -205,7 +216,6 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                           );
                     }),
                   ),
-                  
                   Container(
                     child: Column(
                       children: <Widget>[

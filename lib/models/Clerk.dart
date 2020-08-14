@@ -1,5 +1,5 @@
 class Clerk {
-  int id;
+  String id;
   String firstName;
   String lastName;
   String email;
@@ -27,6 +27,7 @@ class Clerk {
       email: json["email"],
       username: json["username"],
       mobile: json["mobile"],
+      role: json["role"],
       gender: json["gender"],
     );
   }
