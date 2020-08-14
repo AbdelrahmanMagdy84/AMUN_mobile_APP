@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:mime/mime.dart';
+
 import 'DialogManager.dart';
 
 class NewMedicalRecord extends StatefulWidget {
@@ -178,7 +180,17 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
                     ),
                   ],
                 ),
-                setImageView(),
+                if (file != null)
+                  getFileType(file.path) != 'image'
+                      ? Card(color: Colors.amber,
+                                              child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(getFileName(file.path) ),
+                        ),
+                      )
+                      : setImageView(file)
+                else
+                  Container(),
                 Container(
                   margin: EdgeInsets.all(30),
                   child: FlatButton(
@@ -237,8 +249,8 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
     });
   }
 
-  Widget setImageView() {
-    if (file != null) {
+  Widget setImageView(image) {
+    if (image != null) {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(width: 4, color: Theme.of(context).primaryColor),
@@ -248,7 +260,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(15)),
           child: Image.file(
-            file,
+            image,
             width: double.infinity,
             height: 200,
             alignment: Alignment.center,
@@ -276,5 +288,18 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
           date = pickedDate;
         });
     });
+  }
+String getFileName(String input) {
+  print('-----------------------------');
+    print(input);
+    var fileType = input.split('/');
+     print(fileType[0]);
+     
+    return fileType[fileType.length-1];
+  }
+  String getFileType(String input) {
+    String mimeStr = lookupMimeType(input);
+    var fileType = mimeStr.split('/');
+    return fileType[0];
   }
 }

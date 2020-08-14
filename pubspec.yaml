@@ -31,6 +31,7 @@ dependencies:
   file_picker: ^1.13.2
   url_launcher: ^5.4.2
   mime: ^0.9.7
+  add_2_calendar: ^1.4.0
 
   flutter:
     sdk: flutter

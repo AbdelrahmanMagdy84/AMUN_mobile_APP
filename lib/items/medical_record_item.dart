@@ -179,12 +179,19 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                     },
                     child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
-                        child: Image.network(
-                          image,
-                          fit: BoxFit.fitWidth,
-                          height: 100,
-                          width: 80,
-                        )),
+                        child: getFileType(fileName) != 'image'
+                            ? Image.asset(
+                                'assets/images/file.png',
+                                fit: BoxFit.fitWidth,
+                                height: 100,
+                                width: 80,
+                              )
+                            : Image.network(
+                                image,
+                                fit: BoxFit.fitWidth,
+                                height: 100,
+                                width: 80,
+                              )),
                   ),
                   Container(
                     padding: EdgeInsets.all(10),
