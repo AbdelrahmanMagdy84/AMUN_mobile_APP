@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:amun/models/Doctor.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DoctorProfileScreen extends StatefulWidget {
   static final String routeName = "Doctor Profile route name";
@@ -19,31 +21,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     super.didChangeDependencies();
   }
 
-  /* @override
-  void initState() {
-    super.initState();
-    print("getting user token");
-    getUserToken();
-  }
-
-  void getUserToken() {
-    TokenStorage().getUserToken().then((value) async {
-      setState(() {
-        _patientToken = value;
-      });
-      print(_patientToken);
-      userFuture = APIClient()
-          .getDoctorService()
-          .getDoctorByUsername(userName, _patientToken)
-          .then((DoctorResponse doctorResponse) {
-        if (doctorResponse.success) {
-          doctor = doctorResponse.doctor;
-          print("doctor");
-        }
-      });
-    });
-  } */
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +32,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   }
 
   Widget buildItem() {
-    const double h = 50;
+     Future<void> _launched;
+    const double h = 40;
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -148,11 +126,60 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   ],
                 ),
               ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.email,
+                      color: Colors.redAccent,
+                    ),
+                      onPressed: () => setState(() {
+                      _launched = _createEmail(doctor.email);
+                    }),
+                  ),
+                ),
+                Expanded(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.call,
+                      color: Colors.green,
+                    ),
+                    onPressed: () => setState(() {
+                      _launched = _makePhoneCall('tel:${doctor.mobile}');
+                    }),
+                  ),
+                ),
+                FutureBuilder<void>(future: _launched, builder: _launchStatus),
+              ],
             )
           ],
         ),
       ),
     );
+  }
+ Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
+    if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else {
+      return const Text('');
+    }
+  }
+  Future<void> _createEmail(String email) async {
+    if (await canLaunch("mailto:$email?subject=Amun MR")) {
+      await launch("mailto:$email?subject=Amun MR");
+    } else {
+      throw 'Could not Email';
+    }
+  }
+
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget buildMyText(BuildContext ctx, String title, String value) {

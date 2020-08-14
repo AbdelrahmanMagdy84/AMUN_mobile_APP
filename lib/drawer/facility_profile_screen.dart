@@ -2,6 +2,7 @@ import 'package:amun/models/Doctor.dart';
 import 'package:amun/models/MedicalFacility.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FacilityProfileScreen extends StatefulWidget {
   static final String routeName = "facility profile route name";
@@ -19,29 +20,6 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
     facility = routeArgs['facility'];
     super.didChangeDependencies();
   }
-/**get doctor by username */
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   print("getting user token");
-  //   getUserToken();
-  // }
-
-  // void getUserToken() {
-  //   TokenStorage().getUserToken().then((value) async {
-  //     setState(() {
-  //       _patientToken = value;
-  //     });
-  //     userFuture = APIClient()
-  //         .getDoctorService()
-  //         .getDoctorByUsername(_patientToken, userName)
-  //         .then((DoctorResponse doctorResponse) {
-  //       if (doctorResponse.success) {
-  //         doctor = doctorResponse.doctor;
-  //       }
-  //     });
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +32,8 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
   }
 
   Widget buildItem() {
-    const double h = 50;
+    Future<void> _launched;
+    const double h = 40;
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -138,11 +117,61 @@ class _FacilityProfileScreenState extends State<FacilityProfileScreen> {
                   ],
                 ),
               ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.email,
+                      color: Colors.redAccent,
+                    ),
+                      onPressed: () => setState(() {
+                      _launched = _createEmail(facility.email);
+                    }),
+                  ),
+                ),
+                Expanded(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.call,
+                      color: Colors.green,
+                    ),
+                    onPressed: () => setState(() {
+                      _launched = _makePhoneCall('tel:${facility.mobile}');
+                    }),
+                  ),
+                ),
+                FutureBuilder<void>(future: _launched, builder: _launchStatus),
+              ],
             )
           ],
         ),
       ),
     );
+  }
+
+Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
+    if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else {
+      return const Text('');
+    }
+  }
+  Future<void> _createEmail(String email) async {
+    if (await canLaunch("mailto:$email?subject=Amun MR")) {
+      await launch("mailto:$email?subject=Amun MR");
+    } else {
+      throw 'Could not Email';
+    }
+  }
+
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget buildMyText(BuildContext ctx, String title, String value) {

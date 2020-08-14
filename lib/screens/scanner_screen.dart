@@ -1,4 +1,8 @@
 import 'package:amun/drawer/doctors_connections_screen.dart';
+import 'package:amun/models/Doctor.dart';
+import 'package:amun/models/Responses/DoctorsResponse.dart';
+import 'package:amun/services/APIClient.dart';
+import 'package:amun/utils/TokenStorage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -13,8 +17,35 @@ class _ScannerScreenState extends State<ScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   var qrText = "";
   QRViewController controller;
-
   String qr;
+   @override
+  didChangeDependencies() {
+    getUserToken();
+    super.didChangeDependencies();
+  }
+
+  List<Doctor> doctorList = List();
+  Future userFuture;
+
+  String _patientToken;
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+
+       APIClient()
+          .getFacilityPatientService()
+          .getDoctors(_patientToken)
+          .then((DoctorsResponse responseList) {
+        if (responseList.success) {
+          doctorList = responseList.doctors;
+          doctorList = doctorList.reversed.toList();
+        }
+      });
+    });
+  }
+
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
@@ -24,7 +55,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
         scanned = true;
         qrText = scanData;
         Navigator.of(context).pushReplacementNamed(DoctorConnectionScreen.routeName,
-            arguments: {"id": qrText});
+            arguments: {"id": qrText,'myDoctors':doctorList});
       }
     });
   }

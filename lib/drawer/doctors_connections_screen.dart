@@ -19,12 +19,14 @@ class DoctorConnectionScreen extends StatefulWidget {
 class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
   String medicalFacility_ID;
   FacilityPatient connection = new FacilityPatient();
-
+  List<Doctor> myDoctors = List();
+  List<Doctor> filteredDoctors = List();
   @override
   didChangeDependencies() {
     final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
+        ModalRoute.of(context).settings.arguments as Map<String, Object>;
     medicalFacility_ID = routeArgs['id'];
+    myDoctors = routeArgs['myDoctors'];
     print(medicalFacility_ID);
     getUserToken();
     super.didChangeDependencies();
@@ -45,9 +47,23 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
           .getFacilityDoctorService()
           .getDoctors(medicalFacility_ID, _patientToken)
           .then((DoctorsResponse responseList) {
+        print(responseList.success);
+
         if (responseList.success) {
           doctorList = responseList.doctors;
-          doctorList = doctorList.reversed.toList();
+          filteredDoctors=  List.from(doctorList);
+         
+          doctorList.forEach((element) {
+            myDoctors.forEach((myElement) {
+              if (myElement.username == element.username) {
+                filteredDoctors.remove(element);
+              }
+            }
+            );
+          });
+
+          
+          print('x');
         }
       });
     });
@@ -82,14 +98,14 @@ class _DoctorConnectionScreenState extends State<DoctorConnectionScreen> {
                   return ListView.builder(
                     itemBuilder: (ctx, index) {
                       return item(
-                          "${doctorList[index].firstName} ${doctorList[index].lastName}",
-                          doctorList[index].username,
-                          doctorList[index].specialization,
-                          doctorList[index],
-                          doctorList[index].email,
+                          "${filteredDoctors[index].firstName} ${filteredDoctors[index].lastName}",
+                          filteredDoctors[index].username,
+                          filteredDoctors[index].specialization,
+                          filteredDoctors[index],
+                          filteredDoctors[index].email,
                           context);
                     },
-                    itemCount: doctorList.length,
+                    itemCount: filteredDoctors.length,
                   );
                   break;
               }

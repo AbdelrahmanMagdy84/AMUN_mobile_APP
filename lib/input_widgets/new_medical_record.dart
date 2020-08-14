@@ -135,7 +135,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
                       Expanded(
                         child: Text(
                           date == null
-                              ? 'No date chosen'
+                              ? '$date'
                               : 'Picked Date: ${DateFormat.yMd().format(date)}',
                           style: Theme.of(context).textTheme.title,
                         ),
@@ -272,7 +272,7 @@ class _NewPrescreptionOrRadiographState extends State<NewMedicalRecord> {
             firstDate: DateTime(2020),
             lastDate: DateTime.now())
         .then((pickedDate) {
-      if (pickedDate == null)
+      if (pickedDate != null)
         setState(() {
           date = pickedDate;
         });
