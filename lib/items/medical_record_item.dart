@@ -13,6 +13,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:mime/mime.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MedicalRecordItem extends StatefulWidget {
   final MedicalRecord medicalRecord;
@@ -76,6 +78,7 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
     String clerk;
     String image;
     String enteredBy;
+    String fileName;
     if (newMedicalRecord.enteredBy == "PATIENT") {
       enteredBy = "me";
     } else if (newMedicalRecord.enteredBy == "CLERK") {
@@ -88,11 +91,13 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
     }
     if (newMedicalRecord.type == "Radiograph") {
       image = newMedicalRecord.radiograph.url;
+      fileName = newMedicalRecord.radiograph.fileName;
     } else if (newMedicalRecord.type == "Prescription") {
       image = newMedicalRecord.prescription.url;
+      fileName = newMedicalRecord.prescription.fileName;
     } else {
-      print(newMedicalRecord.type);
       image = newMedicalRecord.report.url;
+      fileName = newMedicalRecord.report.fileName;
     }
 
     String title = newMedicalRecord.title;
@@ -163,10 +168,15 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.of(context)
-                        .pushNamed(ShowImageScreen.routeName, arguments: {
-                      'image': image,
-                    }),
+                    onTap: () {
+                      if (getFileType(fileName) != 'image') {
+                        _launchURL(image);
+                      } else {
+                        Navigator.of(context).pushNamed(
+                            ShowImageScreen.routeName,
+                            arguments: {'image': image});
+                      }
+                    },
                     child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         child: Image.network(
@@ -240,5 +250,19 @@ class _MedicalRecordItemState extends State<MedicalRecordItem> {
         ),
       ),
     );
+  }
+
+  String getFileType(String input) {
+    String mimeStr = lookupMimeType(input);
+    var fileType = mimeStr.split('/');
+    return fileType[0];
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
