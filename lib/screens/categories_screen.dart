@@ -1,3 +1,4 @@
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:amun/drawer/doctors_connections_screen.dart';
 import 'package:amun/screens/scanner_screen.dart';
 import 'package:amun/screens/searchForDoctor_screen.dart';
@@ -14,7 +15,7 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-
+  final GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   void initState() {
     super.initState();
   }
@@ -32,16 +33,29 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed(ScannerScreen.routeName);
-              })
-              ,
-               IconButton(
+              }),
+          IconButton(
               color: Theme.of(context).accentColor,
               icon: Icon(
                 Icons.search,
               ),
               onPressed: () {
-                  Navigator.of(context).pushNamed(SearchForDoctorScreen.routeName);
-              
+                Navigator.of(context)
+                    .pushNamed(SearchForDoctorScreen.routeName);
+              }),
+          IconButton(
+              color: Theme.of(context).accentColor,
+              icon: Icon(Icons.calendar_today),
+              onPressed: () {
+                Add2Calendar.addEvent2Cal(Event(
+                  title: 'Amun App Reminders',
+                  startDate: DateTime.now(),
+                  endDate: DateTime.now().add(Duration(days: 1)),
+                  allDay: false,
+                )).then((success) {
+                  scaffoldState.currentState.showSnackBar(
+                      SnackBar(content: Text(success ? 'Success' : 'Error')));
+                });
               })
         ],
       ),
