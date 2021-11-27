@@ -1,7 +1,13 @@
-import 'package:intl/intl.dart';
-import 'package:numberpicker/numberpicker.dart';
-import '../models/blood_glucose.dart';
+import 'package:amun/screens/glucose_screen.dart';
+import 'package:amun/screens/success_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'package:amun/input_widgets/DialogManager.dart';
+import 'package:amun/models/BloodGlucose.dart';
+import 'package:numberpicker/numberpicker.dart';
+import '../services/APIClient.dart';
+import '../models/Responses/BloodGlucoseResponse.dart';
+import '../utils/TokenStorage.dart';
 
 class NewGlucose extends StatefulWidget {
   @override
@@ -10,21 +16,133 @@ class NewGlucose extends StatefulWidget {
 
 class _NewGlucoseState extends State<NewGlucose> {
   BloodGlucose glucose = new BloodGlucose();
+  final noteController = TextEditingController();
+  String _patientToken;
 
-  void displayDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      if (pickedDate == null)
-        return;
-      else
-        setState(() {
-          glucose.date = pickedDate;
-        });
+  /* init state for token */
+  @override
+  void initState() {
+    super.initState();
+    print("getting user token");
+    getUserToken();
+  }
+
+  void getUserToken() {
+    TokenStorage().getUserToken().then((value) async {
+      setState(() {
+        _patientToken = value;
+      });
+      //print(_patientToken);
     });
+  }
+
+/*------------------------------- */
+/*add function */
+  void addMeasure() {
+    DialogManager.showLoadingDialog(context);
+    glucose.note = noteController.text;
+    glucose.value = currentValue;
+    glucose.date = DateTime.now();
+
+    APIClient()
+        .getBloodGlucoseService()
+        .addBloodGlucoseMeasure(glucose, _patientToken)
+        .then((BloodGlucoseResponse bloodGlucoseResponse) {
+      if (bloodGlucoseResponse.success) {
+        DialogManager.stopLoadingDialog(context);
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .pushReplacementNamed(BloodGlucoseScreen.routeName);
+        
+      }
+    }).catchError((Object e) {
+      DialogManager.stopLoadingDialog(context);
+      DialogManager.showErrorDialog(context, "Couldn't add measure");
+      print(e.toString());
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Card(
+          elevation: 4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Text(
+                    'Blood Glucose',
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                width: double.infinity,
+                child: Container(
+                  margin: const EdgeInsets.all(8.0),
+                  child: Card(
+                      elevation: 4,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "Type",
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          buildRadioListTile(TimeType.fasting, 'Fasting'),
+                          buildRadioListTile(
+                              TimeType.afterEating, 'After Eating'),
+                          buildRadioListTile(
+                              TimeType.two_three_hours_aftrer_eating,
+                              '2-3 hours after eating'),
+                        ],
+                      )),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                child: Card(
+                  elevation: 2,
+                  margin: EdgeInsets.symmetric(horizontal: 30),
+                  child: buildNumberPicker(
+                      title: 'Glucose', measureUnite: 'mg/dl'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: "Note",
+                  ),
+                  controller: noteController,
+                  keyboardType: TextInputType.text,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 30),
+                child: FlatButton(
+                    onPressed: addMeasure,
+                    color: Theme.of(context).accentColor,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    )),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget buildRadioListTile(
@@ -44,19 +162,18 @@ class _NewGlucoseState extends State<NewGlucose> {
             if (value == TimeType.fasting) {
               min = 80;
               max = 300;
-              currentValue = 81 ;
+              currentValue = 81;
             }
             if (value == TimeType.afterEating) {
               min = 170;
               max = 300;
-               currentValue =171 ;
+              currentValue = 171;
             }
             if (value == TimeType.two_three_hours_aftrer_eating) {
               min = 120;
               max = 500;
-               currentValue = 131 ;
+              currentValue = 131;
             }
-            
           });
         },
       ),
@@ -76,10 +193,9 @@ class _NewGlucoseState extends State<NewGlucose> {
     ),
   );
 
-   int min = 1;
-   int max = 2;
-  int currentValue =2;
- 
+  int min = 1;
+  int max = 2;
+  int currentValue = 2;
 
   Widget buildNumberPicker({
     String title,
@@ -98,9 +214,9 @@ class _NewGlucoseState extends State<NewGlucose> {
             initialValue: currentValue,
             minValue: min,
             maxValue: max,
-            onChanged: (newValue) => setState(() {currentValue = newValue;
-            }
-            ),
+            onChanged: (newValue) => setState(() {
+              currentValue = newValue;
+            }),
           ),
         ),
         Padding(
@@ -111,102 +227,6 @@ class _NewGlucoseState extends State<NewGlucose> {
           ),
         ),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context).size.height;
-
-    var postprandial;
-    return SingleChildScrollView(
-      child: Card(
-        elevation: 4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: Text(
-                  'Blood Glucose',
-                  style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              width: double.infinity,
-              child: Container(
-                margin: const EdgeInsets.all(8.0),
-                child: Card(
-                    elevation: 4,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          "Type",
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        buildRadioListTile(TimeType.fasting, 'Fasting'),
-                        buildRadioListTile(
-                            TimeType.afterEating, 'After Eating'),
-                        buildRadioListTile(
-                            TimeType.two_three_hours_aftrer_eating,
-                            '2-3 hours after eating'),
-                      ],
-                    )),
-              ),
-            ),
-            Container( 
-              height: 200,
-              width: double.infinity,
-              child: Card(
-                child:
-                    buildNumberPicker(title: 'Glucose', measureUnite: 'mg/dl'),
-              ),
-            ),
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        glucose.date == null
-                            ? 'No date chosen'
-                            : 'Picked Date: ${DateFormat.yMd().format(glucose.date)}',
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                    ),
-                    FloatingActionButton(
-                      onPressed: displayDatePicker,
-                      child: Icon(
-                        Icons.date_range,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            FlatButton(
-                padding: EdgeInsets.all(30),
-                onPressed: null,
-                color: Theme.of(context).accentColor,
-                child: Text(
-                  'Save',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ))
-          ],
-        ),
-      ),
     );
   }
 }

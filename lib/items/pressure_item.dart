@@ -1,12 +1,41 @@
+import 'package:amun/models/BloodPressure.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/blood_Pressure.dart';
+import '../models/BloodPressure.dart';
 
-class PressureItem extends StatelessWidget {
-  DateTime date = DateTime.now();
-  int upper = 180;
-  int lower = 80;
-  //int heartRate = 80;
+class PressureItem extends StatefulWidget {
+  final BloodPressure bloodPressureObj;
+  PressureItem(this.bloodPressureObj);
+  @override
+  _PressureItemState createState() => _PressureItemState();
+}
+
+class _PressureItemState extends State<PressureItem> {
+
+  BloodPressure bloodPressure;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     bloodPressure = widget.bloodPressureObj;
+
+  }
+  @override
+  Widget build(BuildContext context) {
+   
+    // hna hn3ml return lee list mn pressure item (buildPressureItem)
+    return Card(
+      elevation: 10,
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      child: buildPressureItem(
+          ctx: context,
+          date: bloodPressure.date,
+          lower: bloodPressure.lower,
+          upper: bloodPressure.upper,
+          note: bloodPressure.note),
+    );
+  }
+
   Widget buildCircleAvatar(int value, BuildContext ctx) {
     return CircleAvatar(
       backgroundColor: Theme.of(ctx).accentColor,
@@ -72,10 +101,11 @@ class PressureItem extends StatelessWidget {
     } else if ((180 <= upper) || (120 < lower)) {
       return {'indecator': "Hypertensive crisis", 'color': Colors.red[400]};
     }
+    return {'indecator': "Not identfied", 'color': Colors.white};
   }
 
   Widget buildPressureItem(
-      BuildContext ctx, int upper, int lower, DateTime date) {
+      {BuildContext ctx, int upper, int lower, DateTime date, String note}) {
     Map<String, Object> obj = getPressureIndecator(upper, lower);
     return Container(
       child: Column(
@@ -106,28 +136,19 @@ class PressureItem extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-                padding: EdgeInsets.only(left: 10),
-                icon: Icon(
-                  Icons.delete,
-                  color: Theme.of(ctx).errorColor,
-                ),
-                onPressed: () {}
-                // widget.delete(widget.transaction.id),
-                ),
+            
           ]),
+          Divider(),
+          Container(
+            padding: EdgeInsets.all(20),
+            width: double.infinity,
+            child: Text(
+              "Note: $note",
+              maxLines: 3,
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // hna hn3ml return lee list mn pressure item (buildPressureItem)
-    return Card(
-      elevation: 10,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      child: buildPressureItem(context, upper, lower, date),
     );
   }
 }

@@ -1,18 +1,28 @@
-import 'package:amun/reminders/ui/homescreen/reminders_screen.dart';
-import 'package:amun/reminders/ui/new_entry/new_entry.dart';
+import 'package:amun/drawer/allergies_screen.dart';
+import 'package:amun/drawer/condtions_screen.dart';
+import 'package:amun/drawer/doctor_profile_screen.dart';
+import 'package:amun/drawer/doctors_connections_screen.dart';
+import 'package:amun/drawer/doctors_screen.dart';
+import 'package:amun/drawer/edit_patient_info_screen.dart';
+import 'package:amun/drawer/clerk_profile_screen.dart';
+import 'package:amun/screens/blood_pressure_screen.dart';
+import 'package:amun/screens/glucose_screen.dart';
+import 'package:amun/screens/lab_test_screen.dart';
+import 'package:amun/screens/prescription_screen.dart';
+import 'package:amun/screens/radiograph_screen.dart';
+import 'package:amun/screens/searchForDoctor_screen.dart';
 import 'package:amun/screens/show_image_screen.dart';
-
-import './screens/allergies_screen.dart';
-import './screens/category_records_screen.dart';
+import 'package:amun/screens/success_screen.dart';
+import 'package:flutter/services.dart';
 import './screens/login_screen.dart';
-import './screens/my_doctors_screen.dart';
-
 import './screens/register_screen.dart';
 import './screens/scanner_screen.dart';
-
-import './main_drawer.dart';
 import './screens/categories_screen.dart';
 import 'package:flutter/material.dart';
+import 'drawer/facilities_screen.dart';
+
+import 'drawer/medications_screen.dart';
+import 'package:amun/drawer/facility_profile_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,7 +30,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: Colors.amber,
@@ -37,63 +51,26 @@ class MyApp extends StatelessWidget {
         '/': (ctx) => LoginScreen(),
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
-        CategoryRecordsScreen.routeName: (ctx) => CategoryRecordsScreen(),
-        MyDoctorsScreen.routeName: (ctx) => MyDoctorsScreen(),
-        AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
         ScannerScreen.routeName: (ctx) => ScannerScreen(),
-        RemindersScreen.routeName: (ctx) => RemindersScreen(),
-        NewEntry.routeName: (ctx) => NewEntry(),
-        ShowImageScreen.routeName:(ctx)=>ShowImageScreen(),
+        DoctorsScreen.routeName: (ctx) => DoctorsScreen(),
+        AllergiesScreen.routeName: (ctx) => AllergiesScreen(),
+        ConditionsScreen.routeName: (ctx) => ConditionsScreen(),
+        ShowImageScreen.routeName: (ctx) => ShowImageScreen(),
+        PrescriptionScreen.routeName: (ctx) => PrescriptionScreen(),
+        BloodPressureScreen.routeName: (ctx) => BloodPressureScreen(),
+        BloodGlucoseScreen.routeName: (ctx) => BloodGlucoseScreen(),
+        RadiographScreen.routeName: (ctx) => RadiographScreen(),
+        LabTestScreen.routeName: (ctx) => LabTestScreen(),
+        FacilitiesScreen.routeName: (ctx) => FacilitiesScreen(),
+        EditPatientInfo.routeName: (ctx) => EditPatientInfo(),
+        MedicationsScreen.routeName: (ctx) => MedicationsScreen(),
+        ClerkProfileScreen.routeName: (ctx) => ClerkProfileScreen(),
+        DoctorProfileScreen.routeName: (ctx) => DoctorProfileScreen(),
+        FacilityProfileScreen.routeName: (ctx) => FacilityProfileScreen(),
+        SuccessScreen.routeName: (ctx) => SuccessScreen(),
+        DoctorConnectionScreen.routeName: (ctx) => DoctorConnectionScreen(),
+        SearchForDoctorScreen.routeName: (ctx) => SearchForDoctorScreen(),
       },
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      drawer: MainDrawer(),
-      body: Container(
-        color: Colors.black,
-        child: GridView(
-          padding: EdgeInsets.all(20),
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-          ),
-          children: <Widget>[],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

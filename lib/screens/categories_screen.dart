@@ -1,8 +1,10 @@
-import 'package:amun/reminders/global_bloc.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:amun/drawer/doctors_connections_screen.dart';
 import 'package:amun/screens/scanner_screen.dart';
+import 'package:amun/screens/searchForDoctor_screen.dart';
+import 'package:amun/static_data/medical_categories_data.dart';
 import '../items/category_item.dart';
-import '../medical_categories_data.dart';
-import '../main_drawer.dart';
+import '../drawer/main_drawer.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -13,10 +15,8 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  GlobalBloc globalBloc;
-
+  final GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   void initState() {
-    globalBloc = GlobalBloc();
     super.initState();
   }
 
@@ -33,9 +33,31 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed(ScannerScreen.routeName);
+              }),
+          IconButton(
+              color: Theme.of(context).accentColor,
+              icon: Icon(
+                Icons.search,
+              ),
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed(SearchForDoctorScreen.routeName);
+              }),
+          IconButton(
+              color: Theme.of(context).accentColor,
+              icon: Icon(Icons.calendar_today),
+              onPressed: () {
+                Add2Calendar.addEvent2Cal(Event(
+                  title: 'Amun App Reminders',
+                  startDate: DateTime.now(),
+                  endDate: DateTime.now().add(Duration(days: 1)),
+                  allDay: false,
+                )).then((success) {
+                  scaffoldState.currentState.showSnackBar(
+                      SnackBar(content: Text(success ? 'Success' : 'Error')));
+                });
               })
         ],
-        //title: Text("AMUN MR"),
       ),
       drawer: MainDrawer(),
       drawerScrimColor: Theme.of(context).primaryColor.withOpacity(0.5),
@@ -53,8 +75,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 children: <Widget>[
                   ...categories
                       .map(
-                        (cat) => CategoryItem(
-                            cat.id, cat.title, cat.color, cat.image),
+                        (cat) => CategoryItem(cat.id, cat.title, cat.image),
                       )
                       .toList(),
                 ],

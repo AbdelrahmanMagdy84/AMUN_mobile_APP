@@ -13,7 +13,9 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
   didChangeDependencies() {
     final routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, String>;
+    print(routeArgs["image"]);
     image = routeArgs['image'];
+    
     super.didChangeDependencies();
   }
 
@@ -25,7 +27,7 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
         height: double.infinity,
         width: double.infinity,
         child: PhotoView(
-          imageProvider: AssetImage(image),
+          imageProvider: NetworkImage(image),
         ),
       ),
     );
