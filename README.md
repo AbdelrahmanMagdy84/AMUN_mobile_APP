@@ -1,7 +1,7 @@
 # amun
 
 A new Flutter project.
-
+![delete_and_search](https://user-images.githubusercontent.com/45487306/151784998-b687e401-8357-4d3b-a735-193ddc6ba924.gif)
 ## Getting Started
 
 This project is a starting point for a Flutter application.
