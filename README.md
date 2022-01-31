@@ -1,7 +1,7 @@
 # amun
 
 A new Flutter project.
-register screen:
+Register screen:
 
 ![register](https://user-images.githubusercontent.com/45487306/151822825-6e0e6c25-724c-43b7-9f64-7eb1758dffb2.gif)
 
@@ -9,6 +9,9 @@ search and Scan QR code to create connection with a doctor.
 
 ![delete_and_search](https://user-images.githubusercontent.com/45487306/151784998-b687e401-8357-4d3b-a735-193ddc6ba924.gif)
 
+app home page features:
+
+![app features](https://user-images.githubusercontent.com/45487306/151834944-4bb7794d-cf43-488b-9bbd-2758553fe2f0.gif)
 
 ## Getting Started
 
