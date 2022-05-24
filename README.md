@@ -2,7 +2,9 @@
 
 A new Flutter project.
 Register screen:
+
 ![register](https://user-images.githubusercontent.com/45487306/151822825-6e0e6c25-724c-43b7-9f64-7eb1758dffb2.gif)
+
 app home page features:
 
 ![app features](https://user-images.githubusercontent.com/45487306/151834944-4bb7794d-cf43-488b-9bbd-2758553fe2f0.gif)
